@@ -5,7 +5,6 @@ import Home from "pages/Home";
 import Tournament from "pages/Tournament";
 import TournamentRating from "pages/TournamentRating";
 import TournamentHistory from "pages/TournamentHistory";
-
 import { Button } from "@material-ui/core";
 
 const LoggedIn = () => {
@@ -42,13 +41,13 @@ const LoggedIn = () => {
 
         <article className={classes.content}>
           <Switch>
-            <Route path="/tournament">
+            <Route exact path="/tournament">
               <Tournament />
             </Route>
-            <Route path="/tournament-rating">
+            <Route exact path="/tournament-rating">
               <TournamentRating />
             </Route>
-            <Route path="/tournament-history">
+            <Route exact path="/tournament-history">
               <TournamentHistory />
             </Route>
             <Redirect to="/tournament" />
