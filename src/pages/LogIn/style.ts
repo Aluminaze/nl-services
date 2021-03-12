@@ -1,8 +1,16 @@
 import { makeStyles } from "@material-ui/core";
+import { HEADER_HEIGHT } from "utils/constants";
 
 const useStyles = makeStyles(() => {
   return {
-    container: {
+    main: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+      height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+    },
+    content: {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
