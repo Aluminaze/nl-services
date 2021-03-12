@@ -14,13 +14,6 @@ const useStyles = makeStyles(() => {
       height: HEADER_HEIGHT,
       backgroundColor: theme.palette.primary.main,
     },
-    headerNav: {
-      flexBasis: "20%",
-      display: "flex",
-      flexDirection: "column",
-      height: "100%",
-      borderRight: `1px solid ${theme.palette.primary.main}`,
-    },
     headerLabel: {
       fontSize: 18,
       color: "#fff",

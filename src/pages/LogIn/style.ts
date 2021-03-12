@@ -3,14 +3,14 @@ import { HEADER_HEIGHT } from "utils/constants";
 
 const useStyles = makeStyles(() => {
   return {
-    content: {
+    main: {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       width: "100%",
       height: `calc(100vh - ${HEADER_HEIGHT}px)`,
     },
-    container: {
+    content: {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",

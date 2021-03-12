@@ -15,7 +15,7 @@ const LoggedIn = () => {
 
   if (hasAccess) {
     return (
-      <article className={classes.content}>
+      <main className={classes.main}>
         <nav className={classes.nav}>
           <Button
             size="small"
@@ -40,7 +40,7 @@ const LoggedIn = () => {
           </Button>
         </nav>
 
-        <section className={classes.container}>
+        <article className={classes.content}>
           <Switch>
             <Route path="/tournament">
               <Tournament />
@@ -53,15 +53,15 @@ const LoggedIn = () => {
             </Route>
             <Redirect to="/tournament" />
           </Switch>
-        </section>
-      </article>
+        </article>
+      </main>
     );
   }
 
   return (
-    <article className={classes.content}>
+    <main className={classes.main}>
       <Home />
-    </article>
+    </main>
   );
 };
 

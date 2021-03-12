@@ -5,7 +5,7 @@ const useStyles = makeStyles(() => {
   const theme = useTheme();
 
   return {
-    content: {
+    main: {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => {
       height: "100%",
       borderRight: `1px solid ${theme.palette.primary.main}`,
     },
-    container: {
+    content: {
       height: "100%",
       width: "100%",
     },

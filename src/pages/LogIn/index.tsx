@@ -9,10 +9,11 @@ interface LogInProps {
 const LogIn = (props: LogInProps) => {
   const { setIsAuthorized } = props;
   const classes = useStyles();
+
   return (
-    <article className={classes.content}>
-      <section className={classes.container}>
-        <div className={classes.authBlock}>
+    <main className={classes.main}>
+      <article className={classes.content}>
+        <section className={classes.authBlock}>
           <div className={classes.authBlockHeader}>
             <h1>Для начала работы</h1>
             <h1>используйте аккаунт Google</h1>
@@ -25,9 +26,9 @@ const LogIn = (props: LogInProps) => {
           >
             Войти
           </Button>
-        </div>
-      </section>
-    </article>
+        </section>
+      </article>
+    </main>
   );
 };
 
