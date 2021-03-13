@@ -37,7 +37,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <MuiThemeProvider theme={theme}>
-        <Context.Provider value={initContextState}>
+        <Context.Provider
+          value={{ auth: firebase.auth(), firestore: firebase.firestore() }}
+        >
           <App />
         </Context.Provider>
       </MuiThemeProvider>
