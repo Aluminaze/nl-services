@@ -20,9 +20,9 @@ const useStyles = makeStyles(() => ({
 function App() {
   const classes = useStyles();
   const { auth } = useContext(Context);
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
-  const login = () => {
+  const logIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider);
   };
@@ -31,7 +31,7 @@ function App() {
     <div className={classes.wrapper}>
       <Header isAuthorized={user ? true : false} />
 
-      {user ? <LoggedIn /> : <LogIn login={login} />}
+      {user ? <LoggedIn /> : <LogIn logIn={logIn} isLoading={loading} />}
     </div>
   );
 }
