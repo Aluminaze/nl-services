@@ -17,7 +17,7 @@ const Header = (props: HeaderProps): React.ReactElement => {
 
   return (
     <header className={classes.header}>
-      <h1 className={classes.headerLabel}>NL services</h1>
+      <h1 className={classes.headerLabel}>NLS</h1>
 
       {user && (
         <div className={classes.headerUserInfo}>
