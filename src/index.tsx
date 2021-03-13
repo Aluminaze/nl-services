@@ -7,6 +7,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import firebase from "firebase";
 import firebaseConfig from "firebaseConfig";
+import { ContextProps } from "interfaces";
 
 const theme = createMuiTheme({
   palette: {
@@ -20,11 +21,6 @@ const theme = createMuiTheme({
 });
 
 firebase.initializeApp(firebaseConfig);
-
-interface ContextProps {
-  auth: firebase.auth.Auth;
-  firestore: firebase.firestore.Firestore;
-}
 
 const initContextState: ContextProps = {
   auth: firebase.auth(),
