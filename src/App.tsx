@@ -29,7 +29,7 @@ function App() {
 
   return (
     <div className={classes.wrapper}>
-      <Header isAuthorized={user ? true : false} />
+      <Header user={user} />
 
       {user ? <LoggedIn /> : <LogIn logIn={logIn} isLoading={loading} />}
     </div>

@@ -4,11 +4,11 @@ import { Button } from "@material-ui/core";
 import firebase from "firebase";
 
 interface HeaderProps {
-  isAuthorized: boolean;
+  user: firebase.User | null | undefined;
 }
 
 const Header = (props: HeaderProps): React.ReactElement => {
-  const { isAuthorized } = props;
+  const { user } = props;
   const classes = useStyles();
 
   const LogOut = () => {
@@ -19,10 +19,18 @@ const Header = (props: HeaderProps): React.ReactElement => {
     <header className={classes.header}>
       <h1 className={classes.headerLabel}>NL services</h1>
 
-      {isAuthorized && (
-        <Button size="small" color="secondary" onClick={LogOut}>
-          Выйти
-        </Button>
+      {user && (
+        <div className={classes.headerUserInfo}>
+          <h2>{user.email}</h2>
+          <Button
+            variant="outlined"
+            size="small"
+            color="secondary"
+            onClick={LogOut}
+          >
+            Выйти
+          </Button>
+        </div>
       )}
     </header>
   );
