@@ -4,11 +4,11 @@ import Button from "@material-ui/core/Button";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 interface LogInProps {
-  setIsAuthorized: (status: boolean) => void;
+  login: () => void;
 }
 
 const LogIn = (props: LogInProps) => {
-  const { setIsAuthorized } = props;
+  const { login } = props;
   const classes = useStyles();
 
   return (
@@ -25,7 +25,7 @@ const LogIn = (props: LogInProps) => {
                 variant="contained"
                 size="large"
                 color="primary"
-                onClick={() => setIsAuthorized(true)}
+                onClick={login}
               >
                 Войти
               </Button>
