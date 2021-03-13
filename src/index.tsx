@@ -5,6 +5,9 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import firebase from "firebase";
+import firebaseConfig from "firebaseConfig";
+import { ContextProps } from "interfaces";
 
 const theme = createMuiTheme({
   palette: {
@@ -17,11 +20,24 @@ const theme = createMuiTheme({
   },
 });
 
+firebase.initializeApp(firebaseConfig);
+
+const initContextState: ContextProps = {
+  auth: firebase.auth(),
+  firestore: firebase.firestore(),
+};
+
+export const Context = React.createContext<ContextProps>(initContextState);
+
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <MuiThemeProvider theme={theme}>
-        <App />
+        <Context.Provider
+          value={{ auth: firebase.auth(), firestore: firebase.firestore() }}
+        >
+          <App />
+        </Context.Provider>
       </MuiThemeProvider>
     </Router>
   </React.StrictMode>,

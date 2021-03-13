@@ -2,13 +2,15 @@ import React from "react";
 import useStyles from "./style";
 import Button from "@material-ui/core/Button";
 import { Switch, Route, Redirect } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface LogInProps {
-  setIsAuthorized: (status: boolean) => void;
+  isLoading: boolean;
+  logIn: () => void;
 }
 
 const LogIn = (props: LogInProps) => {
-  const { setIsAuthorized } = props;
+  const { isLoading, logIn } = props;
   const classes = useStyles();
 
   return (
@@ -16,20 +18,24 @@ const LogIn = (props: LogInProps) => {
       <article className={classes.content}>
         <Switch>
           <Route exact path="/">
-            <section className={classes.authBlock}>
-              <div className={classes.authBlockHeader}>
-                <h1>Для начала работы</h1>
-                <h1>используйте аккаунт Google</h1>
-              </div>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                onClick={() => setIsAuthorized(true)}
-              >
-                Войти
-              </Button>
-            </section>
+            {isLoading ? (
+              <CircularProgress color="primary" />
+            ) : (
+              <section className={classes.authBlock}>
+                <div className={classes.authBlockHeader}>
+                  <h1>Для начала работы</h1>
+                  <h1>используйте аккаунт Google</h1>
+                </div>
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  onClick={logIn}
+                >
+                  Войти
+                </Button>
+              </section>
+            )}
           </Route>
 
           <Redirect to="/" />

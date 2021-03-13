@@ -18,6 +18,16 @@ const useStyles = makeStyles(() => {
       fontSize: 18,
       color: "#fff",
     },
+    headerUserInfo: {
+      display: "flex",
+
+      "& h2": {
+        alignSelf: "center",
+        color: "#fff",
+        fontSize: 14,
+        margin: "0 10px 0 0",
+      },
+    },
   };
 });
 

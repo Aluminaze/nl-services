@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core";
 import Header from "components/Header";
 import LogIn from "pages/LogIn";
 import LoggedIn from "pages/LoggedIn";
+import { Context } from "./index";
+import firebase from "firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -16,17 +19,19 @@ const useStyles = makeStyles(() => ({
 
 function App() {
   const classes = useStyles();
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  const { auth } = useContext(Context);
+  const [user, loading] = useAuthState(auth);
+
+  const logIn = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider);
+  };
 
   return (
     <div className={classes.wrapper}>
-      <Header isAuthorized={isAuthorized} setIsAuthorized={setIsAuthorized} />
+      <Header user={user} />
 
-      {isAuthorized ? (
-        <LoggedIn />
-      ) : (
-        <LogIn setIsAuthorized={setIsAuthorized} />
-      )}
+      {user ? <LoggedIn /> : <LogIn logIn={logIn} isLoading={loading} />}
     </div>
   );
 }
