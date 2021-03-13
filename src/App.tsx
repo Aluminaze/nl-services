@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core";
 import Header from "components/Header";
 import LogIn from "pages/LogIn";
@@ -21,12 +21,6 @@ function App() {
   const classes = useStyles();
   const { auth } = useContext(Context);
   const [user] = useAuthState(auth);
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (user) setIsAuthorized(true);
-    else setIsAuthorized(false);
-  }, [user]);
 
   const login = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -35,9 +29,9 @@ function App() {
 
   return (
     <div className={classes.wrapper}>
-      <Header isAuthorized={isAuthorized} />
+      <Header isAuthorized={user ? true : false} />
 
-      {isAuthorized ? <LoggedIn /> : <LogIn login={login} />}
+      {user ? <LoggedIn /> : <LogIn login={login} />}
     </div>
   );
 }
