@@ -12,7 +12,7 @@ import { ContextProps } from "interfaces";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#0071e3",
+      main: "#35393e",
     },
     secondary: {
       main: "#ffffff",
