@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import useStyles from "./styles";
 import { Button } from "@material-ui/core";
 import firebase from "firebase";
+import AdminDialog from "components/AdminDialog";
 
 interface HeaderProps {
   user: firebase.User | null | undefined;
@@ -10,6 +11,7 @@ interface HeaderProps {
 const Header = (props: HeaderProps): React.ReactElement => {
   const { user } = props;
   const classes = useStyles();
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(true);
 
   const LogOut = () => {
     firebase.auth().signOut();
@@ -21,7 +23,11 @@ const Header = (props: HeaderProps): React.ReactElement => {
 
       {user && (
         <div className={classes.headerUserInfo}>
-          <h2>{user.email}</h2>
+          {user.email === "aluminaze@gmail.com" ? (
+            <h2 onClick={() => setIsDialogOpen(!isDialogOpen)}>{user.email}</h2>
+          ) : (
+            <h2>{user.email}</h2>
+          )}
           <Button
             variant="outlined"
             size="small"
@@ -32,6 +38,11 @@ const Header = (props: HeaderProps): React.ReactElement => {
           </Button>
         </div>
       )}
+
+      <AdminDialog
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+      />
     </header>
   );
 };
