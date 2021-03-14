@@ -4,6 +4,43 @@ import { Context } from "index";
 import { useList } from "react-firebase-hooks/database";
 import useStyles from "./styles";
 
+type TournamentStruct = {
+  id: string;
+  time11: any;
+  time15: any;
+  time19: any;
+  time23: any;
+};
+
+interface ParticipantStruct {
+  id: string;
+  count: number;
+}
+
+interface RenderParcipiantsProps {
+  participiants: any;
+}
+
+const RenderParcipiants = (props: RenderParcipiantsProps) => {
+  const { participiants } = props;
+  const arr: ParticipantStruct[] = participiants
+    ? Object.values(participiants)
+    : [];
+  console.log("~ arr", arr);
+
+  if (arr.length) {
+    return (
+      <div>
+        {arr.map((pars: ParticipantStruct) => (
+          <div>
+            {pars.id}: {pars.count}
+          </div>
+        ))}
+      </div>
+    );
+  } else return null;
+};
+
 const Tournament = () => {
   const classes = useStyles();
   const { database } = useContext(Context);
@@ -16,19 +53,19 @@ const Tournament = () => {
   const addChild = (): void => {
     refTorunamentPush.set({
       id: `${date}/01/2020`,
-      time11: { win: "id", glads: {} },
-      time15: { win: "id", glads: {} },
-      time19: { win: "id", glads: {} },
-      time23: { win: "id", glads: {} },
+      time11: { win: "id", participiants: {} },
+      time15: { win: "id", participiants: {} },
+      time19: { win: "id", participiants: {} },
+      time23: { win: "id", participiants: {} },
     });
     setDate(date + 1);
   };
 
-  const addUser = (dataSnapshot: any): void => {
+  const addParticipiant = (dataSnapshot: any): void => {
     const { ref } = dataSnapshot;
-    const add = ref.child("time11/glads").push();
+    const add = ref.child("time11/participiants").push();
     add.set({
-      id: 1,
+      id: "parcipId",
       count: 5,
     });
   };
@@ -38,16 +75,20 @@ const Tournament = () => {
       <Button onClick={addChild}>Add child</Button>
       <div className={classes.table}>
         {snapshots?.length && snapshots.length >= 2
-          ? snapshots.map(
-              (dataSnapshot: any, index: number) =>
-                index < 2 && (
+          ? snapshots.map((dataSnapshot: any, index: number) => {
+              const tournamentData: TournamentStruct = dataSnapshot.val();
+
+              if (index < 2)
+                return (
                   <div className={classes.tableCol} key={index}>
-                    <h1>{dataSnapshot.val().id}</h1>
+                    <h1>{tournamentData.id}</h1>
 
                     <div className={classes.tableColBlock}>
                       <h2>11:00</h2>
                       <div className={classes.list}>
-                        {JSON.stringify(dataSnapshot.val().time11)}
+                        <RenderParcipiants
+                          participiants={tournamentData.time11?.participiants}
+                        />
                       </div>
 
                       <div className={classes.buttons}>
@@ -55,7 +96,7 @@ const Tournament = () => {
                           variant="contained"
                           size="small"
                           color="primary"
-                          onClick={() => addUser(dataSnapshot)}
+                          onClick={() => addParticipiant(dataSnapshot)}
                         >
                           Добавить участника
                         </Button>
@@ -107,8 +148,9 @@ const Tournament = () => {
                       </div>
                     </div>
                   </div>
-                )
-            )
+                );
+              else return <span>null</span>;
+            })
           : null}
       </div>
     </section>
