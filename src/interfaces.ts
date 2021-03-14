@@ -14,7 +14,7 @@ export interface ParticipantsStruct {
 }
 export interface TournamentInTimeStruct {
   winner: string;
-  participiants: ParticipantsStruct;
+  participants: ParticipantsStruct;
 }
 
 export interface TournamentStruct {
@@ -26,5 +26,5 @@ export interface TournamentStruct {
 }
 
 export interface RenderParticipantsProps {
-  participiants: ParticipantsStruct;
+  participants: ParticipantsStruct;
 }
