@@ -27,6 +27,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-between",
   },
   tableBlockInfo: {
+    minHeight: "200px",
     width: "100%",
     margin: "10px 10px 10px 0",
     border: "1px solid gray",

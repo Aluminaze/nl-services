@@ -7,8 +7,12 @@ const useStyles = makeStyles(() => ({
   inputWrapper: {
     margin: "15px 0 0 0",
   },
-  buttonWrapper: {
+  buttonsWrapper: {
     margin: "10px 0 0 0",
+
+    "& button": {
+      margin: "0 10px 0 0",
+    },
   },
 }));
 
