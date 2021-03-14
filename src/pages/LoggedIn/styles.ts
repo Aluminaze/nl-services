@@ -1,9 +1,7 @@
-import { makeStyles, useTheme } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { HEADER_HEIGHT } from "utils/constants";
 
 const useStyles = makeStyles(() => {
-  const theme = useTheme();
-
   return {
     main: {
       display: "flex",
