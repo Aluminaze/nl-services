@@ -4,48 +4,8 @@ import { Context } from "index";
 import { useList } from "react-firebase-hooks/database";
 import useStyles from "./styles";
 import ParticipantAddingForm from "components/ParticipantAddingForm";
-interface ParticipantInfoStruct {
-  id: string;
-  count: number;
-}
-interface ParticipantsStruct {
-  [key: string]: ParticipantInfoStruct;
-}
-interface TournamentInTimeStruct {
-  winner: string;
-  participiants: ParticipantsStruct;
-}
-
-type TournamentStruct = {
-  id: string;
-  time11: TournamentInTimeStruct;
-  time15: TournamentInTimeStruct;
-  time19: TournamentInTimeStruct;
-  time23: TournamentInTimeStruct;
-};
-
-interface RenderParticipantsProps {
-  participiants: ParticipantsStruct;
-}
-
-const RenderParcipiants = (props: RenderParticipantsProps) => {
-  const { participiants } = props;
-  const arr: ParticipantInfoStruct[] = participiants
-    ? Object.values(participiants)
-    : [];
-
-  if (arr.length) {
-    return (
-      <>
-        {arr.map((pars: ParticipantInfoStruct, index: number) => (
-          <div key={index}>
-            {pars.id}: {pars.count}
-          </div>
-        ))}
-      </>
-    );
-  } else return null;
-};
+import { TournamentStruct } from "interfaces";
+import RenderParticipants from "components/RenderParticipants";
 
 const Tournament = () => {
   const classes = useStyles();
@@ -68,7 +28,7 @@ const Tournament = () => {
     setDate(date + 1);
   };
 
-  const addParticipiant = (dataSnapshot: any): void => {
+  const addNewParcipant = (dataSnapshot: any): void => {
     const { ref } = dataSnapshot;
     const add = ref.child("time11/participants").push();
     add.set({
@@ -94,8 +54,8 @@ const Tournament = () => {
                       <div className={classes.tableBlockInfo}>
                         <h2>11:00</h2>
                         <div className={classes.list}>
-                          <RenderParcipiants
-                            participiants={tournamentData.time11?.participiants}
+                          <RenderParticipants
+                            participants={tournamentData.time11?.participants}
                           />
                         </div>
                       </div>
