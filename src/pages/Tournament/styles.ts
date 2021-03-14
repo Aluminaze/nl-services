@@ -8,11 +8,11 @@ const useStyles = makeStyles(() => ({
   },
   table: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
     height: "100%",
   },
   tableCol: {
-    flexBasis: "49%",
+    flexBasis: "50%",
     height: "100%",
     border: "1px solid black",
     padding: "20px 25px",

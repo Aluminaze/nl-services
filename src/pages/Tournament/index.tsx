@@ -3,40 +3,45 @@ import { Button } from "@material-ui/core";
 import { Context } from "index";
 import { useList } from "react-firebase-hooks/database";
 import useStyles from "./styles";
-
-type TournamentStruct = {
-  id: string;
-  time11: any;
-  time15: any;
-  time19: any;
-  time23: any;
-};
-
-interface ParticipantStruct {
+interface ParticipantInfoStruct {
   id: string;
   count: number;
 }
+interface ParticipiantsStruct {
+  [key: string]: ParticipantInfoStruct;
+}
+interface TournamentInTimeStruct {
+  winner: string;
+  participiants: ParticipiantsStruct;
+}
+
+type TournamentStruct = {
+  id: string;
+  time11: TournamentInTimeStruct;
+  time15: TournamentInTimeStruct;
+  time19: TournamentInTimeStruct;
+  time23: TournamentInTimeStruct;
+};
 
 interface RenderParcipiantsProps {
-  participiants: any;
+  participiants: ParticipiantsStruct;
 }
 
 const RenderParcipiants = (props: RenderParcipiantsProps) => {
   const { participiants } = props;
-  const arr: ParticipantStruct[] = participiants
+  const arr: ParticipantInfoStruct[] = participiants
     ? Object.values(participiants)
     : [];
-  console.log("~ arr", arr);
 
   if (arr.length) {
     return (
-      <div>
-        {arr.map((pars: ParticipantStruct) => (
-          <div>
+      <>
+        {arr.map((pars: ParticipantInfoStruct, index: number) => (
+          <div key={index}>
             {pars.id}: {pars.count}
           </div>
         ))}
-      </div>
+      </>
     );
   } else return null;
 };
@@ -53,10 +58,10 @@ const Tournament = () => {
   const addChild = (): void => {
     refTorunamentPush.set({
       id: `${date}/01/2020`,
-      time11: { win: "id", participiants: {} },
-      time15: { win: "id", participiants: {} },
-      time19: { win: "id", participiants: {} },
-      time23: { win: "id", participiants: {} },
+      time11: { winner: "id", participiants: {} },
+      time15: { winner: "id", participiants: {} },
+      time19: { winner: "id", participiants: {} },
+      time23: { winner: "id", participiants: {} },
     });
     setDate(date + 1);
   };
@@ -74,11 +79,11 @@ const Tournament = () => {
     <section className={classes.container}>
       <Button onClick={addChild}>Add child</Button>
       <div className={classes.table}>
-        {snapshots?.length && snapshots.length >= 2
-          ? snapshots.map((dataSnapshot: any, index: number) => {
+        {snapshots?.length
+          ? snapshots.map((dataSnapshot, index: number) => {
               const tournamentData: TournamentStruct = dataSnapshot.val();
 
-              if (index < 2)
+              if (index < 1)
                 return (
                   <div className={classes.tableCol} key={index}>
                     <h1>{tournamentData.id}</h1>
@@ -149,7 +154,7 @@ const Tournament = () => {
                     </div>
                   </div>
                 );
-              else return <span>null</span>;
+              else return null;
             })
           : null}
       </div>
