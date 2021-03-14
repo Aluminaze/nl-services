@@ -11,7 +11,7 @@ interface HeaderProps {
 const Header = (props: HeaderProps): React.ReactElement => {
   const { user } = props;
   const classes = useStyles();
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(true);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const LogOut = () => {
     firebase.auth().signOut();
