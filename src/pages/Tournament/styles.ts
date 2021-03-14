@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     height: "100%",
   },
-  tableCol: {
+  tableContainer: {
     flexBasis: "50%",
     height: "100%",
     border: "1px solid black",
@@ -22,8 +22,13 @@ const useStyles = makeStyles(() => ({
       fontSize: 22,
     },
   },
-  tableColBlock: {
-    margin: "10px 0",
+  tableBlock: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  tableBlockInfo: {
+    width: "100%",
+    margin: "10px 10px 10px 0",
     border: "1px solid gray",
     borderRadius: 5,
     padding: "10px",
@@ -35,7 +40,14 @@ const useStyles = makeStyles(() => ({
   list: {
     margin: "10px 0 0 0",
   },
-  buttons: {
+  tableBlockAdding: {
+    border: "1px solid gray",
+    borderRadius: 5,
+    padding: "10px",
+  },
+  tableBlockButtons: {
+    minWidth: 325,
+    flexBasis: "40%",
     margin: "10px 0 0 0",
   },
 }));
