@@ -21,7 +21,7 @@ const LoggedIn = () => {
             color="default"
             onClick={() => history.push("/tournament")}
           >
-            Создать турнир
+            Турнирная таблица
           </Button>
           <Button
             size="small"
