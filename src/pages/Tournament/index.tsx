@@ -3,8 +3,14 @@ import { Button } from "@material-ui/core";
 import { Context } from "index";
 import { useList, useObjectVal } from "react-firebase-hooks/database";
 import useStyles from "./styles";
-import { TournamentStruct, UserStruct } from "interfaces";
+import { TournamentStruct, UserStruct } from "interfacesAndTypes";
 import TournamentAtTime from "components/TournamentAtTime";
+import {
+  TIME_KEY_11,
+  TIME_KEY_15,
+  TIME_KEY_19,
+  TIME_KEY_23,
+} from "utils/constants";
 
 const Tournament = () => {
   const classes = useStyles();
@@ -51,7 +57,7 @@ const Tournament = () => {
                   <h1>{tournamentData.id}</h1>
 
                   <TournamentAtTime
-                    timeKey={"time11"}
+                    timeKey={TIME_KEY_11}
                     tournamentsData={tournamentsData}
                     usersValData={usersValData}
                     participants={tournamentData.time11?.participants}
@@ -59,7 +65,7 @@ const Tournament = () => {
                     usersData={usersData}
                   />
                   <TournamentAtTime
-                    timeKey={"time15"}
+                    timeKey={TIME_KEY_15}
                     tournamentsData={tournamentsData}
                     usersValData={usersValData}
                     participants={tournamentData.time15?.participants}
@@ -67,7 +73,7 @@ const Tournament = () => {
                     usersData={usersData}
                   />
                   <TournamentAtTime
-                    timeKey={"time19"}
+                    timeKey={TIME_KEY_19}
                     tournamentsData={tournamentsData}
                     usersValData={usersValData}
                     participants={tournamentData.time19?.participants}
@@ -75,7 +81,7 @@ const Tournament = () => {
                     usersData={usersData}
                   />
                   <TournamentAtTime
-                    timeKey={"time23"}
+                    timeKey={TIME_KEY_23}
                     tournamentsData={tournamentsData}
                     usersValData={usersValData}
                     participants={tournamentData.time23?.participants}

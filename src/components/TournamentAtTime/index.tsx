@@ -3,12 +3,16 @@ import Button from "@material-ui/core/Button";
 import ParticipantAddingForm from "components/ParticipantAddingForm";
 import RenderParticipants from "components/RenderParticipants";
 import useStyles from "./styles";
-import { ParticipantsStruct, UserStruct } from "interfaces";
+import {
+  ParticipantsStruct,
+  TimeKeyStruct,
+  UserStruct,
+} from "interfacesAndTypes";
 import { Val } from "react-firebase-hooks/database/dist/database/types";
 import getTimeByTimeKey from "utils/getTimeByTimeKey";
 
 interface TournamentAtTimeProps {
-  timeKey: "time11" | "time15" | "time19" | "time23";
+  timeKey: TimeKeyStruct;
   tournamentsData: any;
   usersValData: UserStruct[];
   participants: ParticipantsStruct;

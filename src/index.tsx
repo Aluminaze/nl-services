@@ -7,7 +7,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import firebase from "firebase";
 import firebaseConfig from "firebaseConfig";
-import { ContextProps } from "interfaces";
+import { ContextProps } from "interfacesAndTypes";
 
 const theme = createMuiTheme({
   palette: {

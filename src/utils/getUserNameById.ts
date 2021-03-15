@@ -1,4 +1,4 @@
-import { UserStruct } from "interfaces";
+import { UserStruct } from "interfacesAndTypes";
 
 const getUserNameById = (userId: string, usersData: UserStruct[]): string => {
   let name: string = "not found";

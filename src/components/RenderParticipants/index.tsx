@@ -3,7 +3,7 @@ import {
   ParticipantInfoStruct,
   ParticipantsStruct,
   UserStruct,
-} from "interfaces";
+} from "interfacesAndTypes";
 import getUserNameById from "utils/getUserNameById";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import useStyles from "./styles";
