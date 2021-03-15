@@ -12,10 +12,10 @@ const getTimeByTimeKey = (timeKey: TimeKeyStruct): string => {
       return "11:00";
     case TIME_KEY_15:
       return "15:00";
-    case "time19":
-      return TIME_KEY_19;
-    case "time23":
-      return TIME_KEY_23;
+    case TIME_KEY_19:
+      return "19:00";
+    case TIME_KEY_23:
+      return "23:00";
     default:
       return "";
   }
