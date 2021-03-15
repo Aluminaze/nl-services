@@ -4,8 +4,10 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Button } from "@material-ui/core";
 import _ from "lodash";
+import { TimeKeyStruct } from "interfacesAndTypes";
 
 interface ParticipantAddingFormProps {
+  timeKey: TimeKeyStruct;
   refTournamentsData: any;
   userNames: string[];
   setIsAdding: (status: boolean) => void;
@@ -15,6 +17,7 @@ const amount: string[] = _.range(1, 17).map((num) => String(num));
 
 const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
   const {
+    timeKey,
     refTournamentsData,
     userNames,
     setIsAdding,
@@ -57,7 +60,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           onInputChange={(event, newInputValue) => {
             setInputParticipantName(newInputValue);
           }}
-          id="participant-autocomplete"
+          id={`participant-autocomplete-${timeKey}`}
           options={userNames}
           style={{ width: 300 }}
           renderInput={(params) => (
@@ -81,7 +84,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           onInputChange={(event, newInputValue) => {
             setInputAmount(newInputValue);
           }}
-          id="amount-of-meat-autocomplete"
+          id={`amount-of-meat-autocomplete-${timeKey}`}
           options={amount}
           style={{ width: 170 }}
           renderInput={(params) => (

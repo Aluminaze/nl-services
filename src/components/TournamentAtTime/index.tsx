@@ -109,6 +109,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
         {isAdding ? (
           <div className={classes.tableBlockAdding}>
             <ParticipantAddingForm
+              timeKey={timeKey}
               refTournamentsData={tournamentsData.ref}
               userNames={userNames}
               setIsAdding={setIsAdding}
