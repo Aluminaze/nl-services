@@ -1,21 +1,30 @@
 import React, { useContext, useState } from "react";
 import { Button } from "@material-ui/core";
 import { Context } from "index";
-import { useList } from "react-firebase-hooks/database";
+import { useList, useObjectVal } from "react-firebase-hooks/database";
 import useStyles from "./styles";
 import ParticipantAddingForm from "components/ParticipantAddingForm";
-import { TournamentStruct } from "interfaces";
+import { TournamentStruct, UserStruct } from "interfaces";
 import RenderParticipants from "components/RenderParticipants";
 
 const Tournament = () => {
   const classes = useStyles();
   const { database } = useContext(Context);
+  const [isAdding, setIsAdding] = useState<boolean>(true);
+  const [date, setDate] = useState<number>(1);
+
+  // firebase
   const refTournaments = database.ref("tournaments");
   const refTorunamentPush = refTournaments.push();
-  const [date, setDate] = useState<number>(1);
-  const [isAdding, setIsAdding] = useState<boolean>(true);
+  const refUsers = database.ref("users");
+  const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
+
+  const userNames: string[] = usersData
+    ? Object.values(usersData).map((user: UserStruct) => user.name)
+    : [];
 
   const [snapshots] = useList(refTournaments);
+  const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
 
   const addChild = (): void => {
     refTorunamentPush.set({
@@ -28,13 +37,37 @@ const Tournament = () => {
     setDate(date + 1);
   };
 
-  const addNewParcipant = (dataSnapshot: any): void => {
-    const { ref } = dataSnapshot;
-    const add = ref.child("time11/participants").push();
-    add.set({
-      id: "participantId",
-      count: 5,
-    });
+  const addNewUser = (
+    refDataSnapshot: any,
+    userName: string,
+    userScore: number
+  ): void => {
+    const refParticipants = refDataSnapshot.child("time11/participants").push();
+
+    if (usersData && Object.values(usersData).length) {
+      const usersValData = Object.values(usersData);
+      const selectedUserStruct: UserStruct | undefined = usersValData.find(
+        (user: UserStruct) => user.name === userName
+      );
+
+      if (selectedUserStruct) {
+        console.log(
+          `Добавлен участник: userId: ${selectedUserStruct.id}, count: ${userScore}`
+        );
+
+        refParticipants.set({
+          id: selectedUserStruct.id,
+          count: userScore,
+        });
+      } else {
+        //
+        // TODO: Реализовать отладку ошибок и логирование
+        //
+        alert(
+          "Ошибка при добавлении нового участника! Сообщите администратору проекта."
+        );
+      }
+    }
   };
 
   return (
@@ -55,6 +88,7 @@ const Tournament = () => {
                         <h2>11:00</h2>
                         <div className={classes.list}>
                           <RenderParticipants
+                            usersValData={usersValData}
                             participants={tournamentData.time11?.participants}
                           />
                         </div>
@@ -63,7 +97,12 @@ const Tournament = () => {
                       <div className={classes.tableBlockButtons}>
                         {isAdding ? (
                           <div className={classes.tableBlockAdding}>
-                            <ParticipantAddingForm setIsAdding={setIsAdding} />
+                            <ParticipantAddingForm
+                              refDataSnapshot={dataSnapshot.ref}
+                              userNames={userNames}
+                              setIsAdding={setIsAdding}
+                              addNewUser={addNewUser}
+                            />
                           </div>
                         ) : (
                           <Button

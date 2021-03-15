@@ -25,6 +25,8 @@ export interface TournamentStruct {
   time23: TournamentInTimeStruct;
 }
 
-export interface RenderParticipantsProps {
-  participants: ParticipantsStruct;
-}
+export type UserStruct = {
+  id: string;
+  name: string;
+  score: number;
+};

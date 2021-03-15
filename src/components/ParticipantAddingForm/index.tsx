@@ -6,13 +6,15 @@ import { Button } from "@material-ui/core";
 import _ from "lodash";
 
 interface ParticipantAddingFormProps {
+  refDataSnapshot: any;
+  userNames: string[];
   setIsAdding: (status: boolean) => void;
+  addNewUser: (ref: any, userName: string, userScore: number) => void;
 }
-const participants: string[] = ["*Ricardo*", "Muhamed_mc", "ПРОВАР", "~A~I~D~"];
 const amount: string[] = _.range(1, 17).map((num) => String(num));
 
 const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
-  const { setIsAdding } = props;
+  const { refDataSnapshot, userNames, setIsAdding, addNewUser } = props;
   const classes = useStyles();
   const [selectedParticipant, setSelectedParticipant] = useState<string | null>(
     null
@@ -22,6 +24,18 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
     null
   );
   const [inputAmount, setInputAmount] = useState<string>("");
+
+  const storeNewUser = (): void => {
+    if (selectedParticipant && inputAmountOfMeat) {
+      addNewUser(
+        refDataSnapshot,
+        selectedParticipant,
+        Number(inputAmountOfMeat)
+      );
+
+      setIsAdding(false);
+    }
+  };
 
   return (
     <>
@@ -39,7 +53,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
             setInputParcipName(newInputValue);
           }}
           id="participant-autocomplete"
-          options={participants}
+          options={userNames}
           style={{ width: 300 }}
           renderInput={(params) => (
             <TextField
@@ -76,7 +90,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           variant="contained"
           size="small"
           color="primary"
-          onClick={() => setIsAdding(false)}
+          onClick={storeNewUser}
           disabled={inputParcipName && inputAmountOfMeat ? false : true}
         >
           Сохранить
