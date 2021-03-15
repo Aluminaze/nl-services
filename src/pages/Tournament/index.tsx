@@ -13,17 +13,18 @@ const Tournament = () => {
   const [isAdding, setIsAdding] = useState<boolean>(true);
   const [date, setDate] = useState<number>(1);
 
-  // firebase
+  // firebase refs
   const refTournaments = database.ref("tournaments");
   const refTorunamentPush = refTournaments.push();
   const refUsers = database.ref("users");
+
+  // firebase data
   const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
+  const [snapshots] = useList(refTournaments);
 
   const userNames: string[] = usersData
     ? Object.values(usersData).map((user: UserStruct) => user.name)
     : [];
-
-  const [snapshots] = useList(refTournaments);
   const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
 
   const addChild = (): void => {
