@@ -53,41 +53,43 @@ const Tournament = () => {
               const tournamentData: TournamentStruct = tournamentsData.val();
 
               return (
-                <div className={classes.tableContainer} key={index}>
-                  <h1>{tournamentData.id}</h1>
+                <div className={classes.tableWrapper}>
+                  <div className={classes.tableContainer} key={index}>
+                    <h1>{tournamentData.id}</h1>
 
-                  <TournamentAtTime
-                    timeKey={TIME_KEY_11}
-                    tournamentsData={tournamentsData}
-                    usersValData={usersValData}
-                    participants={tournamentData.time11?.participants}
-                    userNames={userNames}
-                    usersData={usersData}
-                  />
-                  <TournamentAtTime
-                    timeKey={TIME_KEY_15}
-                    tournamentsData={tournamentsData}
-                    usersValData={usersValData}
-                    participants={tournamentData.time15?.participants}
-                    userNames={userNames}
-                    usersData={usersData}
-                  />
-                  <TournamentAtTime
-                    timeKey={TIME_KEY_19}
-                    tournamentsData={tournamentsData}
-                    usersValData={usersValData}
-                    participants={tournamentData.time19?.participants}
-                    userNames={userNames}
-                    usersData={usersData}
-                  />
-                  <TournamentAtTime
-                    timeKey={TIME_KEY_23}
-                    tournamentsData={tournamentsData}
-                    usersValData={usersValData}
-                    participants={tournamentData.time23?.participants}
-                    userNames={userNames}
-                    usersData={usersData}
-                  />
+                    <TournamentAtTime
+                      timeKey={TIME_KEY_11}
+                      tournamentsData={tournamentsData}
+                      usersValData={usersValData}
+                      participants={tournamentData.time11?.participants}
+                      userNames={userNames}
+                      usersData={usersData}
+                    />
+                    <TournamentAtTime
+                      timeKey={TIME_KEY_15}
+                      tournamentsData={tournamentsData}
+                      usersValData={usersValData}
+                      participants={tournamentData.time15?.participants}
+                      userNames={userNames}
+                      usersData={usersData}
+                    />
+                    <TournamentAtTime
+                      timeKey={TIME_KEY_19}
+                      tournamentsData={tournamentsData}
+                      usersValData={usersValData}
+                      participants={tournamentData.time19?.participants}
+                      userNames={userNames}
+                      usersData={usersData}
+                    />
+                    <TournamentAtTime
+                      timeKey={TIME_KEY_23}
+                      tournamentsData={tournamentsData}
+                      usersValData={usersValData}
+                      participants={tournamentData.time23?.participants}
+                      userNames={userNames}
+                      usersData={usersData}
+                    />
+                  </div>
                 </div>
               );
             })

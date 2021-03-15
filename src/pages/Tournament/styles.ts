@@ -11,12 +11,18 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     height: "100%",
   },
-  tableContainer: {
+  tableWrapper: {
     flexBasis: "50%",
-    height: "100%",
+    height: "95%",
     border: "1px solid black",
-    padding: "20px 25px",
     borderRadius: 15,
+    padding: "10px",
+  },
+  tableContainer: {
+    width: "100%",
+    height: "100%",
+    padding: "20px 25px",
+    overflowY: "auto",
 
     "& h1": {
       fontSize: 22,
