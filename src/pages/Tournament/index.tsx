@@ -53,8 +53,8 @@ const Tournament = () => {
               const tournamentData: TournamentStruct = tournamentsData.val();
 
               return (
-                <div className={classes.tableWrapper}>
-                  <div className={classes.tableContainer} key={index}>
+                <div className={classes.tableWrapper} key={index}>
+                  <div className={classes.tableContainer}>
                     <h1>{tournamentData.id}</h1>
 
                     <TournamentAtTime
