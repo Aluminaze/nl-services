@@ -3,14 +3,12 @@ import { Button } from "@material-ui/core";
 import { Context } from "index";
 import { useList, useObjectVal } from "react-firebase-hooks/database";
 import useStyles from "./styles";
-import ParticipantAddingForm from "components/ParticipantAddingForm";
 import { TournamentStruct, UserStruct } from "interfaces";
-import RenderParticipants from "components/RenderParticipants";
+import TournamentAtTime from "components/TournamentAtTime";
 
 const Tournament = () => {
   const classes = useStyles();
   const { database } = useContext(Context);
-  const [isAdding, setIsAdding] = useState<boolean>(true);
   const [date, setDate] = useState<number>(1);
 
   // firebase refs
@@ -40,41 +38,6 @@ const Tournament = () => {
     setDate(date + 1);
   };
 
-  const addNewParticipant = (
-    refTournamentsData: any,
-    userName: string,
-    count: number
-  ): void => {
-    const refParticipants = refTournamentsData
-      .child("time11/participants")
-      .push();
-
-    if (usersData && Object.values(usersData).length) {
-      const usersValData = Object.values(usersData);
-      const selectedUserStruct: UserStruct | undefined = usersValData.find(
-        (user: UserStruct) => user.name === userName
-      );
-
-      if (selectedUserStruct) {
-        console.log(
-          `Добавлен участник: userId: ${selectedUserStruct.id}, count: ${count}`
-        );
-
-        refParticipants.set({
-          id: selectedUserStruct.id,
-          count,
-        });
-      } else {
-        //
-        // TODO: Реализовать отладку ошибок и логирование
-        //
-        alert(
-          "Ошибка при добавлении нового участника! Сообщите администратору проекта."
-        );
-      }
-    }
-  };
-
   return (
     <section className={classes.container}>
       <Button onClick={addChild}>Add child</Button>
@@ -87,40 +50,38 @@ const Tournament = () => {
                 <div className={classes.tableContainer} key={index}>
                   <h1>{tournamentData.id}</h1>
 
-                  <div className={classes.tableBlock}>
-                    <div className={classes.tableBlockInfo}>
-                      <h2>Время турнира: 11:00</h2>
-                      <div className={classes.list}>
-                        <RenderParticipants
-                          refTournamentsData={tournamentsData.ref}
-                          usersValData={usersValData}
-                          participants={tournamentData.time11?.participants}
-                        />
-                      </div>
-                    </div>
-
-                    <div className={classes.tableBlockButtons}>
-                      {isAdding ? (
-                        <div className={classes.tableBlockAdding}>
-                          <ParticipantAddingForm
-                            refTournamentsData={tournamentsData.ref}
-                            userNames={userNames}
-                            setIsAdding={setIsAdding}
-                            addNewParticipant={addNewParticipant}
-                          />
-                        </div>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          size="small"
-                          color="primary"
-                          onClick={() => setIsAdding(true)}
-                        >
-                          Добавить участника
-                        </Button>
-                      )}
-                    </div>
-                  </div>
+                  <TournamentAtTime
+                    timeKey={"time11"}
+                    tournamentsData={tournamentsData}
+                    usersValData={usersValData}
+                    participants={tournamentData.time11?.participants}
+                    userNames={userNames}
+                    usersData={usersData}
+                  />
+                  <TournamentAtTime
+                    timeKey={"time15"}
+                    tournamentsData={tournamentsData}
+                    usersValData={usersValData}
+                    participants={tournamentData.time15?.participants}
+                    userNames={userNames}
+                    usersData={usersData}
+                  />
+                  <TournamentAtTime
+                    timeKey={"time19"}
+                    tournamentsData={tournamentsData}
+                    usersValData={usersValData}
+                    participants={tournamentData.time19?.participants}
+                    userNames={userNames}
+                    usersData={usersData}
+                  />
+                  <TournamentAtTime
+                    timeKey={"time23"}
+                    tournamentsData={tournamentsData}
+                    usersValData={usersValData}
+                    participants={tournamentData.time23?.participants}
+                    userNames={userNames}
+                    usersData={usersData}
+                  />
                 </div>
               );
             })
