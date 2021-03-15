@@ -1,5 +1,14 @@
 import firebase from "firebase";
+import {
+  TIME_KEY_11,
+  TIME_KEY_15,
+  TIME_KEY_19,
+  TIME_KEY_23,
+} from "./utils/constants";
 
+//
+// INTERFACES
+//
 export interface ContextProps {
   auth: firebase.auth.Auth;
   database: firebase.database.Database;
@@ -25,8 +34,17 @@ export interface TournamentStruct {
   time23: TournamentInTimeStruct;
 }
 
+//
+// TYPES
+//
 export type UserStruct = {
   id: string;
   name: string;
   score: number;
 };
+
+export type TimeKeyStruct =
+  | typeof TIME_KEY_11
+  | typeof TIME_KEY_15
+  | typeof TIME_KEY_19
+  | typeof TIME_KEY_23;
