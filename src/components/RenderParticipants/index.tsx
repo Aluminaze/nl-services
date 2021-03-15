@@ -17,6 +17,29 @@ export interface RenderParticipantsProps {
 const RenderParticipants = (props: RenderParticipantsProps) => {
   const { refTournamentsData, usersValData, participants } = props;
   const classes = useStyles();
+  const refParticipants = refTournamentsData.child("time11/participants");
+
+  const deletePaticipant = (userId: string): void => {
+    let childKey: string = "";
+
+    refParticipants
+      .orderByChild("id")
+      .equalTo(userId)
+      .on("value", function (snapshot: any) {
+        snapshot.forEach(function (data: any) {
+          childKey = data.key;
+        });
+      });
+
+    if (childKey) {
+      refParticipants.child(childKey).remove();
+    } else {
+      //
+      // TODO: Реализовать отладку ошибок и логирование
+      //
+      alert(`Ошибка при удалении участника с ID: ${userId}`);
+    }
+  };
 
   const participantsData: ParticipantInfoStruct[] = participants
     ? Object.values(participants)
@@ -26,17 +49,20 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
     return (
       <>
         {participantsData.map(
-          (aprticipantData: ParticipantInfoStruct, index: number) => (
+          (participantData: ParticipantInfoStruct, index: number) => (
             <div className={classes.row} key={index}>
               <div className={classes.rowText}>
                 <span className={classes.rowTextUserName}>
-                  {getUserNameById(aprticipantData.id, usersValData)}:
+                  {getUserNameById(participantData.id, usersValData)}:
                 </span>
                 <span className={classes.rowTextCount}>
-                  {aprticipantData.count}
+                  {participantData.count}
                 </span>
               </div>
-              <div className={classes.iconWrapper}>
+              <div
+                className={classes.iconWrapper}
+                onClick={() => deletePaticipant(participantData.id)}
+              >
                 <HighlightOffIcon color="error" />
               </div>
             </div>

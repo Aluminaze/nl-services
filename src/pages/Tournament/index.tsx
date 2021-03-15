@@ -91,6 +91,7 @@ const Tournament = () => {
                         <h2>11:00</h2>
                         <div className={classes.list}>
                           <RenderParticipants
+                            refTournamentsData={tournamentsData.ref}
                             usersValData={usersValData}
                             participants={tournamentData.time11?.participants}
                           />
