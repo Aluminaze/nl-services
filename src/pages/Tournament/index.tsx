@@ -20,7 +20,7 @@ const Tournament = () => {
 
   // firebase data
   const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
-  const [snapshots] = useList(refTournaments);
+  const [tournaments] = useList(refTournaments);
 
   const userNames: string[] = usersData
     ? Object.values(usersData).map((user: UserStruct) => user.name)
@@ -38,12 +38,14 @@ const Tournament = () => {
     setDate(date + 1);
   };
 
-  const addNewUser = (
-    refDataSnapshot: any,
+  const addNewParticipant = (
+    refTournamentsData: any,
     userName: string,
-    userScore: number
+    count: number
   ): void => {
-    const refParticipants = refDataSnapshot.child("time11/participants").push();
+    const refParticipants = refTournamentsData
+      .child("time11/participants")
+      .push();
 
     if (usersData && Object.values(usersData).length) {
       const usersValData = Object.values(usersData);
@@ -53,12 +55,12 @@ const Tournament = () => {
 
       if (selectedUserStruct) {
         console.log(
-          `Добавлен участник: userId: ${selectedUserStruct.id}, count: ${userScore}`
+          `Добавлен участник: userId: ${selectedUserStruct.id}, count: ${count}`
         );
 
         refParticipants.set({
           id: selectedUserStruct.id,
-          count: userScore,
+          count,
         });
       } else {
         //
@@ -75,9 +77,9 @@ const Tournament = () => {
     <section className={classes.container}>
       <Button onClick={addChild}>Add child</Button>
       <div className={classes.table}>
-        {snapshots?.length
-          ? snapshots.map((dataSnapshot, index: number) => {
-              const tournamentData: TournamentStruct = dataSnapshot.val();
+        {tournaments?.length
+          ? tournaments.map((tournamentsData, index: number) => {
+              const tournamentData: TournamentStruct = tournamentsData.val();
 
               if (index < 1)
                 return (
@@ -99,10 +101,10 @@ const Tournament = () => {
                         {isAdding ? (
                           <div className={classes.tableBlockAdding}>
                             <ParticipantAddingForm
-                              refDataSnapshot={dataSnapshot.ref}
+                              refTournamentsData={tournamentsData.ref}
                               userNames={userNames}
                               setIsAdding={setIsAdding}
-                              addNewUser={addNewUser}
+                              addNewParticipant={addNewParticipant}
                             />
                           </div>
                         ) : (

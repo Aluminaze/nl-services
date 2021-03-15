@@ -6,29 +6,34 @@ import { Button } from "@material-ui/core";
 import _ from "lodash";
 
 interface ParticipantAddingFormProps {
-  refDataSnapshot: any;
+  refTournamentsData: any;
   userNames: string[];
   setIsAdding: (status: boolean) => void;
-  addNewUser: (ref: any, userName: string, userScore: number) => void;
+  addNewParticipant: (ref: any, userName: string, count: number) => void;
 }
 const amount: string[] = _.range(1, 17).map((num) => String(num));
 
 const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
-  const { refDataSnapshot, userNames, setIsAdding, addNewUser } = props;
+  const {
+    refTournamentsData,
+    userNames,
+    setIsAdding,
+    addNewParticipant,
+  } = props;
   const classes = useStyles();
   const [selectedParticipant, setSelectedParticipant] = useState<string | null>(
     null
   );
-  const [inputParcipName, setInputParcipName] = useState<string>("");
+  const [inputParticipantName, setInputParticipantName] = useState<string>("");
   const [inputAmountOfMeat, setInputAmountOfMeat] = useState<string | null>(
     null
   );
   const [inputAmount, setInputAmount] = useState<string>("");
 
-  const storeNewUser = (): void => {
+  const storeNewParticipant = (): void => {
     if (selectedParticipant && inputAmountOfMeat) {
-      addNewUser(
-        refDataSnapshot,
+      addNewParticipant(
+        refTournamentsData,
         selectedParticipant,
         Number(inputAmountOfMeat)
       );
@@ -48,9 +53,9 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           onChange={(event: any, newValue: string | null) => {
             setSelectedParticipant(newValue);
           }}
-          inputValue={inputParcipName}
+          inputValue={inputParticipantName}
           onInputChange={(event, newInputValue) => {
-            setInputParcipName(newInputValue);
+            setInputParticipantName(newInputValue);
           }}
           id="participant-autocomplete"
           options={userNames}
@@ -90,8 +95,8 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           variant="contained"
           size="small"
           color="primary"
-          onClick={storeNewUser}
-          disabled={inputParcipName && inputAmountOfMeat ? false : true}
+          onClick={storeNewParticipant}
+          disabled={inputParticipantName && inputAmountOfMeat ? false : true}
         >
           Сохранить
         </Button>
