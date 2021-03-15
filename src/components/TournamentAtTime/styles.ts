@@ -1,33 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
-  container: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  table: {
-    display: "flex",
-    justifyContent: "center",
-    height: "100%",
-  },
-  tableWrapper: {
-    flexBasis: "50%",
-    height: "95%",
-    border: "1px solid black",
-    borderRadius: 15,
-    padding: "10px",
-  },
-  tableContainer: {
-    width: "100%",
-    height: "100%",
-    padding: "20px 25px",
-    overflowY: "auto",
-
-    "& h1": {
-      fontSize: 22,
-    },
-  },
   tableBlock: {
     display: "flex",
     justifyContent: "space-between",

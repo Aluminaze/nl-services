@@ -4,31 +4,39 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Button } from "@material-ui/core";
 import _ from "lodash";
+import { TimeKeyStruct } from "interfacesAndTypes";
 
 interface ParticipantAddingFormProps {
-  refDataSnapshot: any;
+  timeKey: TimeKeyStruct;
+  refTournamentsData: any;
   userNames: string[];
   setIsAdding: (status: boolean) => void;
-  addNewUser: (ref: any, userName: string, userScore: number) => void;
+  addNewParticipant: (ref: any, userName: string, count: number) => void;
 }
 const amount: string[] = _.range(1, 17).map((num) => String(num));
 
 const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
-  const { refDataSnapshot, userNames, setIsAdding, addNewUser } = props;
+  const {
+    timeKey,
+    refTournamentsData,
+    userNames,
+    setIsAdding,
+    addNewParticipant,
+  } = props;
   const classes = useStyles();
   const [selectedParticipant, setSelectedParticipant] = useState<string | null>(
     null
   );
-  const [inputParcipName, setInputParcipName] = useState<string>("");
+  const [inputParticipantName, setInputParticipantName] = useState<string>("");
   const [inputAmountOfMeat, setInputAmountOfMeat] = useState<string | null>(
     null
   );
   const [inputAmount, setInputAmount] = useState<string>("");
 
-  const storeNewUser = (): void => {
+  const storeNewParticipant = (): void => {
     if (selectedParticipant && inputAmountOfMeat) {
-      addNewUser(
-        refDataSnapshot,
+      addNewParticipant(
+        refTournamentsData,
         selectedParticipant,
         Number(inputAmountOfMeat)
       );
@@ -48,11 +56,11 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           onChange={(event: any, newValue: string | null) => {
             setSelectedParticipant(newValue);
           }}
-          inputValue={inputParcipName}
+          inputValue={inputParticipantName}
           onInputChange={(event, newInputValue) => {
-            setInputParcipName(newInputValue);
+            setInputParticipantName(newInputValue);
           }}
-          id="participant-autocomplete"
+          id={`participant-autocomplete-${timeKey}`}
           options={userNames}
           style={{ width: 300 }}
           renderInput={(params) => (
@@ -76,7 +84,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           onInputChange={(event, newInputValue) => {
             setInputAmount(newInputValue);
           }}
-          id="amount-of-meat-autocomplete"
+          id={`amount-of-meat-autocomplete-${timeKey}`}
           options={amount}
           style={{ width: 170 }}
           renderInput={(params) => (
@@ -90,8 +98,8 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           variant="contained"
           size="small"
           color="primary"
-          onClick={storeNewUser}
-          disabled={inputParcipName && inputAmountOfMeat ? false : true}
+          onClick={storeNewParticipant}
+          disabled={inputParticipantName && inputAmountOfMeat ? false : true}
         >
           Сохранить
         </Button>

@@ -3,46 +3,61 @@ import {
   ParticipantInfoStruct,
   ParticipantsStruct,
   UserStruct,
-} from "interfaces";
+} from "interfacesAndTypes";
+import getUserNameById from "utils/getUserNameById";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import useStyles from "./styles";
 
 export interface RenderParticipantsProps {
+  refTournamentsData: any;
   usersValData: UserStruct[];
   participants: ParticipantsStruct;
+  deleteParticipant: (userId: string, refTournamentsData: any) => void;
 }
 
 const RenderParticipants = (props: RenderParticipantsProps) => {
-  const { usersValData, participants } = props;
-  const arr: ParticipantInfoStruct[] = participants
+  const {
+    refTournamentsData,
+    usersValData,
+    participants,
+    deleteParticipant,
+  } = props;
+  const classes = useStyles();
+
+  const participantsData: ParticipantInfoStruct[] = participants
     ? Object.values(participants)
     : [];
 
-  const getUserNameById = (userId: string, usersData: UserStruct[]): string => {
-    let name: string = "not found";
-
-    if (usersValData.length) {
-      const userData: UserStruct | undefined = usersValData.find(
-        (user: UserStruct) => user.id === userId
-      );
-
-      if (userData) {
-        name = userData.name;
-      }
-    }
-
-    return name;
-  };
-
-  if (arr.length) {
+  if (participantsData.length) {
     return (
       <>
-        {arr.map((pars: ParticipantInfoStruct, index: number) => (
-          <div key={index}>
-            {getUserNameById(pars.id, usersValData)}: {pars.count}
-          </div>
-        ))}
+        {participantsData.map(
+          (participantData: ParticipantInfoStruct, index: number) => (
+            <div className={classes.row} key={index}>
+              <div className={classes.rowText}>
+                <span className={classes.rowTextUserName}>
+                  {getUserNameById(participantData.id, usersValData)}:
+                </span>
+                <span className={classes.rowTextCount}>
+                  {participantData.count}
+                </span>
+              </div>
+              <div
+                className={classes.iconWrapper}
+                onClick={() =>
+                  deleteParticipant(participantData.id, refTournamentsData)
+                }
+              >
+                <HighlightOffIcon color="error" />
+              </div>
+            </div>
+          )
+        )}
       </>
     );
-  } else return null;
+  }
+
+  return null;
 };
 
 export default RenderParticipants;
