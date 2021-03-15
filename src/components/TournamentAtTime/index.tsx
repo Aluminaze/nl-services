@@ -5,6 +5,7 @@ import RenderParticipants from "components/RenderParticipants";
 import useStyles from "./styles";
 import { ParticipantsStruct, UserStruct } from "interfaces";
 import { Val } from "react-firebase-hooks/database/dist/database/types";
+import getTimeByTimeKey from "utils/getTimeByTimeKey";
 
 interface TournamentAtTimeProps {
   timeKey: "time11" | "time15" | "time19" | "time23";
@@ -89,7 +90,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   return (
     <div className={classes.tableBlock}>
       <div className={classes.tableBlockInfo}>
-        <h2>Время турнира: 11:00</h2>
+        <h2>Время турнира: {getTimeByTimeKey(timeKey)}</h2>
         <div className={classes.list}>
           <RenderParticipants
             refTournamentsData={tournamentsData.ref}
