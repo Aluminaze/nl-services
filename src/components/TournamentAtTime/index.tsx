@@ -63,6 +63,29 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     }
   };
 
+  const deleteParticipant = (userId: string, refTournamentsData: any): void => {
+    let childKey: string = "";
+    const refParticipants = refTournamentsData.child(`${timeKey}/participants`);
+
+    refParticipants
+      .orderByChild("id")
+      .equalTo(userId)
+      .on("value", function (snapshot: any) {
+        snapshot.forEach(function (data: any) {
+          childKey = data.key;
+        });
+      });
+
+    if (childKey) {
+      refParticipants.child(childKey).remove();
+    } else {
+      //
+      // TODO: Реализовать отладку ошибок и логирование
+      //
+      alert(`Ошибка при удалении участника с ID: ${userId}`);
+    }
+  };
+
   return (
     <div className={classes.tableBlock}>
       <div className={classes.tableBlockInfo}>
@@ -72,6 +95,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
             refTournamentsData={tournamentsData.ref}
             usersValData={usersValData}
             participants={participants}
+            deleteParticipant={deleteParticipant}
           />
         </div>
       </div>

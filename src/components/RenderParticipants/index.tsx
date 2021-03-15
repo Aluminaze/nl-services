@@ -7,18 +7,23 @@ import {
 import getUserNameById from "utils/getUserNameById";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import useStyles from "./styles";
-import deleteParticipant from "./utils/deleteParticipant";
 
 export interface RenderParticipantsProps {
   refTournamentsData: any;
   usersValData: UserStruct[];
   participants: ParticipantsStruct;
+  deleteParticipant: (userId: string, refTournamentsData: any) => void;
 }
 
 const RenderParticipants = (props: RenderParticipantsProps) => {
-  const { refTournamentsData, usersValData, participants } = props;
+  const {
+    refTournamentsData,
+    usersValData,
+    participants,
+    deleteParticipant,
+  } = props;
   const classes = useStyles();
-  const refParticipants = refTournamentsData.child("time11/participants");
+
   const participantsData: ParticipantInfoStruct[] = participants
     ? Object.values(participants)
     : [];
@@ -40,7 +45,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
               <div
                 className={classes.iconWrapper}
                 onClick={() =>
-                  deleteParticipant(participantData.id, refParticipants)
+                  deleteParticipant(participantData.id, refTournamentsData)
                 }
               >
                 <HighlightOffIcon color="error" />
