@@ -35,11 +35,13 @@ const AdminDialog = (props: AdminDialogProps) => {
   const [userId, setUserId] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const [userScore, setUserScore] = useState<number>(0);
+  const [usersInJSON, setUsersInJSON] = useState<string>("");
 
   const resetStates = (): void => {
     setUserId("");
     setUserName("");
     setUserScore(0);
+    setUsersInJSON("");
   };
 
   const addNewUser = (): void => {
@@ -59,6 +61,20 @@ const AdminDialog = (props: AdminDialogProps) => {
         }
       }
     );
+
+    resetStates();
+  };
+
+  const storeNewUsers = (): void => {
+    const usersData: Array<any> = JSON.parse(usersInJSON);
+
+    refUsers.set({ ...usersData }, (error) => {
+      if (error) {
+        console.error(`The write failed! Users not added!`);
+      } else {
+        console.log(`Users added successfully!`);
+      }
+    });
 
     resetStates();
   };
@@ -111,6 +127,17 @@ const AdminDialog = (props: AdminDialogProps) => {
         </div>
         <Button variant="contained" color="primary" onClick={addNewUser}>
           ADD NEW USER
+        </Button>
+        <div className={classes.dialogInputBlock}>
+          <label>USERS (JSON):</label>
+          <input
+            type="text"
+            value={usersInJSON}
+            onChange={(e) => setUsersInJSON(e.target.value)}
+          />
+        </div>
+        <Button variant="contained" color="primary" onClick={storeNewUsers}>
+          ADD NEW USERS
         </Button>
       </DialogContent>
     </Dialog>
