@@ -20,7 +20,9 @@ const Tournament = () => {
 
   // firebase data
   const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
-  const [tournaments] = useList(refTournaments);
+  const [tournamentsAtDay] = useList(
+    refTournaments.orderByChild("id").equalTo("2/01/2020")
+  );
 
   const userNames: string[] = usersData
     ? Object.values(usersData).map((user: UserStruct) => user.name)
@@ -77,52 +79,50 @@ const Tournament = () => {
     <section className={classes.container}>
       <Button onClick={addChild}>Add child</Button>
       <div className={classes.table}>
-        {tournaments?.length
-          ? tournaments.map((tournamentsData, index: number) => {
+        {tournamentsAtDay?.length
+          ? tournamentsAtDay.map((tournamentsData, index: number) => {
               const tournamentData: TournamentStruct = tournamentsData.val();
 
-              if (index < 1)
-                return (
-                  <div className={classes.tableContainer} key={index}>
-                    <h1>{tournamentData.id}</h1>
+              return (
+                <div className={classes.tableContainer} key={index}>
+                  <h1>{tournamentData.id}</h1>
 
-                    <div className={classes.tableBlock}>
-                      <div className={classes.tableBlockInfo}>
-                        <h2>11:00</h2>
-                        <div className={classes.list}>
-                          <RenderParticipants
-                            refTournamentsData={tournamentsData.ref}
-                            usersValData={usersValData}
-                            participants={tournamentData.time11?.participants}
-                          />
-                        </div>
-                      </div>
-
-                      <div className={classes.tableBlockButtons}>
-                        {isAdding ? (
-                          <div className={classes.tableBlockAdding}>
-                            <ParticipantAddingForm
-                              refTournamentsData={tournamentsData.ref}
-                              userNames={userNames}
-                              setIsAdding={setIsAdding}
-                              addNewParticipant={addNewParticipant}
-                            />
-                          </div>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            size="small"
-                            color="primary"
-                            onClick={() => setIsAdding(true)}
-                          >
-                            Добавить участника
-                          </Button>
-                        )}
+                  <div className={classes.tableBlock}>
+                    <div className={classes.tableBlockInfo}>
+                      <h2>Время турнира: 11:00</h2>
+                      <div className={classes.list}>
+                        <RenderParticipants
+                          refTournamentsData={tournamentsData.ref}
+                          usersValData={usersValData}
+                          participants={tournamentData.time11?.participants}
+                        />
                       </div>
                     </div>
+
+                    <div className={classes.tableBlockButtons}>
+                      {isAdding ? (
+                        <div className={classes.tableBlockAdding}>
+                          <ParticipantAddingForm
+                            refTournamentsData={tournamentsData.ref}
+                            userNames={userNames}
+                            setIsAdding={setIsAdding}
+                            addNewParticipant={addNewParticipant}
+                          />
+                        </div>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          color="primary"
+                          onClick={() => setIsAdding(true)}
+                        >
+                          Добавить участника
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                );
-              else return null;
+                </div>
+              );
             })
           : null}
       </div>
