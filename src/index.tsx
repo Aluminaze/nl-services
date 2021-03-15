@@ -12,7 +12,7 @@ import { ContextProps } from "interfaces";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#0071e3",
+      main: "#35393e",
     },
     secondary: {
       main: "#ffffff",
@@ -24,7 +24,7 @@ firebase.initializeApp(firebaseConfig);
 
 const initContextState: ContextProps = {
   auth: firebase.auth(),
-  firestore: firebase.firestore(),
+  database: firebase.database(),
 };
 
 export const Context = React.createContext<ContextProps>(initContextState);
@@ -34,7 +34,7 @@ ReactDOM.render(
     <Router>
       <MuiThemeProvider theme={theme}>
         <Context.Provider
-          value={{ auth: firebase.auth(), firestore: firebase.firestore() }}
+          value={{ auth: firebase.auth(), database: firebase.database() }}
         >
           <App />
         </Context.Provider>

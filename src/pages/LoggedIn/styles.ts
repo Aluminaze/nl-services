@@ -1,9 +1,7 @@
-import { makeStyles, useTheme } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { HEADER_HEIGHT } from "utils/constants";
 
 const useStyles = makeStyles(() => {
-  const theme = useTheme();
-
   return {
     main: {
       display: "flex",
@@ -13,15 +11,19 @@ const useStyles = makeStyles(() => {
       height: `calc(100vh - ${HEADER_HEIGHT}px)`,
     },
     nav: {
-      flexBasis: "20%",
+      flexBasis: "15%",
       display: "flex",
       flexDirection: "column",
       height: "100%",
-      borderRight: `1px solid ${theme.palette.primary.main}`,
+      borderRight: `2px solid #d9dde3`,
+      padding: "20px 0",
+
+      backgroundColor: "rgba(199,199,199, .1)",
     },
     content: {
       height: "100%",
       width: "100%",
+      padding: "20px",
     },
   };
 });
