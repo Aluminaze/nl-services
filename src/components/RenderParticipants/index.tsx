@@ -4,6 +4,7 @@ import {
   ParticipantsStruct,
   UserStruct,
 } from "interfaces";
+import getUserNameById from "utils/getUserNameById";
 
 export interface RenderParticipantsProps {
   usersValData: UserStruct[];
@@ -16,28 +17,13 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
     ? Object.values(participants)
     : [];
 
-  const getUserNameById = (userId: string, usersData: UserStruct[]): string => {
-    let name: string = "not found";
-
-    if (usersValData.length) {
-      const userData: UserStruct | undefined = usersValData.find(
-        (user: UserStruct) => user.id === userId
-      );
-
-      if (userData) {
-        name = userData.name;
-      }
-    }
-
-    return name;
-  };
-
   if (arr.length) {
     return (
       <>
-        {arr.map((pars: ParticipantInfoStruct, index: number) => (
+        {arr.map((aprticipantData: ParticipantInfoStruct, index: number) => (
           <div key={index}>
-            {getUserNameById(pars.id, usersValData)}: {pars.count}
+            {getUserNameById(aprticipantData.id, usersValData)}:{" "}
+            {aprticipantData.count}
           </div>
         ))}
       </>
