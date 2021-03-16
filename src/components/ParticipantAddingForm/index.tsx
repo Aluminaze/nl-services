@@ -5,6 +5,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Button } from "@material-ui/core";
 import _ from "lodash";
 import { TimeKeyStruct } from "interfacesAndTypes";
+import AlertDialog from "components/Dialogs/AlertDialog";
 
 interface ParticipantAddingFormProps {
   timeKey: TimeKeyStruct;
@@ -32,13 +33,12 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
     null
   );
   const [inputAmount, setInputAmount] = useState<string>("");
+  const [isOpenAddedDialog, setIsOpenAddedDialog] = useState<boolean>(false);
 
   const storeNewParticipant = (): void => {
     if (selectedParticipantName && inputAmountOfMeat) {
       if (selectedParticipantNames.includes(selectedParticipantName)) {
-        alert(
-          `Внимание! ${selectedParticipantName} уже добавлен в список участников текущего турнира. Повторное добавление невозможно!`
-        );
+        setIsOpenAddedDialog(true);
       } else {
         addNewParticipant(selectedParticipantName, Number(inputAmountOfMeat));
         setIsAdding(false);
@@ -113,6 +113,14 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           Отмена
         </Button>
       </div>
+
+      <AlertDialog
+        title={"Внимание!"}
+        message={`${selectedParticipantName} уже добавлен в список участников текущего турнира. Повторное добавление невозможно!`}
+        buttonLabel={"Закрыть"}
+        open={isOpenAddedDialog}
+        setOpen={setIsOpenAddedDialog}
+      />
     </>
   );
 };
