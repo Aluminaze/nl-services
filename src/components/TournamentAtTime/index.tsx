@@ -55,7 +55,18 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
         refUsers
           .child(key)
           .child("score")
-          .set(currentScore + count);
+          .set(currentScore + count, (error) => {
+            if (error) {
+              console.error(
+                `Ошибка при обновлении счета участника с ID: ${userId}`
+              );
+              alert(`Ошибка при обновлении счета участника с ID: ${userId}`);
+            } else {
+              console.log(
+                `Участнику с ID: ${userId}, успешно добавлены очки в кол-ве ${count} ед.`
+              );
+            }
+          });
       }
     }
   };
