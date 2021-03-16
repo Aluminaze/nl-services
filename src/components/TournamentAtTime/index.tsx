@@ -18,6 +18,9 @@ interface TournamentAtTimeProps {
   participants: ParticipantsStruct;
 }
 
+const ACTION_TYPE_ADD: string = "ADD";
+const ACTION_TYPE_DELETE: string = "DELETE";
+
 const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const { timeKey, tournamentsData, participants } = props;
   const classes = useStyles();
@@ -34,7 +37,11 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     : [];
   const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
 
-  const updateUserScore = (userId: string, count: number): void => {
+  const updateUserScore = (
+    actionType: string,
+    userId: string,
+    count: number
+  ): void => {
     let key: string = "";
     let currentScore: number = 0;
 
@@ -49,13 +56,31 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       });
 
     if (key) {
-      if (currentScore === 0) {
-        refUsers.child(key).child("score").set(count);
-      } else {
+      if (actionType === ACTION_TYPE_ADD) {
+        if (currentScore === 0) {
+          refUsers.child(key).child("score").set(count);
+        } else {
+          refUsers
+            .child(key)
+            .child("score")
+            .set(currentScore + count, (error) => {
+              if (error) {
+                console.error(
+                  `Ошибка при обновлении счета участника с ID: ${userId}`
+                );
+                alert(`Ошибка при обновлении счета участника с ID: ${userId}`);
+              } else {
+                console.log(
+                  `Участнику с ID: ${userId}, успешно добавлены очки в кол-ве ${count} ед.`
+                );
+              }
+            });
+        }
+      } else if (actionType === ACTION_TYPE_DELETE) {
         refUsers
           .child(key)
           .child("score")
-          .set(currentScore + count, (error) => {
+          .set(currentScore - count, (error) => {
             if (error) {
               console.error(
                 `Ошибка при обновлении счета участника с ID: ${userId}`
@@ -63,11 +88,18 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
               alert(`Ошибка при обновлении счета участника с ID: ${userId}`);
             } else {
               console.log(
-                `Участнику с ID: ${userId}, успешно добавлены очки в кол-ве ${count} ед.`
+                `Участнику с ID: ${userId}, убраны очки в кол-ве ${count} ед.`
               );
             }
           });
       }
+    } else {
+      console.error(
+        `Ошибка! При удалении участника ID: ${userId}, ключ участника не был найден!`
+      );
+      alert(
+        `Ошибка! При обновлении счета участника произошла ошибка, сообщите об этом администратору!`
+      );
     }
   };
 
@@ -102,7 +134,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
                 `Добавлен участник: userId: ${selectedUserStruct.id}, count: ${count}`
               );
 
-              updateUserScore(selectedUserStruct.id, count);
+              updateUserScore(ACTION_TYPE_ADD, selectedUserStruct.id, count);
             }
           }
         );
@@ -119,6 +151,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
 
   const deleteParticipant = (userId: string, refTournamentsData: any): void => {
     let childKey: string = "";
+    let currentCount: number = 0;
     const refParticipants = refTournamentsData.child(`${timeKey}/participants`);
 
     refParticipants
@@ -126,12 +159,15 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       .equalTo(userId)
       .on("value", function (snapshot: any) {
         snapshot.forEach(function (data: any) {
+          currentCount = data.val().count;
           childKey = data.key;
         });
       });
 
     if (childKey) {
       refParticipants.child(childKey).remove();
+
+      updateUserScore(ACTION_TYPE_DELETE, userId, currentCount);
     } else {
       //
       // TODO: Реализовать отладку ошибок и логирование
