@@ -10,7 +10,7 @@ import {
 } from "interfacesAndTypes";
 import getTimeByTimeKey from "utils/getTimeByTimeKey";
 import { Context } from "index";
-import { useObjectVal } from "react-firebase-hooks/database";
+import { useListVals, useObjectVal } from "react-firebase-hooks/database";
 
 interface TournamentAtTimeProps {
   timeKey: TimeKeyStruct;
@@ -29,9 +29,11 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
 
   // firebase refs
   const refUsers = database.ref("users");
+  const refWinner = tournamentsData.ref.child(`${timeKey}/winner`);
 
   // firebase data
   const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
+  const [winnerId] = useObjectVal<string>(refWinner);
   const userNames: string[] = usersData
     ? Object.values(usersData).map((user: UserStruct) => user.name)
     : [];
@@ -183,6 +185,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
             usersValData={usersValData}
             participants={participants}
             deleteParticipant={deleteParticipant}
+            winnerId={winnerId}
           />
         </ul>
       </div>

@@ -15,24 +15,17 @@ export interface RenderParticipantsProps {
   usersValData: UserStruct[];
   participants: ParticipantsStruct;
   deleteParticipant: (userId: string) => void;
+  winnerId: string | undefined;
 }
 
 const RenderParticipants = (props: RenderParticipantsProps) => {
-  const { usersValData, participants, deleteParticipant } = props;
+  const { usersValData, participants, deleteParticipant, winnerId } = props;
   const classes = useStyles();
-  const [winnerId, setWinnerId] = useState<string>("");
-
   const participantsData: ParticipantInfoStruct[] = participants
     ? Object.values(participants)
     : [];
 
-  const onClickCheckbox = (participantId: string) => {
-    if (winnerId) {
-      setWinnerId("");
-    } else {
-      setWinnerId(participantId);
-    }
-  };
+  const onClickCheckbox = (participantId: string) => {};
 
   if (participantsData.length) {
     return (
