@@ -1,15 +1,16 @@
 import React, { useContext, useState } from "react";
 import { Button } from "@material-ui/core";
 import { Context } from "index";
-import { useList, useObjectVal } from "react-firebase-hooks/database";
+import { useList } from "react-firebase-hooks/database";
 import useStyles from "./styles";
-import { TournamentStruct, UserStruct } from "interfacesAndTypes";
+import { TournamentStruct } from "interfacesAndTypes";
 import TournamentAtTime from "components/TournamentAtTime";
 import {
   TIME_KEY_11,
   TIME_KEY_15,
   TIME_KEY_19,
   TIME_KEY_23,
+  WINNER_ID_DEF_VALUE,
 } from "utils/constants";
 
 const Tournament = () => {
@@ -20,26 +21,18 @@ const Tournament = () => {
   // firebase refs
   const refTournaments = database.ref("tournaments");
   const refTorunamentPush = refTournaments.push();
-  const refUsers = database.ref("users");
 
-  // firebase data
-  const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
   const [tournamentsAtDay] = useList(
     refTournaments.orderByChild("id").equalTo("2/01/2020")
   );
 
-  const userNames: string[] = usersData
-    ? Object.values(usersData).map((user: UserStruct) => user.name)
-    : [];
-  const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
-
   const addChild = (): void => {
     refTorunamentPush.set({
       id: `${date}/01/2020`,
-      time11: { winner: "id", participants: {} },
-      time15: { winner: "id", participants: {} },
-      time19: { winner: "id", participants: {} },
-      time23: { winner: "id", participants: {} },
+      time11: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+      time15: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+      time19: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+      time23: { winner: WINNER_ID_DEF_VALUE, participants: {} },
     });
     setDate(date + 1);
   };
@@ -60,34 +53,22 @@ const Tournament = () => {
                     <TournamentAtTime
                       timeKey={TIME_KEY_11}
                       tournamentsData={tournamentsData}
-                      usersValData={usersValData}
                       participants={tournamentData.time11?.participants}
-                      userNames={userNames}
-                      usersData={usersData}
                     />
                     <TournamentAtTime
                       timeKey={TIME_KEY_15}
                       tournamentsData={tournamentsData}
-                      usersValData={usersValData}
                       participants={tournamentData.time15?.participants}
-                      userNames={userNames}
-                      usersData={usersData}
                     />
                     <TournamentAtTime
                       timeKey={TIME_KEY_19}
                       tournamentsData={tournamentsData}
-                      usersValData={usersValData}
                       participants={tournamentData.time19?.participants}
-                      userNames={userNames}
-                      usersData={usersData}
                     />
                     <TournamentAtTime
                       timeKey={TIME_KEY_23}
                       tournamentsData={tournamentsData}
-                      usersValData={usersValData}
                       participants={tournamentData.time23?.participants}
-                      userNames={userNames}
-                      usersData={usersData}
                     />
                   </div>
                 </div>

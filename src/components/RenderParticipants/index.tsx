@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ParticipantInfoStruct,
   ParticipantsStruct,
@@ -6,51 +6,107 @@ import {
 } from "interfacesAndTypes";
 import getUserNameById from "utils/getUserNameById";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import useStyles from "./styles";
+import clsx from "clsx";
+import { WINNER_ID_DEF_VALUE } from "utils/constants";
 
 export interface RenderParticipantsProps {
-  refTournamentsData: any;
   usersValData: UserStruct[];
   participants: ParticipantsStruct;
-  deleteParticipant: (userId: string, refTournamentsData: any) => void;
+  deleteParticipant: (userId: string) => void;
+  winnerId: string | undefined;
+  setWinner: (userId: string) => void;
 }
 
 const RenderParticipants = (props: RenderParticipantsProps) => {
   const {
-    refTournamentsData,
     usersValData,
     participants,
     deleteParticipant,
+    winnerId,
+    setWinner,
   } = props;
   const classes = useStyles();
-
   const participantsData: ParticipantInfoStruct[] = participants
     ? Object.values(participants)
     : [];
+  const [hasWinner, setHasWinner] = useState<boolean>(false);
+
+  const onClickCheckbox = (participantId: string) => {
+    setWinner(participantId);
+  };
+
+  useEffect(() => {
+    if (winnerId === WINNER_ID_DEF_VALUE) {
+      setHasWinner(false);
+    } else {
+      setHasWinner(true);
+    }
+  }, [winnerId]);
 
   if (participantsData.length) {
     return (
       <>
         {participantsData.map(
           (participantData: ParticipantInfoStruct, index: number) => (
-            <div className={classes.row} key={index}>
-              <div className={classes.rowText}>
-                <span className={classes.rowTextUserName}>
-                  {getUserNameById(participantData.id, usersValData)}:
-                </span>
-                <span className={classes.rowTextCount}>
+            <li className={classes.row} key={index}>
+              <div
+                className={clsx(
+                  classes.rowText,
+                  winnerId === participantData.id && classes.rowTextUnregular
+                )}
+              >
+                <div className={classes.rowTextElement}>
+                  <div className={classes.rowTextElementCheckbox}>
+                    {hasWinner && winnerId === participantData.id && (
+                      <div
+                        className={classes.checkboxWrapper}
+                        onClick={() => onClickCheckbox(participantData.id)}
+                      >
+                        <CheckBoxIcon color="secondary" />
+                      </div>
+                    )}
+                    {!hasWinner && (
+                      <div
+                        className={classes.checkboxWrapper}
+                        onClick={() => onClickCheckbox(participantData.id)}
+                      >
+                        <CheckBoxOutlineBlankIcon />
+                      </div>
+                    )}
+                  </div>
+                  <span
+                    className={
+                      winnerId === participantData.id
+                        ? classes.textUnregular
+                        : classes.textRegular
+                    }
+                  >
+                    {getUserNameById(participantData.id, usersValData)}
+                  </span>
+                </div>
+                <span
+                  className={
+                    winnerId === participantData.id
+                      ? classes.textUnregular
+                      : classes.textRegular
+                  }
+                >
                   {participantData.count}
                 </span>
               </div>
-              <div
-                className={classes.iconWrapper}
-                onClick={() =>
-                  deleteParticipant(participantData.id, refTournamentsData)
-                }
-              >
-                <HighlightOffIcon color="error" />
-              </div>
-            </div>
+
+              {winnerId !== participantData.id && (
+                <div
+                  className={classes.iconWrapper}
+                  onClick={() => deleteParticipant(participantData.id)}
+                >
+                  <HighlightOffIcon color="error" />
+                </div>
+              )}
+            </li>
           )
         )}
       </>
