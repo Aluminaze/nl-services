@@ -12,7 +12,7 @@ interface ParticipantAddingFormProps {
   setIsAdding: (status: boolean) => void;
   addNewParticipant: (userName: string, count: number) => void;
 }
-const amount: string[] = _.range(1, 17).map((num) => String(num));
+const amount: string[] = _.range(0, 17).map((num) => String(num));
 
 const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
   const { timeKey, userNames, setIsAdding, addNewParticipant } = props;
