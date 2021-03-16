@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     margin: "0 8px 0 0",
   },
-  checkbox: {
+  checkboxWrapper: {
     display: "flex",
     alignItems: "center",
     "&:hover": {

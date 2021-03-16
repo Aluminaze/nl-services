@@ -180,14 +180,14 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     <div className={classes.tableBlock}>
       <div className={classes.tableBlockInfo}>
         <h2>Время турнира: {getTimeByTimeKey(timeKey)}</h2>
-        <div className={classes.list}>
+        <ul className={classes.list}>
           <RenderParticipants
             refTournamentsData={tournamentsData.ref}
             usersValData={usersValData}
             participants={participants}
             deleteParticipant={deleteParticipant}
           />
-        </div>
+        </ul>
       </div>
 
       <div className={classes.tableBlockButtons}>

@@ -45,7 +45,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
       <>
         {participantsData.map(
           (participantData: ParticipantInfoStruct, index: number) => (
-            <div className={classes.row} key={index}>
+            <li className={classes.row} key={index}>
               <div
                 className={clsx(
                   classes.rowText,
@@ -56,14 +56,14 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
                   <div className={classes.rowTextElementCheckbox}>
                     {winnerId === participantData.id ? (
                       <div
-                        className={classes.checkbox}
+                        className={classes.checkboxWrapper}
                         onClick={() => onClickCheckbox(participantData.id)}
                       >
                         <CheckBoxIcon color="secondary" />
                       </div>
                     ) : winnerId ? null : (
                       <div
-                        className={classes.checkbox}
+                        className={classes.checkboxWrapper}
                         onClick={() => onClickCheckbox(participantData.id)}
                       >
                         <CheckBoxOutlineBlankIcon />
@@ -101,7 +101,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
                   <HighlightOffIcon color="error" />
                 </div>
               )}
-            </div>
+            </li>
           )
         )}
       </>
