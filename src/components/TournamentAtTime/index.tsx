@@ -31,6 +31,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const [selectedParticipantNames, setSelectedParticipantNames] = useState<
     string[]
   >([]);
+  const [sumOfCounts, setSumOfCounts] = useState<number>(0);
 
   // firebase refs
   const refUsers = database.ref("users");
@@ -43,6 +44,38 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     ? Object.values(usersData).map((user: UserStruct) => user.name)
     : [];
   const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
+
+  useEffect(() => {
+    let tempSum: number = Object.values(participants).reduce(
+      (sum: number, participantData: ParticipantInfoStruct) =>
+        sum + participantData.count,
+      0
+    );
+
+    setSumOfCounts(tempSum);
+  }, [participants]);
+
+  //
+  // NOTE: Данный хук создает массив с именнами участников турнира
+  //
+  useEffect(() => {
+    if (usersData) {
+      const tempSelectedNames: string[] = [];
+
+      Object.values(participants).forEach(
+        (participantData: ParticipantInfoStruct) => {
+          const userData: UserStruct | undefined = Object.values(
+            usersData
+          ).find((user: UserStruct) => user.id === participantData.id);
+          if (userData) {
+            tempSelectedNames.push(userData.name);
+          }
+        }
+      );
+
+      setSelectedParticipantNames(tempSelectedNames);
+    }
+  }, [participants, usersData]);
 
   const updateUserScore = (
     actionType: string,
@@ -109,28 +142,6 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       );
     }
   };
-
-  //
-  // NOTE: Данный хук создает массив с именнами участников турнира
-  //
-  useEffect(() => {
-    if (usersData) {
-      const tempSelectedNames: string[] = [];
-
-      Object.values(participants).forEach(
-        (participantData: ParticipantInfoStruct) => {
-          const userData: UserStruct | undefined = Object.values(
-            usersData
-          ).find((user: UserStruct) => user.id === participantData.id);
-          if (userData) {
-            tempSelectedNames.push(userData.name);
-          }
-        }
-      );
-
-      setSelectedParticipantNames(tempSelectedNames);
-    }
-  }, [participants, usersData]);
 
   const addNewParticipant = (userName: string, count: number): void => {
     const refParticipants = tournamentsData.ref
@@ -223,9 +234,9 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           <RenderParticipants
             usersValData={usersValData}
             participants={participants}
-            deleteParticipant={deleteParticipant}
             winnerId={winnerId}
             setWinner={setWinner}
+            deleteParticipant={deleteParticipant}
           />
         </ul>
       </div>
@@ -237,6 +248,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
               timeKey={timeKey}
               allUserNames={allUserNames}
               selectedParticipantNames={selectedParticipantNames}
+              sumOfCounts={sumOfCounts}
               setIsAdding={setIsAdding}
               addNewParticipant={addNewParticipant}
             />

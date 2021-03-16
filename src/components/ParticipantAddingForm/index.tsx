@@ -6,11 +6,13 @@ import { Button } from "@material-ui/core";
 import _ from "lodash";
 import { TimeKeyStruct } from "interfacesAndTypes";
 import AlertDialog from "components/Dialogs/AlertDialog";
+import { MAX_SUM_OF_COUNTS } from "utils/constants";
 
 interface ParticipantAddingFormProps {
   timeKey: TimeKeyStruct;
   allUserNames: string[];
   selectedParticipantNames: string[];
+  sumOfCounts: number;
   setIsAdding: (status: boolean) => void;
   addNewParticipant: (userName: string, count: number) => void;
 }
@@ -21,6 +23,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
     timeKey,
     allUserNames,
     selectedParticipantNames,
+    sumOfCounts,
     setIsAdding,
     addNewParticipant,
   } = props;
@@ -34,14 +37,21 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
   );
   const [inputAmount, setInputAmount] = useState<string>("");
   const [isOpenAddedDialog, setIsOpenAddedDialog] = useState<boolean>(false);
+  const [isOpenСountDialog, setIsOpenCountDialog] = useState<boolean>(false);
 
   const storeNewParticipant = (): void => {
     if (selectedParticipantName && inputAmountOfMeat) {
       if (selectedParticipantNames.includes(selectedParticipantName)) {
         setIsOpenAddedDialog(true);
       } else {
-        addNewParticipant(selectedParticipantName, Number(inputAmountOfMeat));
-        setIsAdding(false);
+        let count: number = Number(inputAmountOfMeat);
+
+        if (sumOfCounts + count <= MAX_SUM_OF_COUNTS) {
+          addNewParticipant(selectedParticipantName, count);
+          setIsAdding(false);
+        } else {
+          setIsOpenCountDialog(true);
+        }
       }
     }
   };
@@ -120,6 +130,15 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
         buttonLabel={"Закрыть"}
         open={isOpenAddedDialog}
         setOpen={setIsOpenAddedDialog}
+      />
+      <AlertDialog
+        title={"Внимание!"}
+        message={`Превышено максимальное количество участников! Еще можно добавить мясца в количестве: ${
+          MAX_SUM_OF_COUNTS - sumOfCounts
+        }`}
+        buttonLabel={"Закрыть"}
+        open={isOpenСountDialog}
+        setOpen={setIsOpenCountDialog}
       />
     </>
   );
