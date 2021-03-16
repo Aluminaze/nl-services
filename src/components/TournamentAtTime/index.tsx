@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import ParticipantAddingForm from "components/ParticipantAddingForm";
 import RenderParticipants from "components/RenderParticipants";
 import useStyles from "./styles";
 import {
+  ParticipantInfoStruct,
   ParticipantsStruct,
   TimeKeyStruct,
   UserStruct,
@@ -27,6 +28,9 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const classes = useStyles();
   const { database } = useContext(Context);
   const [isAdding, setIsAdding] = useState<boolean>(true);
+  const [selectedParticipantNames, setSelectedParticipantNames] = useState<
+    string[]
+  >([]);
 
   // firebase refs
   const refUsers = database.ref("users");
@@ -105,6 +109,28 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       );
     }
   };
+
+  //
+  // NOTE: Данный хук создает массив с именнами участников турнира
+  //
+  useEffect(() => {
+    if (usersData) {
+      const tempSelectedNames: string[] = [];
+
+      Object.values(participants).forEach(
+        (participantData: ParticipantInfoStruct) => {
+          const userData: UserStruct | undefined = Object.values(
+            usersData
+          ).find((user: UserStruct) => user.id === participantData.id);
+          if (userData) {
+            tempSelectedNames.push(userData.name);
+          }
+        }
+      );
+
+      setSelectedParticipantNames(tempSelectedNames);
+    }
+  }, [participants, usersData]);
 
   const addNewParticipant = (userName: string, count: number): void => {
     const refParticipants = tournamentsData.ref
@@ -210,6 +236,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
             <ParticipantAddingForm
               timeKey={timeKey}
               allUserNames={allUserNames}
+              selectedParticipantNames={selectedParticipantNames}
               setIsAdding={setIsAdding}
               addNewParticipant={addNewParticipant}
             />

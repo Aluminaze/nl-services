@@ -9,13 +9,20 @@ import { TimeKeyStruct } from "interfacesAndTypes";
 interface ParticipantAddingFormProps {
   timeKey: TimeKeyStruct;
   allUserNames: string[];
+  selectedParticipantNames: string[];
   setIsAdding: (status: boolean) => void;
   addNewParticipant: (userName: string, count: number) => void;
 }
 const amount: string[] = _.range(0, 17).map((num) => String(num));
 
 const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
-  const { timeKey, allUserNames, setIsAdding, addNewParticipant } = props;
+  const {
+    timeKey,
+    allUserNames,
+    selectedParticipantNames,
+    setIsAdding,
+    addNewParticipant,
+  } = props;
   const classes = useStyles();
   const [selectedParticipantName, setSelectedParticipantName] = useState<
     string | null
@@ -28,9 +35,14 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
 
   const storeNewParticipant = (): void => {
     if (selectedParticipantName && inputAmountOfMeat) {
-      addNewParticipant(selectedParticipantName, Number(inputAmountOfMeat));
-
-      setIsAdding(false);
+      if (selectedParticipantNames.includes(selectedParticipantName)) {
+        alert(
+          `Внимание! ${selectedParticipantName} уже добавлен в список участников текущего турнира. Повторное добавление невозможно!`
+        );
+      } else {
+        addNewParticipant(selectedParticipantName, Number(inputAmountOfMeat));
+        setIsAdding(false);
+      }
     }
   };
 
