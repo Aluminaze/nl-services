@@ -33,6 +33,10 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
     : [];
   const [hasWinner, setHasWinner] = useState<boolean>(false);
 
+  const onClickCheckbox = (participantId: string) => {
+    setWinner(participantId);
+  };
+
   useEffect(() => {
     if (winnerId === "unknown") {
       setHasWinner(false);
@@ -40,12 +44,6 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
       setHasWinner(true);
     }
   }, [winnerId]);
-
-  const onClickCheckbox = (participantId: string) => {
-    setWinner(participantId);
-  };
-
-  console.log(`render`);
 
   if (participantsData.length) {
     return (
