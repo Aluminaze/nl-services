@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "@material-ui/core/Button";
 import ParticipantAddingForm from "components/ParticipantAddingForm";
 import RenderParticipants from "components/RenderParticipants";
@@ -8,30 +8,57 @@ import {
   TimeKeyStruct,
   UserStruct,
 } from "interfacesAndTypes";
-import { Val } from "react-firebase-hooks/database/dist/database/types";
 import getTimeByTimeKey from "utils/getTimeByTimeKey";
+import { Context } from "index";
+import { useObjectVal } from "react-firebase-hooks/database";
 
 interface TournamentAtTimeProps {
   timeKey: TimeKeyStruct;
   tournamentsData: any;
-  usersValData: UserStruct[];
   participants: ParticipantsStruct;
-  userNames: string[];
-  usersData: Val<{ [key: string]: UserStruct }> | undefined;
 }
 
 const TournamentAtTime = (props: TournamentAtTimeProps) => {
-  const {
-    timeKey,
-    tournamentsData,
-    usersValData,
-    participants,
-    userNames,
-    usersData,
-  } = props;
+  const { timeKey, tournamentsData, participants } = props;
   const classes = useStyles();
-
+  const { database } = useContext(Context);
   const [isAdding, setIsAdding] = useState<boolean>(true);
+
+  // firebase refs
+  const refUsers = database.ref("users");
+
+  // firebase data
+  const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
+  const userNames: string[] = usersData
+    ? Object.values(usersData).map((user: UserStruct) => user.name)
+    : [];
+  const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
+
+  const updateUserScore = (userId: string, count: number): void => {
+    let key: string = "";
+    let currentScore: number = 0;
+
+    refUsers
+      .orderByChild("id")
+      .equalTo(userId)
+      .on("value", function (snapshot: any) {
+        snapshot.forEach(function (data: any) {
+          key = data.key;
+          currentScore = data.val().score;
+        });
+      });
+
+    if (key) {
+      if (currentScore === 0) {
+        refUsers.child(key).child("score").set(count);
+      } else {
+        refUsers
+          .child(key)
+          .child("score")
+          .set(currentScore + count);
+      }
+    }
+  };
 
   const addNewParticipant = (
     refTournamentsData: any,
@@ -42,27 +69,38 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       .child(`${timeKey}/participants`)
       .push();
 
-    if (usersData && Object.values(usersData).length) {
-      const usersValData = Object.values(usersData);
+    if (usersValData.length) {
       const selectedUserStruct: UserStruct | undefined = usersValData.find(
         (user: UserStruct) => user.name === userName
       );
 
       if (selectedUserStruct) {
-        console.log(
-          `Добавлен участник: userId: ${selectedUserStruct.id}, count: ${count}`
-        );
+        refParticipants.set(
+          {
+            id: selectedUserStruct.id,
+            count,
+          },
+          (error: any) => {
+            if (error) {
+              console.error(`Ошибка при добавлении нового участника! ${error}`);
+              alert(
+                "Ошибка при добавлении нового участника! Сообщите администратору проекта."
+              );
+            } else {
+              console.log(
+                `Добавлен участник: userId: ${selectedUserStruct.id}, count: ${count}`
+              );
 
-        refParticipants.set({
-          id: selectedUserStruct.id,
-          count,
-        });
+              updateUserScore(selectedUserStruct.id, count);
+            }
+          }
+        );
       } else {
         //
         // TODO: Реализовать отладку ошибок и логирование
         //
         alert(
-          "Ошибка при добавлении нового участника! Сообщите администратору проекта."
+          `Ошибка при добавлении нового участника! Не найден участник с именем ${userName}`
         );
       }
     }
