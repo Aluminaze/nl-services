@@ -11,6 +11,7 @@ import {
 import getTimeByTimeKey from "utils/getTimeByTimeKey";
 import { Context } from "index";
 import { useObjectVal } from "react-firebase-hooks/database";
+import { WINNER_ID_DEF_VALUE } from "utils/constants";
 
 interface TournamentAtTimeProps {
   timeKey: TimeKeyStruct;
@@ -178,7 +179,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
 
   const setWinner = (userId: string): void => {
     if (winnerId === userId) {
-      refWinner.set("unknown");
+      refWinner.set(WINNER_ID_DEF_VALUE);
     } else {
       refWinner.set(userId);
     }

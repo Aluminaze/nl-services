@@ -10,6 +10,7 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import useStyles from "./styles";
 import clsx from "clsx";
+import { WINNER_ID_DEF_VALUE } from "utils/constants";
 
 export interface RenderParticipantsProps {
   usersValData: UserStruct[];
@@ -38,7 +39,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
   };
 
   useEffect(() => {
-    if (winnerId === "unknown") {
+    if (winnerId === WINNER_ID_DEF_VALUE) {
       setHasWinner(false);
     } else {
       setHasWinner(true);

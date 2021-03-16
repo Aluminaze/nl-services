@@ -10,6 +10,7 @@ import {
   TIME_KEY_15,
   TIME_KEY_19,
   TIME_KEY_23,
+  WINNER_ID_DEF_VALUE,
 } from "utils/constants";
 
 const Tournament = () => {
@@ -28,10 +29,10 @@ const Tournament = () => {
   const addChild = (): void => {
     refTorunamentPush.set({
       id: `${date}/01/2020`,
-      time11: { winner: "unknown", participants: {} },
-      time15: { winner: "unknown", participants: {} },
-      time19: { winner: "unknown", participants: {} },
-      time23: { winner: "unknown", participants: {} },
+      time11: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+      time15: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+      time19: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+      time23: { winner: WINNER_ID_DEF_VALUE, participants: {} },
     });
     setDate(date + 1);
   };
