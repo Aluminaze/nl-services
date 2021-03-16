@@ -35,7 +35,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   // firebase data
   const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
   const [winnerId] = useObjectVal<string>(refWinner);
-  const userNames: string[] = usersData
+  const allUserNames: string[] = usersData
     ? Object.values(usersData).map((user: UserStruct) => user.name)
     : [];
   const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
@@ -209,7 +209,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           <div className={classes.tableBlockAdding}>
             <ParticipantAddingForm
               timeKey={timeKey}
-              userNames={userNames}
+              allUserNames={allUserNames}
               setIsAdding={setIsAdding}
               addNewParticipant={addNewParticipant}
             />

@@ -8,18 +8,18 @@ import { TimeKeyStruct } from "interfacesAndTypes";
 
 interface ParticipantAddingFormProps {
   timeKey: TimeKeyStruct;
-  userNames: string[];
+  allUserNames: string[];
   setIsAdding: (status: boolean) => void;
   addNewParticipant: (userName: string, count: number) => void;
 }
 const amount: string[] = _.range(0, 17).map((num) => String(num));
 
 const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
-  const { timeKey, userNames, setIsAdding, addNewParticipant } = props;
+  const { timeKey, allUserNames, setIsAdding, addNewParticipant } = props;
   const classes = useStyles();
-  const [selectedParticipant, setSelectedParticipant] = useState<string | null>(
-    null
-  );
+  const [selectedParticipantName, setSelectedParticipantName] = useState<
+    string | null
+  >(null);
   const [inputParticipantName, setInputParticipantName] = useState<string>("");
   const [inputAmountOfMeat, setInputAmountOfMeat] = useState<string | null>(
     null
@@ -27,8 +27,8 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
   const [inputAmount, setInputAmount] = useState<string>("");
 
   const storeNewParticipant = (): void => {
-    if (selectedParticipant && inputAmountOfMeat) {
-      addNewParticipant(selectedParticipant, Number(inputAmountOfMeat));
+    if (selectedParticipantName && inputAmountOfMeat) {
+      addNewParticipant(selectedParticipantName, Number(inputAmountOfMeat));
 
       setIsAdding(false);
     }
@@ -40,17 +40,17 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
 
       <div className={classes.inputWrapper}>
         <Autocomplete
-          value={selectedParticipant}
+          value={selectedParticipantName}
           size="small"
           onChange={(event: any, newValue: string | null) => {
-            setSelectedParticipant(newValue);
+            setSelectedParticipantName(newValue);
           }}
           inputValue={inputParticipantName}
           onInputChange={(event, newInputValue) => {
             setInputParticipantName(newInputValue);
           }}
           id={`participant-autocomplete-${timeKey}`}
-          options={userNames}
+          options={allUserNames}
           style={{ width: 300 }}
           renderInput={(params) => (
             <TextField
