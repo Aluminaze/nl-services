@@ -8,21 +8,14 @@ import { TimeKeyStruct } from "interfacesAndTypes";
 
 interface ParticipantAddingFormProps {
   timeKey: TimeKeyStruct;
-  refTournamentsData: any;
   userNames: string[];
   setIsAdding: (status: boolean) => void;
-  addNewParticipant: (ref: any, userName: string, count: number) => void;
+  addNewParticipant: (userName: string, count: number) => void;
 }
 const amount: string[] = _.range(1, 17).map((num) => String(num));
 
 const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
-  const {
-    timeKey,
-    refTournamentsData,
-    userNames,
-    setIsAdding,
-    addNewParticipant,
-  } = props;
+  const { timeKey, userNames, setIsAdding, addNewParticipant } = props;
   const classes = useStyles();
   const [selectedParticipant, setSelectedParticipant] = useState<string | null>(
     null
@@ -35,11 +28,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
 
   const storeNewParticipant = (): void => {
     if (selectedParticipant && inputAmountOfMeat) {
-      addNewParticipant(
-        refTournamentsData,
-        selectedParticipant,
-        Number(inputAmountOfMeat)
-      );
+      addNewParticipant(selectedParticipant, Number(inputAmountOfMeat));
 
       setIsAdding(false);
     }

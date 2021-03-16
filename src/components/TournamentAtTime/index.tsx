@@ -103,12 +103,8 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     }
   };
 
-  const addNewParticipant = (
-    refTournamentsData: any,
-    userName: string,
-    count: number
-  ): void => {
-    const refParticipants = refTournamentsData
+  const addNewParticipant = (userName: string, count: number): void => {
+    const refParticipants = tournamentsData.ref
       .child(`${timeKey}/participants`)
       .push();
 
@@ -149,10 +145,12 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     }
   };
 
-  const deleteParticipant = (userId: string, refTournamentsData: any): void => {
+  const deleteParticipant = (userId: string): void => {
     let childKey: string = "";
     let currentCount: number = 0;
-    const refParticipants = refTournamentsData.child(`${timeKey}/participants`);
+    const refParticipants = tournamentsData.ref.child(
+      `${timeKey}/participants`
+    );
 
     refParticipants
       .orderByChild("id")
@@ -182,7 +180,6 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
         <h2>Время турнира: {getTimeByTimeKey(timeKey)}</h2>
         <ul className={classes.list}>
           <RenderParticipants
-            refTournamentsData={tournamentsData.ref}
             usersValData={usersValData}
             participants={participants}
             deleteParticipant={deleteParticipant}
@@ -195,7 +192,6 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           <div className={classes.tableBlockAdding}>
             <ParticipantAddingForm
               timeKey={timeKey}
-              refTournamentsData={tournamentsData.ref}
               userNames={userNames}
               setIsAdding={setIsAdding}
               addNewParticipant={addNewParticipant}

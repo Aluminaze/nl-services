@@ -12,19 +12,13 @@ import useStyles from "./styles";
 import clsx from "clsx";
 
 export interface RenderParticipantsProps {
-  refTournamentsData: any;
   usersValData: UserStruct[];
   participants: ParticipantsStruct;
-  deleteParticipant: (userId: string, refTournamentsData: any) => void;
+  deleteParticipant: (userId: string) => void;
 }
 
 const RenderParticipants = (props: RenderParticipantsProps) => {
-  const {
-    refTournamentsData,
-    usersValData,
-    participants,
-    deleteParticipant,
-  } = props;
+  const { usersValData, participants, deleteParticipant } = props;
   const classes = useStyles();
   const [winnerId, setWinnerId] = useState<string>("");
 
@@ -94,9 +88,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
               {winnerId !== participantData.id && (
                 <div
                   className={classes.iconWrapper}
-                  onClick={() =>
-                    deleteParticipant(participantData.id, refTournamentsData)
-                  }
+                  onClick={() => deleteParticipant(participantData.id)}
                 >
                   <HighlightOffIcon color="error" />
                 </div>
