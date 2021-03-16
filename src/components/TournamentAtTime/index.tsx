@@ -179,9 +179,13 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
 
   const setWinner = (userId: string): void => {
     if (winnerId === userId) {
+      // NOTE: Здесь реализована логика когда решили поменять победителя
       refWinner.set(WINNER_ID_DEF_VALUE);
+      updateUserScore(ACTION_TYPE_ADD, userId, 16);
     } else {
+      // NOTE: Здесь реализована логика когда выбирают победителя
       refWinner.set(userId);
+      updateUserScore(ACTION_TYPE_ADD, userId, -16);
     }
   };
 
