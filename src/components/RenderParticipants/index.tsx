@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ParticipantInfoStruct,
   ParticipantsStruct,
@@ -16,16 +16,36 @@ export interface RenderParticipantsProps {
   participants: ParticipantsStruct;
   deleteParticipant: (userId: string) => void;
   winnerId: string | undefined;
+  setWinner: (userId: string) => void;
 }
 
 const RenderParticipants = (props: RenderParticipantsProps) => {
-  const { usersValData, participants, deleteParticipant, winnerId } = props;
+  const {
+    usersValData,
+    participants,
+    deleteParticipant,
+    winnerId,
+    setWinner,
+  } = props;
   const classes = useStyles();
   const participantsData: ParticipantInfoStruct[] = participants
     ? Object.values(participants)
     : [];
+  const [hasWinner, setHasWinner] = useState<boolean>(false);
 
-  const onClickCheckbox = (participantId: string) => {};
+  useEffect(() => {
+    if (winnerId === "unknown") {
+      setHasWinner(false);
+    } else {
+      setHasWinner(true);
+    }
+  }, [winnerId]);
+
+  const onClickCheckbox = (participantId: string) => {
+    setWinner(participantId);
+  };
+
+  console.log(`render`);
 
   if (participantsData.length) {
     return (
@@ -41,14 +61,15 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
               >
                 <div className={classes.rowTextElement}>
                   <div className={classes.rowTextElementCheckbox}>
-                    {winnerId === participantData.id ? (
+                    {hasWinner && winnerId === participantData.id && (
                       <div
                         className={classes.checkboxWrapper}
                         onClick={() => onClickCheckbox(participantData.id)}
                       >
                         <CheckBoxIcon color="secondary" />
                       </div>
-                    ) : winnerId ? null : (
+                    )}
+                    {!hasWinner && (
                       <div
                         className={classes.checkboxWrapper}
                         onClick={() => onClickCheckbox(participantData.id)}

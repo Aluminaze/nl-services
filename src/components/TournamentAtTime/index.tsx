@@ -10,7 +10,7 @@ import {
 } from "interfacesAndTypes";
 import getTimeByTimeKey from "utils/getTimeByTimeKey";
 import { Context } from "index";
-import { useListVals, useObjectVal } from "react-firebase-hooks/database";
+import { useObjectVal } from "react-firebase-hooks/database";
 
 interface TournamentAtTimeProps {
   timeKey: TimeKeyStruct;
@@ -176,6 +176,14 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     }
   };
 
+  const setWinner = (userId: string): void => {
+    if (winnerId === userId) {
+      refWinner.set("unknown");
+    } else {
+      refWinner.set(userId);
+    }
+  };
+
   return (
     <div className={classes.tableBlock}>
       <div className={classes.tableBlockInfo}>
@@ -186,6 +194,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
             participants={participants}
             deleteParticipant={deleteParticipant}
             winnerId={winnerId}
+            setWinner={setWinner}
           />
         </ul>
       </div>
