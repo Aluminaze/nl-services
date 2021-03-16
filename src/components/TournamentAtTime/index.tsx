@@ -19,7 +19,7 @@ interface TournamentAtTimeProps {
 }
 
 const ACTION_TYPE_ADD: string = "ADD";
-const ACTION_TYPE_DELETE: string = "DELETE";
+const ACTION_TYPE_REDUCE: string = "REDUCE";
 
 const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const { timeKey, tournamentsData, participants } = props;
@@ -76,7 +76,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
               }
             });
         }
-      } else if (actionType === ACTION_TYPE_DELETE) {
+      } else if (actionType === ACTION_TYPE_REDUCE) {
         refUsers
           .child(key)
           .child("score")
@@ -167,7 +167,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     if (childKey) {
       refParticipants.child(childKey).remove();
 
-      updateUserScore(ACTION_TYPE_DELETE, userId, currentCount);
+      updateUserScore(ACTION_TYPE_REDUCE, userId, currentCount);
     } else {
       //
       // TODO: Реализовать отладку ошибок и логирование
