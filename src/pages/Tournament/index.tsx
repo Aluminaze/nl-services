@@ -28,10 +28,10 @@ const Tournament = () => {
   const addChild = (): void => {
     refTorunamentPush.set({
       id: `${date}/01/2020`,
-      time11: { winner: "id", participants: {} },
-      time15: { winner: "id", participants: {} },
-      time19: { winner: "id", participants: {} },
-      time23: { winner: "id", participants: {} },
+      time11: { winner: "unknown", participants: {} },
+      time15: { winner: "unknown", participants: {} },
+      time19: { winner: "unknown", participants: {} },
+      time23: { winner: "unknown", participants: {} },
     });
     setDate(date + 1);
   };
