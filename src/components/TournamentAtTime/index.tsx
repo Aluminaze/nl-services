@@ -12,7 +12,7 @@ import {
 import getTimeByTimeKey from "utils/getTimeByTimeKey";
 import { Context } from "index";
 import { useObjectVal } from "react-firebase-hooks/database";
-import { WINNER_ID_DEF_VALUE } from "utils/constants";
+import { MAX_SUM_OF_COUNTS, WINNER_ID_DEF_VALUE } from "utils/constants";
 
 interface TournamentAtTimeProps {
   timeKey: TimeKeyStruct;
@@ -241,29 +241,31 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
         </ul>
       </div>
 
-      <div className={classes.tableBlockButtons}>
-        {isAdding ? (
-          <div className={classes.tableBlockAdding}>
-            <ParticipantAddingForm
-              timeKey={timeKey}
-              allUserNames={allUserNames}
-              selectedParticipantNames={selectedParticipantNames}
-              sumOfCounts={sumOfCounts}
-              setIsAdding={setIsAdding}
-              addNewParticipant={addNewParticipant}
-            />
-          </div>
-        ) : (
-          <Button
-            variant="contained"
-            size="small"
-            color="primary"
-            onClick={() => setIsAdding(true)}
-          >
-            Добавить участника
-          </Button>
-        )}
-      </div>
+      {sumOfCounts < MAX_SUM_OF_COUNTS && (
+        <div className={classes.tableBlockActions}>
+          {isAdding ? (
+            <div className={classes.tableBlockAdding}>
+              <ParticipantAddingForm
+                timeKey={timeKey}
+                allUserNames={allUserNames}
+                selectedParticipantNames={selectedParticipantNames}
+                sumOfCounts={sumOfCounts}
+                setIsAdding={setIsAdding}
+                addNewParticipant={addNewParticipant}
+              />
+            </div>
+          ) : (
+            <Button
+              variant="contained"
+              size="small"
+              color="primary"
+              onClick={() => setIsAdding(true)}
+            >
+              Добавить участника
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
