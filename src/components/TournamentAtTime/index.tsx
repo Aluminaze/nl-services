@@ -46,20 +46,22 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
 
   useEffect(() => {
-    let tempSum: number = Object.values(participants).reduce(
-      (sum: number, participantData: ParticipantInfoStruct) =>
-        sum + participantData.count,
-      0
-    );
+    if (participants) {
+      const tempSum: number = Object.values(participants).reduce(
+        (sum: number, participantData: ParticipantInfoStruct) =>
+          sum + participantData.count,
+        0
+      );
 
-    setSumOfCounts(tempSum);
+      setSumOfCounts(tempSum);
+    }
   }, [participants]);
 
   //
   // NOTE: Данный хук создает массив с именнами участников турнира
   //
   useEffect(() => {
-    if (usersData) {
+    if (usersData && participants) {
       const tempSelectedNames: string[] = [];
 
       Object.values(participants).forEach(
