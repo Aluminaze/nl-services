@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
     height: "100%",
   },
   tableWrapper: {
-    flexBasis: "50%",
+    flexBasis: "40%",
     height: "95%",
     border: "1px solid black",
     borderRadius: 15,
