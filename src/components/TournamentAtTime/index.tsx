@@ -27,7 +27,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const { timeKey, tournamentsData, participants } = props;
   const classes = useStyles();
   const { database } = useContext(Context);
-  const [isAdding, setIsAdding] = useState<boolean>(true);
+  const [isAdding, setIsAdding] = useState<boolean>(false);
   const [selectedParticipantNames, setSelectedParticipantNames] = useState<
     string[]
   >([]);
