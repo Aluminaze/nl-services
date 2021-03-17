@@ -8,7 +8,6 @@ const useStyles = makeStyles(() => ({
   tableBlockInfo: {
     minHeight: 190,
     width: "100%",
-    maxWidth: 470,
     margin: "10px 10px 10px 0",
     border: "1px solid gray",
     borderRadius: 5,
