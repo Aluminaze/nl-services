@@ -2,27 +2,37 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   container: {
-    height: "100%",
+    maxHeight: "100%",
     display: "flex",
     flexDirection: "column",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    margin: "0 0 30px 0",
+    flexBasis: "10%",
+  },
+  headerTitle: {},
+  headerDatePicker: {
+    flexBasis: "25%",
   },
   table: {
     display: "flex",
     justifyContent: "center",
-    height: "100%",
-  },
-  tableWrapper: {
-    flexBasis: "40%",
-    height: "95%",
+    flexBasis: "90%",
+    overflowY: "auto",
     border: "1px solid black",
     borderRadius: 15,
     padding: "10px",
   },
+  tableWrapper: {
+    height: "100%",
+  },
   tableContainer: {
     width: "100%",
-    height: "100%",
+    height: "auto",
     padding: "20px 25px",
-    overflowY: "auto",
 
     "& h1": {
       fontSize: 22,

@@ -5,32 +5,54 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Button } from "@material-ui/core";
 import _ from "lodash";
 import { TimeKeyStruct } from "interfacesAndTypes";
+import AlertDialog from "components/Dialogs/AlertDialog";
+import { MAX_SUM_OF_COUNTS } from "utils/constants";
 
 interface ParticipantAddingFormProps {
   timeKey: TimeKeyStruct;
-  userNames: string[];
+  allUserNames: string[];
+  selectedParticipantNames: string[];
+  sumOfCounts: number;
   setIsAdding: (status: boolean) => void;
   addNewParticipant: (userName: string, count: number) => void;
 }
 const amount: string[] = _.range(0, 17).map((num) => String(num));
 
 const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
-  const { timeKey, userNames, setIsAdding, addNewParticipant } = props;
+  const {
+    timeKey,
+    allUserNames,
+    selectedParticipantNames,
+    sumOfCounts,
+    setIsAdding,
+    addNewParticipant,
+  } = props;
   const classes = useStyles();
-  const [selectedParticipant, setSelectedParticipant] = useState<string | null>(
-    null
-  );
+  const [selectedParticipantName, setSelectedParticipantName] = useState<
+    string | null
+  >(null);
   const [inputParticipantName, setInputParticipantName] = useState<string>("");
   const [inputAmountOfMeat, setInputAmountOfMeat] = useState<string | null>(
     null
   );
   const [inputAmount, setInputAmount] = useState<string>("");
+  const [isOpenAddedDialog, setIsOpenAddedDialog] = useState<boolean>(false);
+  const [isOpenСountDialog, setIsOpenCountDialog] = useState<boolean>(false);
 
   const storeNewParticipant = (): void => {
-    if (selectedParticipant && inputAmountOfMeat) {
-      addNewParticipant(selectedParticipant, Number(inputAmountOfMeat));
+    if (selectedParticipantName && inputAmountOfMeat) {
+      if (selectedParticipantNames.includes(selectedParticipantName)) {
+        setIsOpenAddedDialog(true);
+      } else {
+        let count: number = Number(inputAmountOfMeat);
 
-      setIsAdding(false);
+        if (sumOfCounts + count <= MAX_SUM_OF_COUNTS) {
+          addNewParticipant(selectedParticipantName, count);
+          setIsAdding(false);
+        } else {
+          setIsOpenCountDialog(true);
+        }
+      }
     }
   };
 
@@ -40,17 +62,17 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
 
       <div className={classes.inputWrapper}>
         <Autocomplete
-          value={selectedParticipant}
+          value={selectedParticipantName}
           size="small"
           onChange={(event: any, newValue: string | null) => {
-            setSelectedParticipant(newValue);
+            setSelectedParticipantName(newValue);
           }}
           inputValue={inputParticipantName}
           onInputChange={(event, newInputValue) => {
             setInputParticipantName(newInputValue);
           }}
           id={`participant-autocomplete-${timeKey}`}
-          options={userNames}
+          options={allUserNames}
           style={{ width: 300 }}
           renderInput={(params) => (
             <TextField
@@ -101,6 +123,23 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           Отмена
         </Button>
       </div>
+
+      <AlertDialog
+        title={"Внимание!"}
+        message={`${selectedParticipantName} уже добавлен в список участников текущего турнира. Повторное добавление невозможно!`}
+        buttonLabel={"Закрыть"}
+        open={isOpenAddedDialog}
+        setOpen={setIsOpenAddedDialog}
+      />
+      <AlertDialog
+        title={"Внимание!"}
+        message={`Превышено максимальное количество участников! Еще можно добавить мясца в количестве: ${
+          MAX_SUM_OF_COUNTS - sumOfCounts
+        }`}
+        buttonLabel={"Закрыть"}
+        open={isOpenСountDialog}
+        setOpen={setIsOpenCountDialog}
+      />
     </>
   );
 };

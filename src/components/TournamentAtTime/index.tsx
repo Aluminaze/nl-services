@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import ParticipantAddingForm from "components/ParticipantAddingForm";
 import RenderParticipants from "components/RenderParticipants";
 import useStyles from "./styles";
 import {
+  ParticipantInfoStruct,
   ParticipantsStruct,
   TimeKeyStruct,
   UserStruct,
@@ -11,7 +12,7 @@ import {
 import getTimeByTimeKey from "utils/getTimeByTimeKey";
 import { Context } from "index";
 import { useObjectVal } from "react-firebase-hooks/database";
-import { WINNER_ID_DEF_VALUE } from "utils/constants";
+import { MAX_SUM_OF_COUNTS, WINNER_ID_DEF_VALUE } from "utils/constants";
 
 interface TournamentAtTimeProps {
   timeKey: TimeKeyStruct;
@@ -26,7 +27,11 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const { timeKey, tournamentsData, participants } = props;
   const classes = useStyles();
   const { database } = useContext(Context);
-  const [isAdding, setIsAdding] = useState<boolean>(true);
+  const [isAdding, setIsAdding] = useState<boolean>(false);
+  const [selectedParticipantNames, setSelectedParticipantNames] = useState<
+    string[]
+  >([]);
+  const [sumOfCounts, setSumOfCounts] = useState<number>(0);
 
   // firebase refs
   const refUsers = database.ref("users");
@@ -35,10 +40,44 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   // firebase data
   const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
   const [winnerId] = useObjectVal<string>(refWinner);
-  const userNames: string[] = usersData
+  const allUserNames: string[] = usersData
     ? Object.values(usersData).map((user: UserStruct) => user.name)
     : [];
   const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
+
+  useEffect(() => {
+    if (participants) {
+      const tempSum: number = Object.values(participants).reduce(
+        (sum: number, participantData: ParticipantInfoStruct) =>
+          sum + participantData.count,
+        0
+      );
+
+      setSumOfCounts(tempSum);
+    }
+  }, [participants]);
+
+  //
+  // NOTE: Данный хук создает массив с именнами участников турнира
+  //
+  useEffect(() => {
+    if (usersData && participants) {
+      const tempSelectedNames: string[] = [];
+
+      Object.values(participants).forEach(
+        (participantData: ParticipantInfoStruct) => {
+          const userData: UserStruct | undefined = Object.values(
+            usersData
+          ).find((user: UserStruct) => user.id === participantData.id);
+          if (userData) {
+            tempSelectedNames.push(userData.name);
+          }
+        }
+      );
+
+      setSelectedParticipantNames(tempSelectedNames);
+    }
+  }, [participants, usersData]);
 
   const updateUserScore = (
     actionType: string,
@@ -197,34 +236,38 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           <RenderParticipants
             usersValData={usersValData}
             participants={participants}
-            deleteParticipant={deleteParticipant}
             winnerId={winnerId}
             setWinner={setWinner}
+            deleteParticipant={deleteParticipant}
           />
         </ul>
       </div>
 
-      <div className={classes.tableBlockButtons}>
-        {isAdding ? (
-          <div className={classes.tableBlockAdding}>
-            <ParticipantAddingForm
-              timeKey={timeKey}
-              userNames={userNames}
-              setIsAdding={setIsAdding}
-              addNewParticipant={addNewParticipant}
-            />
-          </div>
-        ) : (
-          <Button
-            variant="contained"
-            size="small"
-            color="primary"
-            onClick={() => setIsAdding(true)}
-          >
-            Добавить участника
-          </Button>
-        )}
-      </div>
+      {sumOfCounts < MAX_SUM_OF_COUNTS && (
+        <div className={classes.tableBlockActions}>
+          {isAdding ? (
+            <div className={classes.tableBlockAdding}>
+              <ParticipantAddingForm
+                timeKey={timeKey}
+                allUserNames={allUserNames}
+                selectedParticipantNames={selectedParticipantNames}
+                sumOfCounts={sumOfCounts}
+                setIsAdding={setIsAdding}
+                addNewParticipant={addNewParticipant}
+              />
+            </div>
+          ) : (
+            <Button
+              variant="contained"
+              size="small"
+              color="primary"
+              onClick={() => setIsAdding(true)}
+            >
+              Добавить участника
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

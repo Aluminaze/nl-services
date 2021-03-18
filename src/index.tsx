@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import firebase from "firebase";
 import firebaseConfig from "firebaseConfig";
 import { ContextProps } from "interfacesAndTypes";
+import { ConfirmProvider } from "material-ui-confirm";
 
 const theme = createMuiTheme({
   palette: {
@@ -33,11 +34,13 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <MuiThemeProvider theme={theme}>
-        <Context.Provider
-          value={{ auth: firebase.auth(), database: firebase.database() }}
-        >
-          <App />
-        </Context.Provider>
+        <ConfirmProvider>
+          <Context.Provider
+            value={{ auth: firebase.auth(), database: firebase.database() }}
+          >
+            <App />
+          </Context.Provider>
+        </ConfirmProvider>
       </MuiThemeProvider>
     </Router>
   </React.StrictMode>,

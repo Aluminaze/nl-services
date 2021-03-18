@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
     borderRadius: 5,
     padding: "10px",
   },
-  tableBlockButtons: {
+  tableBlockActions: {
     minWidth: 325,
     flexBasis: "40%",
     margin: "10px 0 0 0",
