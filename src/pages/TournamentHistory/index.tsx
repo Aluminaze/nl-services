@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "index";
 import { useList } from "react-firebase-hooks/database";
 import useStyles from "./styles";
@@ -19,18 +19,34 @@ import DateFnsUtils from "@date-io/date-fns";
 const TournamentHistory = () => {
   const classes = useStyles();
   const { database } = useContext(Context);
-  const [tournamentDate, setTournamentDate] = useState<Date | null>(null);
+  const [tournamentFullDate, setTournamentFullDate] = useState<Date | null>(
+    null
+  );
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
   // firebase refs
   const refTournaments = database.ref("tournaments");
 
   // firenase data
   const [tournamentsAtDay] = useList(
-    refTournaments.orderByChild("id").equalTo("2/01/2020")
+    refTournaments.orderByChild("id").equalTo(selectedDate)
   );
 
+  useEffect(() => {
+    if (tournamentFullDate) {
+      const date: number = tournamentFullDate.getDate();
+      const mounth: number = tournamentFullDate.getMonth() + 1;
+      const year: number = tournamentFullDate.getFullYear();
+      const pickedDate: string = `${date}/${mounth}/${year}`;
+
+      setSelectedDate(pickedDate);
+    } else {
+      setSelectedDate("");
+    }
+  }, [tournamentFullDate]);
+
   const handleDateChange = (date: Date | null) => {
-    setTournamentDate(date);
+    setTournamentFullDate(date);
   };
 
   return (
@@ -43,12 +59,13 @@ const TournamentHistory = () => {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
+              autoOk={true}
               variant="inline"
               format="dd/MM/yyyy"
               margin="normal"
               id="date-picker"
               label="дд/мм/гггг"
-              value={tournamentDate}
+              value={tournamentFullDate}
               onChange={handleDateChange}
               KeyboardButtonProps={{
                 "aria-label": "change date",

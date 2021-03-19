@@ -12,18 +12,24 @@ import {
   TIME_KEY_23,
   WINNER_ID_DEF_VALUE,
 } from "utils/constants";
+import getCurrentDate from "utils/getCurrentDate";
 
 const Tournament = () => {
   const classes = useStyles();
   const { database } = useContext(Context);
   const [date, setDate] = useState<number>(1);
+  const [currentDate] = useState<string>(
+    new Date().toLocaleDateString("en-US", {
+      timeZone: "Europe/Minsk",
+    })
+  );
 
   // firebase refs
   const refTournaments = database.ref("tournaments");
   const refTorunamentPush = refTournaments.push();
 
   const [tournamentsAtDay] = useList(
-    refTournaments.orderByChild("id").equalTo("2/01/2020")
+    refTournaments.orderByChild("id").equalTo(getCurrentDate(currentDate))
   );
 
   const addChild = (): void => {
