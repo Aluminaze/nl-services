@@ -16,6 +16,7 @@ import { MAX_SUM_OF_COUNTS, WINNER_ID_DEF_VALUE } from "utils/constants";
 import getUserNameById from "utils/getUserNameById";
 import InfoIcon from "@material-ui/icons/Info";
 import ActionLogsDialog from "components/Dialogs/ActionLogsDialog";
+import getCurrentDate from "utils/getCurrentDate";
 
 interface TournamentAtTimeProps {
   tournamentDateId: string;
@@ -261,9 +262,11 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       .ref("tournamentsActionLogs")
       .push();
 
-    const currentDate: string = new Date().toLocaleDateString("en-US", {
-      timeZone: "Europe/Minsk",
-    });
+    const currentDate: string = getCurrentDate(
+      new Date().toLocaleDateString("en-US", {
+        timeZone: "Europe/Minsk",
+      })
+    );
     const currentTime: string = new Date().toLocaleTimeString("en-US", {
       timeZone: "Europe/Minsk",
     });
