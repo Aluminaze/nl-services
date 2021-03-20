@@ -55,7 +55,7 @@ const Tournament = () => {
               return (
                 <div className={classes.tableWrapper} key={index}>
                   <div className={classes.tableContainer}>
-                    <h1>Дата турнира: {tournamentData.id}</h1>
+                    <h1>Текущая дата турнира: {tournamentData.id}</h1>
 
                     <TournamentAtTime
                       timeKey={TIME_KEY_11}

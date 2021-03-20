@@ -84,7 +84,7 @@ const TournamentHistory = () => {
               return (
                 <div className={classes.tableWrapper} key={index}>
                   <div className={classes.tableContainer}>
-                    <h1>{tournamentData.id}</h1>
+                    <h1>История турнира по дате: {tournamentData.id}</h1>
 
                     <TournamentAtTime
                       timeKey={TIME_KEY_11}
