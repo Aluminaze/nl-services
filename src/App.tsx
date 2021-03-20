@@ -24,6 +24,9 @@ function App() {
 
   const logIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: "select_account",
+    });
     firebase.auth().signInWithPopup(provider);
   };
 
@@ -31,7 +34,11 @@ function App() {
     <div className={classes.wrapper}>
       <Header user={user} />
 
-      {user ? <LoggedIn /> : <LogIn logIn={logIn} isLoading={loading} />}
+      {user ? (
+        <LoggedIn user={user} />
+      ) : (
+        <LogIn logIn={logIn} isLoading={loading} />
+      )}
     </div>
   );
 }
