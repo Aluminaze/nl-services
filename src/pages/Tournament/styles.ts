@@ -28,6 +28,7 @@ const useStyles = makeStyles(() => ({
 
     "& h1": {
       fontSize: 22,
+      margin: "0 0 15px 0",
     },
   },
   tableBlock: {

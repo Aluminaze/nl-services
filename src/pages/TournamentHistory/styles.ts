@@ -10,7 +10,6 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    margin: "0 0 30px 0",
     flexBasis: "10%",
   },
   headerTitle: {},
@@ -22,8 +21,6 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     flexBasis: "90%",
     overflowY: "auto",
-    border: "1px solid black",
-    borderRadius: 15,
     padding: "10px",
   },
   tableWrapper: {
@@ -36,6 +33,7 @@ const useStyles = makeStyles(() => ({
 
     "& h1": {
       fontSize: 22,
+      margin: "0 0 15px 0",
     },
   },
   tableBlock: {

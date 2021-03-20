@@ -18,6 +18,10 @@ const useStyles = makeStyles(() => ({
       fontSize: 18,
     },
   },
+  tableBlockInfoHeader: {
+    display: "flex",
+    alignItems: "center",
+  },
   list: {
     margin: "10px 0 0 0",
   },
@@ -30,6 +34,13 @@ const useStyles = makeStyles(() => ({
     minWidth: 325,
     flexBasis: "40%",
     margin: "10px 0 0 0",
+  },
+  infoIconWrapper: {
+    display: "flex",
+    margin: "0 7px 0 0",
+    "&:hover": {
+      cursor: "pointer",
+    },
   },
 }));
 
