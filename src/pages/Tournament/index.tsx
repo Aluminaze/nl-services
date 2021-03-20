@@ -83,7 +83,11 @@ const Tournament = () => {
             })
           ) : (
             <div className={classes.button}>
-              <Button variant="contained" onClick={addTournamentTable}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={addTournamentTable}
+              >
                 Создать турнирную таблицу на сегодняшний день
               </Button>
             </div>
