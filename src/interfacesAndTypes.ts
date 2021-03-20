@@ -41,6 +41,9 @@ export type UserStruct = {
   id: string;
   name: string;
   score: number;
+  email: string;
+  tournaments: boolean;
+  sieges: boolean;
 };
 
 export type TimeKeyStruct =
