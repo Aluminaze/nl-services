@@ -18,6 +18,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import ActionLogsDialog from "components/Dialogs/ActionLogsDialog";
 
 interface TournamentAtTimeProps {
+  tournamentDateId: string;
   timeKey: TimeKeyStruct;
   tournamentsData: any;
   participants: ParticipantsStruct;
@@ -32,7 +33,7 @@ const ACTION_LOG_TYPE_SET_WINNER: string = "SET_WINNER";
 const ACTION_LOG_TYPE_UNSET_WINNER: string = "UNSET_WNNER";
 
 const TournamentAtTime = (props: TournamentAtTimeProps) => {
-  const { timeKey, tournamentsData, participants } = props;
+  const { tournamentDateId, timeKey, tournamentsData, participants } = props;
   const classes = useStyles();
   const { database, auth } = useContext(Context);
   const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -252,9 +253,14 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     userNameOrId: string,
     count: number
   ): void => {
+    // firebase refs
     const refParticipants = tournamentsData.ref
       .child(`${timeKey}/actionLogs`)
       .push();
+    const refTournamentsActionLogsPush = database
+      .ref("tournamentsActionLogs")
+      .push();
+
     const currentDate: string = new Date().toLocaleDateString("en-US", {
       timeZone: "Europe/Minsk",
     });
@@ -268,37 +274,45 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       );
 
       if (findedUser) {
+        const tournamentActionLog: string = ` в турнире [${tournamentDateId} ${getTimeByTimeKey(
+          timeKey
+        )}]`;
+
         if (actionType === ACTION_LOG_TYPE_ADD) {
-          refParticipants.set(
-            `[${currentDate} ${currentTime}] ${findedUser.name} добавил участника ${userNameOrId} [+${count}]`
-          );
+          const actionLog: string = `[${currentDate} ${currentTime}] ${findedUser.name} добавил участника ${userNameOrId} [+${count}]`;
+
+          refParticipants.set(actionLog);
+          refTournamentsActionLogsPush.set(actionLog + tournamentActionLog);
         } else if (actionType === ACTION_LOG_TYPE_DELETE) {
-          refParticipants.set(
-            `[${currentDate} ${currentTime}] ${
-              findedUser.name
-            } удалил участника ${getUserNameById(
-              userNameOrId,
-              usersValData
-            )} [-${count}]`
-          );
+          const actionLog: string = `[${currentDate} ${currentTime}] ${
+            findedUser.name
+          } удалил участника ${getUserNameById(
+            userNameOrId,
+            usersValData
+          )} [-${count}]`;
+
+          refParticipants.set(actionLog);
+          refTournamentsActionLogsPush.set(actionLog + tournamentActionLog);
         } else if (actionType === ACTION_LOG_TYPE_SET_WINNER) {
-          refParticipants.set(
-            `[${currentDate} ${currentTime}] ${
-              findedUser.name
-            } выбрал победителя турнира -> ${getUserNameById(
-              userNameOrId,
-              usersValData
-            )}`
-          );
+          const actionLog: string = `[${currentDate} ${currentTime}] ${
+            findedUser.name
+          } выбрал победителя турнира -> ${getUserNameById(
+            userNameOrId,
+            usersValData
+          )}`;
+
+          refParticipants.set(actionLog);
+          refTournamentsActionLogsPush.set(actionLog + tournamentActionLog);
         } else if (actionType === ACTION_LOG_TYPE_UNSET_WINNER) {
-          refParticipants.set(
-            `[${currentDate} ${currentTime}] ${
-              findedUser.name
-            } убрал победителя турнира -> ${getUserNameById(
-              userNameOrId,
-              usersValData
-            )}`
-          );
+          const actionLog: string = `[${currentDate} ${currentTime}] ${
+            findedUser.name
+          } убрал победителя турнира -> ${getUserNameById(
+            userNameOrId,
+            usersValData
+          )}`;
+
+          refParticipants.set(actionLog);
+          refTournamentsActionLogsPush.set(actionLog + tournamentActionLog);
         }
       }
     }

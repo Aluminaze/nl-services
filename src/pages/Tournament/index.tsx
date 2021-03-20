@@ -58,21 +58,25 @@ const Tournament = () => {
                     <h1>Текущая дата турнира: {tournamentData.id}</h1>
 
                     <TournamentAtTime
+                      tournamentDateId={getCurrentDate(currentDate)}
                       timeKey={TIME_KEY_11}
                       tournamentsData={tournamentsData}
                       participants={tournamentData.time11?.participants}
                     />
                     <TournamentAtTime
+                      tournamentDateId={getCurrentDate(currentDate)}
                       timeKey={TIME_KEY_15}
                       tournamentsData={tournamentsData}
                       participants={tournamentData.time15?.participants}
                     />
                     <TournamentAtTime
+                      tournamentDateId={getCurrentDate(currentDate)}
                       timeKey={TIME_KEY_19}
                       tournamentsData={tournamentsData}
                       participants={tournamentData.time19?.participants}
                     />
                     <TournamentAtTime
+                      tournamentDateId={getCurrentDate(currentDate)}
                       timeKey={TIME_KEY_23}
                       tournamentsData={tournamentsData}
                       participants={tournamentData.time23?.participants}
