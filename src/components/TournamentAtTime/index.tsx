@@ -15,6 +15,7 @@ import { useObjectVal } from "react-firebase-hooks/database";
 import { MAX_SUM_OF_COUNTS, WINNER_ID_DEF_VALUE } from "utils/constants";
 import getUserNameById from "utils/getUserNameById";
 import InfoIcon from "@material-ui/icons/Info";
+import ActionLogsDialog from "components/Dialogs/ActionLogsDialog";
 
 interface TournamentAtTimeProps {
   timeKey: TimeKeyStruct;
@@ -39,18 +40,24 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     string[]
   >([]);
   const [sumOfCounts, setSumOfCounts] = useState<number>(0);
+  const [isOpenActionLogsDialog, setIsOpenActionLogsDialog] = useState<boolean>(
+    false
+  );
 
   // firebase refs
   const refUsers = database.ref("users");
   const refWinner = tournamentsData.ref.child(`${timeKey}/winner`);
+  const refActionLogs = tournamentsData.ref.child(`${timeKey}/actionLogs`);
 
   // firebase data
   const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
   const [winnerId] = useObjectVal<string>(refWinner);
+  const [actionLogs] = useObjectVal<{ [key: string]: string }>(refActionLogs);
   const allUserNames: string[] = usersData
     ? Object.values(usersData).map((user: UserStruct) => user.name)
     : [];
   const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
+  const actionLogsData: string[] = actionLogs ? Object.values(actionLogs) : [];
 
   useEffect(() => {
     if (participants) {
@@ -299,7 +306,10 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     <div className={classes.tableBlock}>
       <div className={classes.tableBlockInfo}>
         <div className={classes.tableBlockInfoHeader}>
-          <div className={classes.infoIconWrapper}>
+          <div
+            className={classes.infoIconWrapper}
+            onClick={() => setIsOpenActionLogsDialog(true)}
+          >
             <InfoIcon color="primary" />
           </div>
           <h2>Время турнира: {getTimeByTimeKey(timeKey)}</h2>
@@ -341,6 +351,13 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           )}
         </div>
       )}
+      <ActionLogsDialog
+        isDialogOpen={isOpenActionLogsDialog}
+        setIsDialogOpen={setIsOpenActionLogsDialog}
+        actionLogsData={actionLogsData}
+        date={"20/3/2021"}
+        timeKey={timeKey}
+      />
     </div>
   );
 };
