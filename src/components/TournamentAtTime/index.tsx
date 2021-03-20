@@ -90,6 +90,8 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       );
 
       setSelectedParticipantNames(tempSelectedNames);
+    } else {
+      setSelectedParticipantNames([]);
     }
   }, [participants, usersData]);
 
