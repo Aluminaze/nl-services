@@ -274,45 +274,54 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       );
 
       if (findedUser) {
-        const tournamentActionLog: string = ` в турнире [${tournamentDateId} ${getTimeByTimeKey(
+        const tournamentActionLog: string = `в турнире [${tournamentDateId} ${getTimeByTimeKey(
           timeKey
         )}]`;
+        const actionTime: string = `[${currentDate} ${currentTime}]`;
 
         if (actionType === ACTION_LOG_TYPE_ADD) {
-          const actionLog: string = `[${currentDate} ${currentTime}] ${findedUser.name} добавил участника ${userNameOrId} [+${count}]`;
+          const actionLog: string = `${findedUser.name} добавил участника ${userNameOrId} [+${count}]`;
 
-          refParticipants.set(actionLog);
-          refTournamentsActionLogsPush.set(actionLog + tournamentActionLog);
+          refParticipants.set(`${actionTime} ${actionLog}`);
+          refTournamentsActionLogsPush.set(
+            `${actionTime} ${tournamentActionLog}: ${actionLog}`
+          );
         } else if (actionType === ACTION_LOG_TYPE_DELETE) {
-          const actionLog: string = `[${currentDate} ${currentTime}] ${
+          const actionLog: string = `${
             findedUser.name
           } удалил участника ${getUserNameById(
             userNameOrId,
             usersValData
           )} [-${count}]`;
 
-          refParticipants.set(actionLog);
-          refTournamentsActionLogsPush.set(actionLog + tournamentActionLog);
+          refParticipants.set(`${actionTime} ${actionLog}`);
+          refTournamentsActionLogsPush.set(
+            `${actionTime} ${tournamentActionLog}: ${actionLog}`
+          );
         } else if (actionType === ACTION_LOG_TYPE_SET_WINNER) {
-          const actionLog: string = `[${currentDate} ${currentTime}] ${
+          const actionLog: string = `${
             findedUser.name
           } выбрал победителя турнира -> ${getUserNameById(
             userNameOrId,
             usersValData
           )}`;
 
-          refParticipants.set(actionLog);
-          refTournamentsActionLogsPush.set(actionLog + tournamentActionLog);
+          refParticipants.set(`${actionTime} ${actionLog}`);
+          refTournamentsActionLogsPush.set(
+            `${actionTime} ${tournamentActionLog}: ${actionLog}`
+          );
         } else if (actionType === ACTION_LOG_TYPE_UNSET_WINNER) {
-          const actionLog: string = `[${currentDate} ${currentTime}] ${
+          const actionLog: string = `${
             findedUser.name
           } убрал победителя турнира -> ${getUserNameById(
             userNameOrId,
             usersValData
           )}`;
 
-          refParticipants.set(actionLog);
-          refTournamentsActionLogsPush.set(actionLog + tournamentActionLog);
+          refParticipants.set(`${actionTime} ${actionLog}`);
+          refTournamentsActionLogsPush.set(
+            `${actionTime} ${tournamentActionLog}: ${actionLog}`
+          );
         }
       }
     }
