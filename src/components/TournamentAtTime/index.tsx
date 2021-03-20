@@ -24,6 +24,11 @@ interface TournamentAtTimeProps {
 const ACTION_TYPE_ADD: string = "ADD";
 const ACTION_TYPE_REDUCE: string = "REDUCE";
 
+const ACTION_LOG_TYPE_ADD: string = "ADD";
+const ACTION_LOG_TYPE_DELETE: string = "DELETE";
+const ACTION_LOG_TYPE_SET_WINNER: string = "SET_WINNER";
+const ACTION_LOG_TYPE_UNSET_WINNER: string = "UNSET_WNNER";
+
 const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const { timeKey, tournamentsData, participants } = props;
   const classes = useStyles();
@@ -173,7 +178,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
                 `Добавлен участник: userId: ${selectedUserStruct.id}, count: ${count}`
               );
 
-              addActionLogWhenAdding(userName, count);
+              addActionLog(ACTION_LOG_TYPE_ADD, userName, count);
               updateUserScore(ACTION_TYPE_ADD, selectedUserStruct.id, count);
             }
           }
@@ -208,7 +213,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
 
     if (childKey) {
       refParticipants.child(childKey).remove();
-      addActionLogWhenDeleting(userId, currentCount);
+      addActionLog(ACTION_LOG_TYPE_DELETE, userId, currentCount);
       updateUserScore(ACTION_TYPE_REDUCE, userId, currentCount);
     } else {
       //
@@ -222,18 +227,21 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     if (winnerId === userId) {
       // NOTE: Здесь реализована логика когда решили поменять победителя
       refWinner.set(WINNER_ID_DEF_VALUE);
-      updateUserScore(ACTION_TYPE_ADD, userId, 16);
+      addActionLog(ACTION_LOG_TYPE_UNSET_WINNER, userId, MAX_SUM_OF_COUNTS);
+      updateUserScore(ACTION_TYPE_ADD, userId, MAX_SUM_OF_COUNTS);
     } else {
       // NOTE: Здесь реализована логика когда выбирают победителя
       refWinner.set(userId);
-      updateUserScore(ACTION_TYPE_ADD, userId, -16);
+      addActionLog(ACTION_LOG_TYPE_SET_WINNER, userId, MAX_SUM_OF_COUNTS);
+      updateUserScore(ACTION_TYPE_ADD, userId, -MAX_SUM_OF_COUNTS);
     }
   };
 
-  //
-  // ACTION LOGS
-  //
-  const addActionLogWhenAdding = (userName: string, count: number): void => {
+  const addActionLog = (
+    actionType: string,
+    userNameOrId: string,
+    count: number
+  ): void => {
     const refParticipants = tournamentsData.ref
       .child(`${timeKey}/actionLogs`)
       .push();
@@ -250,38 +258,38 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       );
 
       if (findedUser) {
-        refParticipants.set(
-          `[${currentDate} ${currentTime}] ${findedUser.name} добавил участника ${userName} [+${count}]`
-        );
-      }
-    }
-  };
-
-  const addActionLogWhenDeleting = (userId: string, count: number) => {
-    const refParticipants = tournamentsData.ref
-      .child(`${timeKey}/actionLogs`)
-      .push();
-    const currentDate: string = new Date().toLocaleDateString("en-US", {
-      timeZone: "Europe/Minsk",
-    });
-    const currentTime: string = new Date().toLocaleTimeString("en-US", {
-      timeZone: "Europe/Minsk",
-    });
-
-    if (usersValData) {
-      const findedUser: UserStruct | undefined = usersValData.find(
-        (userData: UserStruct) => userData.email === auth.currentUser?.email
-      );
-
-      if (findedUser) {
-        refParticipants.set(
-          `[${currentDate} ${currentTime}] ${
-            findedUser.name
-          } удалил участника ${getUserNameById(
-            userId,
-            usersValData
-          )} [-${count}]`
-        );
+        if (actionType === ACTION_LOG_TYPE_ADD) {
+          refParticipants.set(
+            `[${currentDate} ${currentTime}] ${findedUser.name} добавил участника ${userNameOrId} [+${count}]`
+          );
+        } else if (actionType === ACTION_LOG_TYPE_DELETE) {
+          refParticipants.set(
+            `[${currentDate} ${currentTime}] ${
+              findedUser.name
+            } удалил участника ${getUserNameById(
+              userNameOrId,
+              usersValData
+            )} [-${count}]`
+          );
+        } else if (actionType === ACTION_LOG_TYPE_SET_WINNER) {
+          refParticipants.set(
+            `[${currentDate} ${currentTime}] ${
+              findedUser.name
+            } выбрал победителя турнира -> ${getUserNameById(
+              userNameOrId,
+              usersValData
+            )}`
+          );
+        } else if (actionType === ACTION_LOG_TYPE_UNSET_WINNER) {
+          refParticipants.set(
+            `[${currentDate} ${currentTime}] ${
+              findedUser.name
+            } убрал победителя турнира -> ${getUserNameById(
+              userNameOrId,
+              usersValData
+            )}`
+          );
+        }
       }
     }
   };
