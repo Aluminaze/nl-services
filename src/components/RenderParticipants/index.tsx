@@ -40,11 +40,11 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
   const [hasWinner, setHasWinner] = useState<boolean>(false);
   const confirmDelete = useConfirm();
 
-  const onClickCheckbox = (participantId: string) => {
+  const onSetWinner = (participantId: string) => {
     setWinner(participantId);
   };
 
-  const onDeleteWinner = (participantId: string) => {
+  const onDeleteParticipant = (participantId: string) => {
     confirmDelete({
       title: (
         <div className={classes.confirmTitle}>
@@ -93,7 +93,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
                     {hasWinner && winnerId === participantData.id && (
                       <div
                         className={classes.checkboxWrapper}
-                        onClick={() => onClickCheckbox(participantData.id)}
+                        onClick={() => onSetWinner(participantData.id)}
                       >
                         <CheckBoxIcon color="secondary" />
                       </div>
@@ -101,7 +101,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
                     {!hasWinner && (
                       <div
                         className={classes.checkboxWrapper}
-                        onClick={() => onClickCheckbox(participantData.id)}
+                        onClick={() => onSetWinner(participantData.id)}
                       >
                         <CheckBoxOutlineBlankIcon />
                       </div>
@@ -131,7 +131,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
               {winnerId !== participantData.id && (
                 <div
                   className={classes.iconWrapper}
-                  onClick={() => onDeleteWinner(participantData.id)}
+                  onClick={() => onDeleteParticipant(participantData.id)}
                 >
                   <HighlightOffIcon color="error" />
                 </div>
