@@ -13,11 +13,11 @@ import {
   WINNER_ID_DEF_VALUE,
 } from "utils/constants";
 import getCurrentDate from "utils/getCurrentDate";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const Tournament = () => {
   const classes = useStyles();
   const { database } = useContext(Context);
-  const [date, setDate] = useState<number>(1);
   const [currentDate] = useState<string>(
     new Date().toLocaleDateString("en-US", {
       timeZone: "Europe/Minsk",
@@ -28,33 +28,34 @@ const Tournament = () => {
   const refTournaments = database.ref("tournaments");
   const refTorunamentPush = refTournaments.push();
 
-  const [tournamentsAtDay] = useList(
+  const [tournamentsAtDay, loadingTournamentsAtDay] = useList(
     refTournaments.orderByChild("id").equalTo(getCurrentDate(currentDate))
   );
 
-  const addChild = (): void => {
+  const addTournamentTable = (): void => {
     refTorunamentPush.set({
-      id: `${date}/01/2020`,
+      id: getCurrentDate(currentDate),
       time11: { winner: WINNER_ID_DEF_VALUE, participants: {} },
       time15: { winner: WINNER_ID_DEF_VALUE, participants: {} },
       time19: { winner: WINNER_ID_DEF_VALUE, participants: {} },
       time23: { winner: WINNER_ID_DEF_VALUE, participants: {} },
     });
-    setDate(date + 1);
   };
 
   return (
     <section className={classes.container}>
-      <Button onClick={addChild}>Add child</Button>
-      <div className={classes.table}>
-        {tournamentsAtDay?.length
-          ? tournamentsAtDay.map((tournamentsData, index: number) => {
+      {loadingTournamentsAtDay ? (
+        <CircularProgress color="primary" />
+      ) : (
+        <div className={classes.table}>
+          {tournamentsAtDay?.length ? (
+            tournamentsAtDay.map((tournamentsData, index: number) => {
               const tournamentData: TournamentStruct = tournamentsData.val();
 
               return (
                 <div className={classes.tableWrapper} key={index}>
                   <div className={classes.tableContainer}>
-                    <h1>{tournamentData.id}</h1>
+                    <h1>Дата турнира: {tournamentData.id}</h1>
 
                     <TournamentAtTime
                       timeKey={TIME_KEY_11}
@@ -80,8 +81,19 @@ const Tournament = () => {
                 </div>
               );
             })
-          : null}
-      </div>
+          ) : (
+            <div className={classes.button}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={addTournamentTable}
+              >
+                Создать турнирную таблицу на сегодняшний день
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 };

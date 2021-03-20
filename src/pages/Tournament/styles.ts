@@ -5,6 +5,8 @@ const useStyles = makeStyles(() => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   table: {
     display: "flex",
@@ -13,7 +15,7 @@ const useStyles = makeStyles(() => ({
   },
   tableWrapper: {
     flexBasis: "40%",
-    height: "95%",
+    height: "auto",
     border: "1px solid black",
     borderRadius: 15,
     padding: "10px",
@@ -56,6 +58,10 @@ const useStyles = makeStyles(() => ({
     minWidth: 325,
     flexBasis: "40%",
     margin: "10px 0 0 0",
+  },
+  button: {
+    display: "flex",
+    height: 50,
   },
 }));
 
