@@ -49,6 +49,27 @@ const useStyles = makeStyles(() => ({
       cursor: "pointer",
     },
   },
+  confirmTitle: {
+    display: "flex",
+    alignItems: "center",
+  },
+  confirmTitleText: {
+    fontWeight: 800,
+    margin: "0 0 0 5px",
+
+    "& strong": {
+      color: "#f44336",
+      fontSize: 18,
+    },
+  },
+  confirmMessageText: {
+    color: "#000",
+
+    "& strong": {
+      color: "#f44336",
+      fontSize: 18,
+    },
+  },
 }));
 
 export default useStyles;
