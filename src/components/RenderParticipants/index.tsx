@@ -41,7 +41,33 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
   const confirmDelete = useConfirm();
 
   const onSetWinner = (participantId: string) => {
-    setWinner(participantId);
+    if (hasWinner) {
+      confirmDelete({
+        title: (
+          <div className={classes.confirmTitle}>
+            <WarningIcon color="error" />
+            <span className={classes.confirmTitleText}>Внимание!</span>
+          </div>
+        ),
+        description: (
+          <span className={classes.confirmMessageText}>
+            Турнирная таблица на <strong>{getTimeByTimeKey(timeKey)}</strong>
+            <br />
+            Текущий победитель турнира&nbsp;
+            <strong>{getUserNameById(participantId, usersValData)}</strong>
+            &nbsp;
+            <br />
+            Вы действетельно хотите поменять победителя турнира?
+          </span>
+        ),
+        cancellationText: "Нет",
+        confirmationText: "Да",
+      }).then(() => {
+        setWinner(participantId);
+      });
+    } else {
+      setWinner(participantId);
+    }
   };
 
   const onDeleteParticipant = (participantId: string) => {
