@@ -70,6 +70,7 @@ const TournamentHistory = () => {
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}
+              invalidDateMessage={"Неккоректная дата"}
             />
           </MuiPickersUtilsProvider>
         </div>
