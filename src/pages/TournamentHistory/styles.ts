@@ -22,8 +22,6 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     flexBasis: "90%",
     overflowY: "auto",
-    border: "1px solid black",
-    borderRadius: 15,
     padding: "10px",
   },
   tableWrapper: {
