@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Button } from "@material-ui/core";
 import { Context } from "index";
 import { useList } from "react-firebase-hooks/database";
@@ -18,7 +18,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 const Tournament = () => {
   const classes = useStyles();
   const { database } = useContext(Context);
-  const [currentDate] = useState<string>(
+  const currentDate: string = getCurrentDate(
     new Date().toLocaleDateString("en-US", {
       timeZone: "Europe/Minsk",
     })
@@ -29,12 +29,12 @@ const Tournament = () => {
   const refTorunamentPush = refTournaments.push();
 
   const [tournamentsAtDay, loadingTournamentsAtDay] = useList(
-    refTournaments.orderByChild("id").equalTo(getCurrentDate(currentDate))
+    refTournaments.orderByChild("id").equalTo(currentDate)
   );
 
   const addTournamentTable = (): void => {
     refTorunamentPush.set({
-      id: getCurrentDate(currentDate),
+      id: currentDate,
       time11: { winner: WINNER_ID_DEF_VALUE, participants: {} },
       time15: { winner: WINNER_ID_DEF_VALUE, participants: {} },
       time19: { winner: WINNER_ID_DEF_VALUE, participants: {} },
