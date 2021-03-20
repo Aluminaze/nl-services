@@ -11,8 +11,12 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import useStyles from "./styles";
 import clsx from "clsx";
 import { WINNER_ID_DEF_VALUE } from "utils/constants";
+import { useConfirm } from "material-ui-confirm";
+import getTimeByTimeKey from "utils/getTimeByTimeKey";
+import WarningIcon from "@material-ui/icons/Warning";
 
 export interface RenderParticipantsProps {
+  timeKey: string;
   usersValData: UserStruct[];
   participants: ParticipantsStruct;
   deleteParticipant: (userId: string) => void;
@@ -22,6 +26,7 @@ export interface RenderParticipantsProps {
 
 const RenderParticipants = (props: RenderParticipantsProps) => {
   const {
+    timeKey,
     usersValData,
     participants,
     deleteParticipant,
@@ -33,9 +38,60 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
     ? Object.values(participants)
     : [];
   const [hasWinner, setHasWinner] = useState<boolean>(false);
+  const confirmDelete = useConfirm();
 
-  const onClickCheckbox = (participantId: string) => {
-    setWinner(participantId);
+  const onSetWinner = (participantId: string) => {
+    if (hasWinner) {
+      confirmDelete({
+        title: (
+          <div className={classes.confirmTitle}>
+            <WarningIcon color="error" />
+            <span className={classes.confirmTitleText}>Внимание!</span>
+          </div>
+        ),
+        description: (
+          <span className={classes.confirmMessageText}>
+            Турнирная таблица на <strong>{getTimeByTimeKey(timeKey)}</strong>
+            <br />
+            Текущий победитель турнира&nbsp;
+            <strong>{getUserNameById(participantId, usersValData)}</strong>
+            &nbsp;
+            <br />
+            Вы действетельно хотите поменять победителя турнира?
+          </span>
+        ),
+        cancellationText: "Нет",
+        confirmationText: "Да",
+      }).then(() => {
+        setWinner(participantId);
+      });
+    } else {
+      setWinner(participantId);
+    }
+  };
+
+  const onDeleteParticipant = (participantId: string) => {
+    confirmDelete({
+      title: (
+        <div className={classes.confirmTitle}>
+          <WarningIcon color="error" />
+          <span className={classes.confirmTitleText}>Внимание!</span>
+        </div>
+      ),
+      description: (
+        <span className={classes.confirmMessageText}>
+          Турнирная таблица на <strong>{getTimeByTimeKey(timeKey)}</strong>
+          <br />
+          Вы действительно хотите удалить&nbsp;
+          <strong>{getUserNameById(participantId, usersValData)}</strong>&nbsp;
+          из списка участников?
+        </span>
+      ),
+      cancellationText: "Нет",
+      confirmationText: "Да",
+    }).then(() => {
+      deleteParticipant(participantId);
+    });
   };
 
   useEffect(() => {
@@ -63,7 +119,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
                     {hasWinner && winnerId === participantData.id && (
                       <div
                         className={classes.checkboxWrapper}
-                        onClick={() => onClickCheckbox(participantData.id)}
+                        onClick={() => onSetWinner(participantData.id)}
                       >
                         <CheckBoxIcon color="secondary" />
                       </div>
@@ -71,7 +127,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
                     {!hasWinner && (
                       <div
                         className={classes.checkboxWrapper}
-                        onClick={() => onClickCheckbox(participantData.id)}
+                        onClick={() => onSetWinner(participantData.id)}
                       >
                         <CheckBoxOutlineBlankIcon />
                       </div>
@@ -101,7 +157,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
               {winnerId !== participantData.id && (
                 <div
                   className={classes.iconWrapper}
-                  onClick={() => deleteParticipant(participantData.id)}
+                  onClick={() => onDeleteParticipant(participantData.id)}
                 >
                   <HighlightOffIcon color="error" />
                 </div>

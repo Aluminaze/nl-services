@@ -234,6 +234,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
         <h2>Время турнира: {getTimeByTimeKey(timeKey)}</h2>
         <ul className={classes.list}>
           <RenderParticipants
+            timeKey={timeKey}
             usersValData={usersValData}
             participants={participants}
             winnerId={winnerId}
