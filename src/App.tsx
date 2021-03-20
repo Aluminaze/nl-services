@@ -31,7 +31,11 @@ function App() {
     <div className={classes.wrapper}>
       <Header user={user} />
 
-      {user ? <LoggedIn /> : <LogIn logIn={logIn} isLoading={loading} />}
+      {user ? (
+        <LoggedIn user={user} />
+      ) : (
+        <LogIn logIn={logIn} isLoading={loading} />
+      )}
     </div>
   );
 }
