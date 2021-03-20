@@ -13,6 +13,7 @@ import getTimeByTimeKey from "utils/getTimeByTimeKey";
 import { Context } from "index";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { MAX_SUM_OF_COUNTS, WINNER_ID_DEF_VALUE } from "utils/constants";
+import getUserNameById from "utils/getUserNameById";
 
 interface TournamentAtTimeProps {
   timeKey: TimeKeyStruct;
@@ -207,7 +208,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
 
     if (childKey) {
       refParticipants.child(childKey).remove();
-
+      addActionLogWhenDeleting(userId, currentCount);
       updateUserScore(ACTION_TYPE_REDUCE, userId, currentCount);
     } else {
       //
@@ -217,6 +218,21 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     }
   };
 
+  const setWinner = (userId: string): void => {
+    if (winnerId === userId) {
+      // NOTE: Здесь реализована логика когда решили поменять победителя
+      refWinner.set(WINNER_ID_DEF_VALUE);
+      updateUserScore(ACTION_TYPE_ADD, userId, 16);
+    } else {
+      // NOTE: Здесь реализована логика когда выбирают победителя
+      refWinner.set(userId);
+      updateUserScore(ACTION_TYPE_ADD, userId, -16);
+    }
+  };
+
+  //
+  // ACTION LOGS
+  //
   const addActionLogWhenAdding = (userName: string, count: number): void => {
     const refParticipants = tournamentsData.ref
       .child(`${timeKey}/actionLogs`)
@@ -241,15 +257,32 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     }
   };
 
-  const setWinner = (userId: string): void => {
-    if (winnerId === userId) {
-      // NOTE: Здесь реализована логика когда решили поменять победителя
-      refWinner.set(WINNER_ID_DEF_VALUE);
-      updateUserScore(ACTION_TYPE_ADD, userId, 16);
-    } else {
-      // NOTE: Здесь реализована логика когда выбирают победителя
-      refWinner.set(userId);
-      updateUserScore(ACTION_TYPE_ADD, userId, -16);
+  const addActionLogWhenDeleting = (userId: string, count: number) => {
+    const refParticipants = tournamentsData.ref
+      .child(`${timeKey}/actionLogs`)
+      .push();
+    const currentDate: string = new Date().toLocaleDateString("en-US", {
+      timeZone: "Europe/Minsk",
+    });
+    const currentTime: string = new Date().toLocaleTimeString("en-US", {
+      timeZone: "Europe/Minsk",
+    });
+
+    if (usersValData) {
+      const findedUser: UserStruct | undefined = usersValData.find(
+        (userData: UserStruct) => userData.email === auth.currentUser?.email
+      );
+
+      if (findedUser) {
+        refParticipants.set(
+          `[${currentDate} ${currentTime}] ${
+            findedUser.name
+          } удалил участника ${getUserNameById(
+            userId,
+            usersValData
+          )} [-${count}]`
+        );
+      }
     }
   };
 
