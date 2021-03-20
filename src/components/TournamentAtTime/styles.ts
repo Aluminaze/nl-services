@@ -7,6 +7,7 @@ const useStyles = makeStyles(() => ({
   },
   tableBlockInfo: {
     minHeight: 190,
+    minWidth: 310,
     width: "100%",
     margin: "10px 10px 10px 0",
     border: "1px solid gray",
