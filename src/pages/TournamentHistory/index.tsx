@@ -78,8 +78,8 @@ const TournamentHistory = () => {
       {selectedDate && (
         <div className={classes.table}>
           {tournamentsAtDay?.length ? (
-            tournamentsAtDay.map((tournamentsData, index: number) => {
-              const tournamentData: TournamentStruct = tournamentsData.val();
+            tournamentsAtDay.map((tournamentSnapshot, index: number) => {
+              const tournamentData: TournamentStruct = tournamentSnapshot.val();
 
               return (
                 <div className={classes.tableWrapper} key={index}>
@@ -89,25 +89,25 @@ const TournamentHistory = () => {
                     <TournamentAtTime
                       tournamentDateId={selectedDate}
                       timeKey={TIME_KEY_11}
-                      tournamentsData={tournamentsData}
+                      tournamentSnapshot={tournamentSnapshot}
                       participants={tournamentData.time11?.participants}
                     />
                     <TournamentAtTime
                       tournamentDateId={selectedDate}
                       timeKey={TIME_KEY_15}
-                      tournamentsData={tournamentsData}
+                      tournamentSnapshot={tournamentSnapshot}
                       participants={tournamentData.time15?.participants}
                     />
                     <TournamentAtTime
                       tournamentDateId={selectedDate}
                       timeKey={TIME_KEY_19}
-                      tournamentsData={tournamentsData}
+                      tournamentSnapshot={tournamentSnapshot}
                       participants={tournamentData.time19?.participants}
                     />
                     <TournamentAtTime
                       tournamentDateId={selectedDate}
                       timeKey={TIME_KEY_23}
-                      tournamentsData={tournamentsData}
+                      tournamentSnapshot={tournamentSnapshot}
                       participants={tournamentData.time23?.participants}
                     />
                   </div>

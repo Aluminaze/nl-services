@@ -21,7 +21,7 @@ import getCurrentDate from "utils/getCurrentDate";
 interface TournamentAtTimeProps {
   tournamentDateId: string;
   timeKey: TimeKeyStruct;
-  tournamentsData: any;
+  tournamentSnapshot: any;
   participants: ParticipantsStruct;
 }
 
@@ -34,7 +34,7 @@ const ACTION_LOG_TYPE_SET_WINNER: string = "SET_WINNER";
 const ACTION_LOG_TYPE_UNSET_WINNER: string = "UNSET_WNNER";
 
 const TournamentAtTime = (props: TournamentAtTimeProps) => {
-  const { tournamentDateId, timeKey, tournamentsData, participants } = props;
+  const { tournamentDateId, timeKey, tournamentSnapshot, participants } = props;
   const classes = useStyles();
   const { database, auth } = useContext(Context);
   const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -48,8 +48,8 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
 
   // firebase refs
   const refUsers = database.ref("users");
-  const refWinner = tournamentsData.ref.child(`${timeKey}/winner`);
-  const refActionLogs = tournamentsData.ref.child(`${timeKey}/actionLogs`);
+  const refWinner = tournamentSnapshot.ref.child(`${timeKey}/winner`);
+  const refActionLogs = tournamentSnapshot.ref.child(`${timeKey}/actionLogs`);
 
   // firebase data
   const [usersData] = useObjectVal<{ [key: string]: UserStruct }>(refUsers);
@@ -164,7 +164,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   };
 
   const addNewParticipant = (userName: string, count: number): void => {
-    const refParticipants = tournamentsData.ref
+    const refParticipants = tournamentSnapshot.ref
       .child(`${timeKey}/participants`)
       .push();
 
@@ -209,7 +209,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const deleteParticipant = (userId: string): void => {
     let childKey: string = "";
     let currentCount: number = 0;
-    const refParticipants = tournamentsData.ref.child(
+    const refParticipants = tournamentSnapshot.ref.child(
       `${timeKey}/participants`
     );
 
@@ -255,7 +255,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     count: number
   ): void => {
     // firebase refs
-    const refParticipants = tournamentsData.ref
+    const refParticipants = tournamentSnapshot.ref
       .child(`${timeKey}/actionLogs`)
       .push();
     const refTournamentsActionLogsPush = database
