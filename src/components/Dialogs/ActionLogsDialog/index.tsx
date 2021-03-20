@@ -93,8 +93,8 @@ const ActionLogsDialog = (props: ActionLogsDialogProps) => {
       <DialogContent className={classes.dialog} dividers>
         {actionLogsData.length ? (
           <ul className={classes.dialogList}>
-            {actionLogsData.map((actionLog: string) => (
-              <li>{actionLog}</li>
+            {actionLogsData.map((actionLog: string, index: number) => (
+              <li key={index}>{actionLog}</li>
             ))}
           </ul>
         ) : (
