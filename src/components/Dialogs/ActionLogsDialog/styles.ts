@@ -4,9 +4,10 @@ const useStyles = makeStyles(() => ({
   dialog: {
     width: "80vw",
     height: "80vh",
-    padding: "0 35px",
+    padding: "0 20px",
   },
   dialogList: {
+    padding: "15px 0 10px 0",
     "& li": {
       margin: "5px 0",
       color: "#000",
@@ -24,7 +25,6 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
   },
   titleText: {
-    fontWeight: 800,
     margin: "0 0 0 5px",
   },
   messageText: {
