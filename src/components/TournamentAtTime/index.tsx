@@ -14,6 +14,7 @@ import { Context } from "index";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { MAX_SUM_OF_COUNTS, WINNER_ID_DEF_VALUE } from "utils/constants";
 import getUserNameById from "utils/getUserNameById";
+import InfoIcon from "@material-ui/icons/Info";
 
 interface TournamentAtTimeProps {
   timeKey: TimeKeyStruct;
@@ -297,7 +298,12 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   return (
     <div className={classes.tableBlock}>
       <div className={classes.tableBlockInfo}>
-        <h2>Время турнира: {getTimeByTimeKey(timeKey)}</h2>
+        <div className={classes.tableBlockInfoHeader}>
+          <div className={classes.infoIconWrapper}>
+            <InfoIcon color="primary" />
+          </div>
+          <h2>Время турнира: {getTimeByTimeKey(timeKey)}</h2>
+        </div>
         <ul className={classes.list}>
           <RenderParticipants
             timeKey={timeKey}
