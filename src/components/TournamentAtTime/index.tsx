@@ -26,7 +26,7 @@ const ACTION_TYPE_REDUCE: string = "REDUCE";
 const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const { timeKey, tournamentsData, participants } = props;
   const classes = useStyles();
-  const { database } = useContext(Context);
+  const { database, auth } = useContext(Context);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [selectedParticipantNames, setSelectedParticipantNames] = useState<
     string[]
@@ -172,6 +172,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
                 `Добавлен участник: userId: ${selectedUserStruct.id}, count: ${count}`
               );
 
+              addActionLogWhenAdding(userName, count);
               updateUserScore(ACTION_TYPE_ADD, selectedUserStruct.id, count);
             }
           }
@@ -213,6 +214,30 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       // TODO: Реализовать отладку ошибок и логирование
       //
       alert(`Ошибка при удалении участника с ID: ${userId}`);
+    }
+  };
+
+  const addActionLogWhenAdding = (userName: string, count: number): void => {
+    const refParticipants = tournamentsData.ref
+      .child(`${timeKey}/actionLogs`)
+      .push();
+    const currentDate: string = new Date().toLocaleDateString("en-US", {
+      timeZone: "Europe/Minsk",
+    });
+    const currentTime: string = new Date().toLocaleTimeString("en-US", {
+      timeZone: "Europe/Minsk",
+    });
+
+    if (usersValData) {
+      const findedUser: UserStruct | undefined = usersValData.find(
+        (userData: UserStruct) => userData.email === auth.currentUser?.email
+      );
+
+      if (findedUser) {
+        refParticipants.set(
+          `[${currentDate} ${currentTime}] ${findedUser.name} добавил участника ${userName} [+${count}]`
+        );
+      }
     }
   };
 
