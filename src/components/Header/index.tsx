@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useStyles from "./styles";
 import { Button } from "@material-ui/core";
 import firebase from "firebase";
-import AdminDialog from "components/AdminDialog";
+import AdminDialog from "components/Dialogs/AdminDialog";
 
 interface HeaderProps {
   user: firebase.User | null | undefined;
