@@ -57,6 +57,10 @@ const useStyles = makeStyles(() => ({
     flexBasis: "40%",
     margin: "10px 0 0 0",
   },
+  button: {
+    display: "flex",
+    height: 50,
+  },
 }));
 
 export default useStyles;
