@@ -31,7 +31,7 @@ firebase.initializeApp(firebaseConfig);
 //
 const ruleTournament = new schedule.RecurrenceRule();
 ruleTournament.hour = 0;
-ruleTournament.second = 1;
+ruleTournament.second = 20;
 ruleTournament.tz = "Europe/Minsk";
 
 schedule.scheduleJob(ruleTournament, function () {
@@ -57,8 +57,9 @@ schedule.scheduleJob(ruleTournament, function () {
 });
 
 const ruleCurrentDate = new schedule.RecurrenceRule();
-ruleTournament.hour = 0;
-ruleTournament.second = 5;
+ruleCurrentDate.hour = 0;
+ruleCurrentDate.second = 30;
+ruleCurrentDate.tz = "Europe/Minsk";
 
 schedule.scheduleJob(ruleCurrentDate, function () {
   const currentDate: string = getCurrentDate();
