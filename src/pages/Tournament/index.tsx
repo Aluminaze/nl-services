@@ -31,14 +31,14 @@ const Tournament = (props: TournamentProps) => {
 
   return (
     <section className={classes.container}>
-      <div className={classes.table}>
-        {!loadingTournamentsAtDay &&
-        !loadingCurrentDate &&
-        tournamentsAtDay?.length ? (
-          tournamentsAtDay.map((tournamentSnapshot, index: number) => {
-            const tournamentData: TournamentStruct = tournamentSnapshot.val();
+      {!loadingTournamentsAtDay &&
+      !loadingCurrentDate &&
+      tournamentsAtDay?.length ? (
+        tournamentsAtDay.map((tournamentSnapshot, index: number) => {
+          const tournamentData: TournamentStruct = tournamentSnapshot.val();
 
-            return (
+          return (
+            <div className={classes.table}>
               <div className={classes.tableWrapper} key={index}>
                 <div className={classes.tableContainer}>
                   <h1>Текущая дата турнира: {tournamentData.id}</h1>
@@ -69,12 +69,12 @@ const Tournament = (props: TournamentProps) => {
                   />
                 </div>
               </div>
-            );
-          })
-        ) : (
-          <CircularProgress color="primary" />
-        )}
-      </div>
+            </div>
+          );
+        })
+      ) : (
+        <CircularProgress color="primary" />
+      )}
     </section>
   );
 };
