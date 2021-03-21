@@ -28,9 +28,11 @@ const LoggedIn = (props: LoggedInProps) => {
 
   // firebase refs
   const refUsers = database.ref("users");
+  const refCurrentDate = database.ref("currentDate");
   const [usersData, loadingUsersData] = useObjectVal<{
     [key: string]: UserStruct;
   }>(refUsers);
+  const [currentDate] = useObjectVal<string>(refCurrentDate);
 
   useEffect(() => {
     if (usersData) {
@@ -84,7 +86,7 @@ const LoggedIn = (props: LoggedInProps) => {
           <article className={classes.content}>
             <Switch>
               <Route exact path="/tournament">
-                <Tournament />
+                <Tournament currentDate={currentDate ? currentDate : ""} />
               </Route>
               <Route exact path="/tournament-rating">
                 <TournamentRating />

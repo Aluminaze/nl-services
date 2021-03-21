@@ -12,17 +12,16 @@ import {
   TIME_KEY_23,
   WINNER_ID_DEF_VALUE,
 } from "utils/constants";
-import getCurrentDate from "utils/getCurrentDate";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-const Tournament = () => {
+interface TournamentProps {
+  currentDate: string;
+}
+
+const Tournament = (props: TournamentProps) => {
+  const { currentDate } = props;
   const classes = useStyles();
   const { database } = useContext(Context);
-  const currentDate: string = getCurrentDate(
-    new Date().toLocaleDateString("en-US", {
-      timeZone: "Europe/Minsk",
-    })
-  );
 
   // firebase refs
   const refTournaments = database.ref("tournaments");
