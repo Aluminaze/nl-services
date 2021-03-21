@@ -5,6 +5,7 @@ import LogIn from "pages/LogIn";
 import LoggedIn from "pages/LoggedIn";
 import { Context } from "./index";
 import firebase from "firebase/app";
+import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const useStyles = makeStyles(() => ({
