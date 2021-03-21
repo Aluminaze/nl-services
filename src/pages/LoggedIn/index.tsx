@@ -73,14 +73,14 @@ const LoggedIn = (props: LoggedInProps) => {
             <Button
               size="small"
               color="default"
-              onClick={() => history.push("/tournament-rating")}
+              onClick={() => history.push("/rating")}
             >
               Рейтинг
             </Button>
             <Button
               size="small"
               color="default"
-              onClick={() => history.push("/tournament-history")}
+              onClick={() => history.push("/history")}
             >
               История турниров
             </Button>
@@ -101,10 +101,10 @@ const LoggedIn = (props: LoggedInProps) => {
                   loadingCurrentDate={loadingCurrentDate}
                 />
               </Route>
-              <Route exact path="/tournament-rating">
+              <Route exact path="/rating">
                 <TournamentRating />
               </Route>
-              <Route exact path="/tournament-history">
+              <Route exact path="/history">
                 <TournamentHistory />
               </Route>
               <Route exact path="/action-logs">
