@@ -6,6 +6,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import firebase from "firebase/app";
+import "firebase/database";
 import firebaseConfig from "firebaseConfig";
 import { ContextProps } from "interfacesAndTypes";
 import { ConfirmProvider } from "material-ui-confirm";
