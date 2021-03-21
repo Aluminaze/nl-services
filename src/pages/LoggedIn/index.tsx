@@ -11,6 +11,7 @@ import { useObjectVal } from "react-firebase-hooks/database";
 import { UserStruct } from "interfacesAndTypes";
 import { EMAIL_DEFAULT_VALUE } from "utils/constants";
 import firebase from "firebase";
+import ActionLogsForYear from "pages/ActionLogsForYear";
 
 interface LoggedInProps {
   user: firebase.User | null | undefined;
@@ -83,6 +84,13 @@ const LoggedIn = (props: LoggedInProps) => {
             >
               История турниров
             </Button>
+            <Button
+              size="small"
+              color="default"
+              onClick={() => history.push("/action-logs")}
+            >
+              Журнал событий
+            </Button>
           </nav>
 
           <article className={classes.content}>
@@ -98,6 +106,9 @@ const LoggedIn = (props: LoggedInProps) => {
               </Route>
               <Route exact path="/tournament-history">
                 <TournamentHistory />
+              </Route>
+              <Route exact path="/action-logs">
+                <ActionLogsForYear />
               </Route>
               <Redirect to="/tournament" />
             </Switch>
