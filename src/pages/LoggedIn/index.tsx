@@ -11,6 +11,7 @@ import { useObjectVal } from "react-firebase-hooks/database";
 import { UserStruct } from "interfacesAndTypes";
 import { EMAIL_DEFAULT_VALUE } from "utils/constants";
 import firebase from "firebase";
+import ActionLogsForYear from "pages/ActionLogsForYear";
 
 interface LoggedInProps {
   user: firebase.User | null | undefined;
@@ -72,16 +73,23 @@ const LoggedIn = (props: LoggedInProps) => {
             <Button
               size="small"
               color="default"
-              onClick={() => history.push("/tournament-rating")}
+              onClick={() => history.push("/rating")}
             >
               Рейтинг
             </Button>
             <Button
               size="small"
               color="default"
-              onClick={() => history.push("/tournament-history")}
+              onClick={() => history.push("/history")}
             >
               История турниров
+            </Button>
+            <Button
+              size="small"
+              color="default"
+              onClick={() => history.push("/action-logs")}
+            >
+              Журнал событий
             </Button>
           </nav>
 
@@ -93,11 +101,14 @@ const LoggedIn = (props: LoggedInProps) => {
                   loadingCurrentDate={loadingCurrentDate}
                 />
               </Route>
-              <Route exact path="/tournament-rating">
+              <Route exact path="/rating">
                 <TournamentRating />
               </Route>
-              <Route exact path="/tournament-history">
+              <Route exact path="/history">
                 <TournamentHistory />
+              </Route>
+              <Route exact path="/action-logs">
+                <ActionLogsForYear />
               </Route>
               <Redirect to="/tournament" />
             </Switch>

@@ -12,7 +12,9 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     flexBasis: "10%",
   },
-  headerTitle: {},
+  headerTitle: {
+    fontWeight: 500,
+  },
   headerDatePicker: {
     flexBasis: "25%",
   },

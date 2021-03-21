@@ -21,6 +21,10 @@ const useStyles = makeStyles(() => ({
   tableBlockInfoHeader: {
     display: "flex",
     alignItems: "center",
+
+    "& h2": {
+      fontWeight: 500,
+    },
   },
   list: {
     margin: "10px 0 0 0",

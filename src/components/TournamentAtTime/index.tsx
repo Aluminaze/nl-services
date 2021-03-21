@@ -254,13 +254,12 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     userNameOrId: string,
     count: number
   ): void => {
+    const currentYear: number = new Date().getFullYear();
     // firebase refs
     const refParticipants = tournamentSnapshot.ref
       .child(`${timeKey}/actionLogs`)
       .push();
-    const refTournamentsActionLogsPush = database
-      .ref("tournamentsActionLogs")
-      .push();
+    const refActionLogsPush = database.ref("actionLogs" + currentYear).push();
 
     const currentDate: string = getCurrentDate();
     const currentTime: string = new Date().toLocaleTimeString("en-US", {
@@ -282,7 +281,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           const actionLog: string = `${findedUser.name} добавил участника ${userNameOrId} [+${count}]`;
 
           refParticipants.set(`${actionTime} ${actionLog}`);
-          refTournamentsActionLogsPush.set(
+          refActionLogsPush.set(
             `${actionTime} ${tournamentActionLog}: ${actionLog}`
           );
         } else if (actionType === ACTION_LOG_TYPE_DELETE) {
@@ -294,7 +293,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           )} [-${count}]`;
 
           refParticipants.set(`${actionTime} ${actionLog}`);
-          refTournamentsActionLogsPush.set(
+          refActionLogsPush.set(
             `${actionTime} ${tournamentActionLog}: ${actionLog}`
           );
         } else if (actionType === ACTION_LOG_TYPE_SET_WINNER) {
@@ -306,7 +305,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           )}`;
 
           refParticipants.set(`${actionTime} ${actionLog}`);
-          refTournamentsActionLogsPush.set(
+          refActionLogsPush.set(
             `${actionTime} ${tournamentActionLog}: ${actionLog}`
           );
         } else if (actionType === ACTION_LOG_TYPE_UNSET_WINNER) {
@@ -318,7 +317,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           )}`;
 
           refParticipants.set(`${actionTime} ${actionLog}`);
-          refTournamentsActionLogsPush.set(
+          refActionLogsPush.set(
             `${actionTime} ${tournamentActionLog}: ${actionLog}`
           );
         }
