@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
     overflowY: "auto",
 
     "& h1": {
-      fontSize: 22,
+      fontWeight: 500,
       margin: "0 0 15px 0",
     },
   },
