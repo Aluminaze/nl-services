@@ -35,11 +35,7 @@ ruleTournament.second = 1;
 ruleTournament.tz = "Europe/Minsk";
 
 schedule.scheduleJob(ruleTournament, function () {
-  const currentDate: string = getCurrentDate(
-    new Date().toLocaleDateString("en-US", {
-      timeZone: "Europe/Minsk",
-    })
-  );
+  const currentDate: string = getCurrentDate();
   const refTournaments = firebase.database().ref("tournaments");
   const refTournamentsPush = refTournaments.push();
 
@@ -65,11 +61,7 @@ ruleTournament.hour = 0;
 ruleTournament.second = 5;
 
 schedule.scheduleJob(ruleCurrentDate, function () {
-  const currentDate: string = getCurrentDate(
-    new Date().toLocaleDateString("en-US", {
-      timeZone: "Europe/Minsk",
-    })
-  );
+  const currentDate: string = getCurrentDate();
 
   const refCurrentTime = firebase.database().ref("currentDate");
   refCurrentTime.set(currentDate);
