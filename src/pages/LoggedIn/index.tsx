@@ -10,7 +10,7 @@ import { Context } from "index";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { UserStruct } from "interfacesAndTypes";
 import { EMAIL_DEFAULT_VALUE } from "utils/constants";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import ActionLogsForYear from "pages/ActionLogsForYear";
 
 interface LoggedInProps {
