@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
 import {
   TIME_KEY_11,
   TIME_KEY_15,
