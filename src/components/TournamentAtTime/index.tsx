@@ -262,11 +262,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       .ref("tournamentsActionLogs")
       .push();
 
-    const currentDate: string = getCurrentDate(
-      new Date().toLocaleDateString("en-US", {
-        timeZone: "Europe/Minsk",
-      })
-    );
+    const currentDate: string = getCurrentDate();
     const currentTime: string = new Date().toLocaleTimeString("en-US", {
       timeZone: "Europe/Minsk",
     });
