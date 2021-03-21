@@ -38,8 +38,8 @@ const Tournament = (props: TournamentProps) => {
           const tournamentData: TournamentStruct = tournamentSnapshot.val();
 
           return (
-            <div className={classes.table}>
-              <div className={classes.tableWrapper} key={index}>
+            <div className={classes.table} key={index}>
+              <div className={classes.tableWrapper}>
                 <div className={classes.tableContainer}>
                   <h1>Текущая дата турнира: {tournamentData.id}</h1>
 
