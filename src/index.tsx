@@ -10,9 +10,6 @@ import "firebase/database";
 import firebaseConfig from "firebaseConfig";
 import { ContextProps } from "interfacesAndTypes";
 import { ConfirmProvider } from "material-ui-confirm";
-import * as schedule from "node-schedule";
-import getCurrentDate from "utils/getCurrentDate";
-import { WINNER_ID_DEF_VALUE } from "utils/constants";
 
 const theme = createMuiTheme({
   palette: {
@@ -26,48 +23,6 @@ const theme = createMuiTheme({
 });
 
 firebase.initializeApp(firebaseConfig);
-
-//
-// SCHEDULES
-//
-const ruleTournament = new schedule.RecurrenceRule();
-ruleTournament.hour = 0;
-ruleTournament.second = 20;
-ruleTournament.tz = "Europe/Minsk";
-
-schedule.scheduleJob(ruleTournament, function () {
-  const currentDate: string = getCurrentDate();
-  const refTournaments = firebase.database().ref("tournaments");
-  const refTournamentsPush = refTournaments.push();
-
-  refTournaments
-    .orderByChild("id")
-    .equalTo(currentDate)
-    .get()
-    .then(function (snapshot) {
-      if (!snapshot.exists()) {
-        refTournamentsPush.set({
-          id: currentDate,
-          time11: { winner: WINNER_ID_DEF_VALUE, participants: {} },
-          time15: { winner: WINNER_ID_DEF_VALUE, participants: {} },
-          time19: { winner: WINNER_ID_DEF_VALUE, participants: {} },
-          time23: { winner: WINNER_ID_DEF_VALUE, participants: {} },
-        });
-      }
-    });
-});
-
-const ruleCurrentDate = new schedule.RecurrenceRule();
-ruleCurrentDate.hour = 0;
-ruleCurrentDate.second = 30;
-ruleCurrentDate.tz = "Europe/Minsk";
-
-schedule.scheduleJob(ruleCurrentDate, function () {
-  const currentDate: string = getCurrentDate();
-
-  const refCurrentTime = firebase.database().ref("currentDate");
-  refCurrentTime.set(currentDate);
-});
 
 //
 // CONTEXT
