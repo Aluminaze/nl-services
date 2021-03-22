@@ -9,9 +9,13 @@ import { Button, CircularProgress } from "@material-ui/core";
 import { Context } from "index";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { UserStruct } from "interfacesAndTypes";
-import { EMAIL_DEFAULT_VALUE } from "utils/constants";
-import firebase from "firebase/app";
+import { EMAIL_DEFAULT_VALUE, WINNER_ID_DEF_VALUE } from "utils/constants";
 import ActionLogsForYear from "pages/ActionLogsForYear";
+import getCurrentDate from "utils/getCurrentDate";
+
+// firebase
+import firebase from "firebase/app";
+import "firebase/database";
 
 interface LoggedInProps {
   user: firebase.User | null | undefined;
@@ -26,6 +30,8 @@ const LoggedIn = (props: LoggedInProps) => {
   const [allEmailsOfUsers, setAllEmailsOfUsers] = useState<string[]>([]);
 
   const { database } = useContext(Context);
+  const refTournaments = firebase.database().ref("tournaments");
+  const refTournamentsPush = refTournaments.push();
 
   // firebase refs
   const refUsers = database.ref("users");
@@ -51,6 +57,30 @@ const LoggedIn = (props: LoggedInProps) => {
       setAllEmailsOfUsers(tempAllEmailsOfUsers);
     }
   }, [usersData]);
+
+  const createEventWithTournaments = () => {
+    const dateNow: string = getCurrentDate();
+
+    refTournaments
+      .orderByChild("id")
+      .equalTo(dateNow)
+      .get()
+      .then((snapshot) => {
+        if (!snapshot.exists()) {
+          refTournamentsPush.set({
+            id: dateNow,
+            time11: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+            time15: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+            time19: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+            time23: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+          });
+        }
+      });
+
+    setTimeout(() => {
+      refCurrentDate.set(dateNow);
+    }, 1500);
+  };
 
   if (loadingUsersData) {
     return (
@@ -90,6 +120,13 @@ const LoggedIn = (props: LoggedInProps) => {
               onClick={() => history.push("/action-logs")}
             >
               Журнал событий
+            </Button>
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => createEventWithTournaments()}
+            >
+              Создать турнирную сетку
             </Button>
           </nav>
 
