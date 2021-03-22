@@ -35,21 +35,28 @@ const AdminDialog = (props: AdminDialogProps) => {
   const [userId, setUserId] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const [userScore, setUserScore] = useState<number>(0);
-  const [usersInJSON, setUsersInJSON] = useState<string>("");
+  const [sieges, setSieges] = useState<string>("");
+  const [tournaments, setTournaments] = useState<string>("");
+  const [email, setEmail] = useState<string>("unknown");
 
   const resetStates = (): void => {
     setUserId("");
     setUserName("");
     setUserScore(0);
-    setUsersInJSON("");
+    setSieges("");
+    setTournaments("");
+    setEmail("unknown");
   };
 
   const addNewUser = (): void => {
     refUsersPush.set(
       {
+        email: email,
         id: userId,
         name: userName,
         score: userScore,
+        sieges: Boolean(sieges),
+        tournaments: Boolean(tournaments),
       },
       (error) => {
         if (error) {
@@ -61,20 +68,6 @@ const AdminDialog = (props: AdminDialogProps) => {
         }
       }
     );
-
-    resetStates();
-  };
-
-  const storeNewUsers = (): void => {
-    const usersData: Array<any> = JSON.parse(usersInJSON);
-
-    refUsers.set({ ...usersData }, (error) => {
-      if (error) {
-        console.error(`The write failed! Users not added!`);
-      } else {
-        console.log(`Users added successfully!`);
-      }
-    });
 
     resetStates();
   };
@@ -125,19 +118,32 @@ const AdminDialog = (props: AdminDialogProps) => {
             onChange={(e) => setUserScore(Number(e.target.value))}
           />
         </div>
-        <Button variant="contained" color="primary" onClick={addNewUser}>
-          ADD NEW USER
-        </Button>
         <div className={classes.dialogInputBlock}>
-          <label>USERS (JSON):</label>
+          <label>SIEGES:</label>
           <input
             type="text"
-            value={usersInJSON}
-            onChange={(e) => setUsersInJSON(e.target.value)}
+            value={sieges}
+            onChange={(e) => setSieges(e.target.value)}
           />
         </div>
-        <Button variant="contained" color="primary" onClick={storeNewUsers}>
-          ADD NEW USERS
+        <div className={classes.dialogInputBlock}>
+          <label>TOURNAMENTS:</label>
+          <input
+            type="text"
+            value={tournaments}
+            onChange={(e) => setTournaments(e.target.value)}
+          />
+        </div>
+        <div className={classes.dialogInputBlock}>
+          <label>EMAIL:</label>
+          <input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <Button variant="contained" color="primary" onClick={addNewUser}>
+          ADD NEW USER
         </Button>
       </DialogContent>
     </Dialog>
