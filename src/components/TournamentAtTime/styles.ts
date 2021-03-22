@@ -20,10 +20,19 @@ const useStyles = makeStyles(() => ({
   },
   tableBlockInfoHeader: {
     display: "flex",
+    flexDirection: "column",
+  },
+  tableBlockInfoHeaderElement: {
+    display: "flex",
     alignItems: "center",
 
     "& h2": {
       fontWeight: 500,
+    },
+    "& h3": {
+      margin: "0 0 0 31px",
+      fontWeight: 400,
+      fontSize: 16,
     },
   },
   list: {

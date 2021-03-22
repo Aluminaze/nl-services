@@ -70,6 +70,8 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       );
 
       setSumOfCounts(tempSum);
+    } else {
+      setSumOfCounts(0);
     }
   }, [participants]);
 
@@ -329,13 +331,18 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     <div className={classes.tableBlock}>
       <div className={classes.tableBlockInfo}>
         <div className={classes.tableBlockInfoHeader}>
-          <div
-            className={classes.infoIconWrapper}
-            onClick={() => setIsOpenActionLogsDialog(true)}
-          >
-            <InfoIcon color="primary" />
+          <div className={classes.tableBlockInfoHeaderElement}>
+            <div
+              className={classes.infoIconWrapper}
+              onClick={() => setIsOpenActionLogsDialog(true)}
+            >
+              <InfoIcon color="primary" />
+            </div>
+            <h2>Время турнира: {getTimeByTimeKey(timeKey)}</h2>
           </div>
-          <h2>Время турнира: {getTimeByTimeKey(timeKey)}</h2>
+          <div className={classes.tableBlockInfoHeaderElement}>
+            <h3>Количество участников: {sumOfCounts}</h3>
+          </div>
         </div>
         <ul className={classes.list}>
           <RenderParticipants
