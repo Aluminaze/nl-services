@@ -259,13 +259,13 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     if (winnerId === userId) {
       // NOTE: Здесь реализована логика когда решили поменять победителя
       refWinner.set(WINNER_ID_DEF_VALUE);
-      addActionLog(ACTION_LOG_TYPE_UNSET_WINNER, userId, MAX_SUM_OF_COUNTS);
-      updateUserScore(ACTION_TYPE_ADD, userId, MAX_SUM_OF_COUNTS);
+      addActionLog(ACTION_LOG_TYPE_UNSET_WINNER, userId, sumOfCounts);
+      updateUserScore(ACTION_TYPE_ADD, userId, sumOfCounts);
     } else {
       // NOTE: Здесь реализована логика когда выбирают победителя
       refWinner.set(userId);
-      addActionLog(ACTION_LOG_TYPE_SET_WINNER, userId, MAX_SUM_OF_COUNTS);
-      updateUserScore(ACTION_TYPE_ADD, userId, -MAX_SUM_OF_COUNTS);
+      addActionLog(ACTION_LOG_TYPE_SET_WINNER, userId, sumOfCounts);
+      updateUserScore(ACTION_TYPE_ADD, userId, -sumOfCounts);
     }
   };
 
@@ -322,7 +322,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           } выбрал победителя турнира -> ${getUserNameById(
             userNameOrId,
             usersValData
-          )}`;
+          )} [-${count}]`;
 
           refParticipants.set(`${actionTime} ${actionLog}`);
           refActionLogsPush.set(
@@ -334,7 +334,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           } убрал победителя турнира -> ${getUserNameById(
             userNameOrId,
             usersValData
-          )}`;
+          )} [+${count}]`;
 
           refParticipants.set(`${actionTime} ${actionLog}`);
           refActionLogsPush.set(
