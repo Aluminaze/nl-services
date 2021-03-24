@@ -45,6 +45,10 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const [isOpenActionLogsDialog, setIsOpenActionLogsDialog] = useState<boolean>(
     false
   );
+  const [
+    disableWorkWithParticipants,
+    setDisableWorkWithParticipants,
+  ] = useState<boolean>(false);
 
   // firebase refs
   const refUsers = database.ref("users");
@@ -61,6 +65,20 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
   const actionLogsData: string[] = actionLogs ? Object.values(actionLogs) : [];
 
+  //
+  // NOTE: Здесь реализована логика, если победитель турнира выбран, то функция добавления участников становится недоступной
+  //
+  useEffect(() => {
+    if (winnerId === undefined || winnerId === WINNER_ID_DEF_VALUE) {
+      setDisableWorkWithParticipants(false);
+    } else {
+      setDisableWorkWithParticipants(true);
+    }
+  }, [winnerId]);
+
+  //
+  // NOTE: Здесь реализована логика по подсчету выбранных участников в турнире
+  //
   useEffect(() => {
     if (participants) {
       const tempSum: number = Object.values(participants).reduce(
@@ -375,6 +393,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
               size="small"
               color="primary"
               onClick={() => setIsAdding(true)}
+              disabled={disableWorkWithParticipants}
             >
               Добавить участника
             </Button>
