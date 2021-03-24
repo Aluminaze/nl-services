@@ -45,6 +45,10 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const [isOpenActionLogsDialog, setIsOpenActionLogsDialog] = useState<boolean>(
     false
   );
+  const [
+    disableWorkWithParticipants,
+    setDisableWorkWithParticipants,
+  ] = useState<boolean>(false);
 
   // firebase refs
   const refUsers = database.ref("users");
@@ -61,6 +65,20 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const usersValData: UserStruct[] = usersData ? Object.values(usersData) : [];
   const actionLogsData: string[] = actionLogs ? Object.values(actionLogs) : [];
 
+  //
+  // NOTE: Здесь реализована логика, если победитель турнира выбран, то функция добавления участников становится недоступной
+  //
+  useEffect(() => {
+    if (winnerId === undefined || winnerId === WINNER_ID_DEF_VALUE) {
+      setDisableWorkWithParticipants(false);
+    } else {
+      setDisableWorkWithParticipants(true);
+    }
+  }, [winnerId]);
+
+  //
+  // NOTE: Здесь реализована логика по подсчету выбранных участников в турнире
+  //
   useEffect(() => {
     if (participants) {
       const tempSum: number = Object.values(participants).reduce(
@@ -241,13 +259,13 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     if (winnerId === userId) {
       // NOTE: Здесь реализована логика когда решили поменять победителя
       refWinner.set(WINNER_ID_DEF_VALUE);
-      addActionLog(ACTION_LOG_TYPE_UNSET_WINNER, userId, MAX_SUM_OF_COUNTS);
-      updateUserScore(ACTION_TYPE_ADD, userId, MAX_SUM_OF_COUNTS);
+      addActionLog(ACTION_LOG_TYPE_UNSET_WINNER, userId, sumOfCounts);
+      updateUserScore(ACTION_TYPE_ADD, userId, sumOfCounts);
     } else {
       // NOTE: Здесь реализована логика когда выбирают победителя
       refWinner.set(userId);
-      addActionLog(ACTION_LOG_TYPE_SET_WINNER, userId, MAX_SUM_OF_COUNTS);
-      updateUserScore(ACTION_TYPE_ADD, userId, -MAX_SUM_OF_COUNTS);
+      addActionLog(ACTION_LOG_TYPE_SET_WINNER, userId, sumOfCounts);
+      updateUserScore(ACTION_TYPE_ADD, userId, -sumOfCounts);
     }
   };
 
@@ -304,7 +322,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           } выбрал победителя турнира -> ${getUserNameById(
             userNameOrId,
             usersValData
-          )}`;
+          )} [-${count}]`;
 
           refParticipants.set(`${actionTime} ${actionLog}`);
           refActionLogsPush.set(
@@ -316,7 +334,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
           } убрал победителя турнира -> ${getUserNameById(
             userNameOrId,
             usersValData
-          )}`;
+          )} [+${count}]`;
 
           refParticipants.set(`${actionTime} ${actionLog}`);
           refActionLogsPush.set(
@@ -350,6 +368,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
             usersValData={usersValData}
             participants={participants}
             winnerId={winnerId}
+            disableWorkWithParticipants={disableWorkWithParticipants}
             setWinner={setWinner}
             deleteParticipant={deleteParticipant}
           />
@@ -375,6 +394,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
               size="small"
               color="primary"
               onClick={() => setIsAdding(true)}
+              disabled={disableWorkWithParticipants}
             >
               Добавить участника
             </Button>

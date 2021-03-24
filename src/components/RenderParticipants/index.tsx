@@ -19,8 +19,9 @@ export interface RenderParticipantsProps {
   timeKey: string;
   usersValData: UserStruct[];
   participants: ParticipantsStruct;
-  deleteParticipant: (userId: string) => void;
   winnerId: string | undefined;
+  disableWorkWithParticipants: boolean;
+  deleteParticipant: (userId: string) => void;
   setWinner: (userId: string) => void;
 }
 
@@ -29,8 +30,9 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
     timeKey,
     usersValData,
     participants,
-    deleteParticipant,
     winnerId,
+    disableWorkWithParticipants,
+    deleteParticipant,
     setWinner,
   } = props;
   const classes = useStyles();
@@ -154,7 +156,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
                 </span>
               </div>
 
-              {winnerId !== participantData.id && (
+              {winnerId !== participantData.id && !disableWorkWithParticipants && (
                 <div
                   className={classes.iconWrapper}
                   onClick={() => onDeleteParticipant(participantData.id)}
