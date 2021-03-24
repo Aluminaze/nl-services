@@ -368,6 +368,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
             usersValData={usersValData}
             participants={participants}
             winnerId={winnerId}
+            disableWorkWithParticipants={disableWorkWithParticipants}
             setWinner={setWinner}
             deleteParticipant={deleteParticipant}
           />
