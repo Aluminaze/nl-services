@@ -249,9 +249,11 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       updateUserScore(ACTION_TYPE_REDUCE, userId, currentCount);
     } else {
       //
-      // TODO: Реализовать отладку ошибок и логирование
+      // TODO: Реализовать отладку ошибок
       //
-      alert(`Ошибка при удалении участника с ID: ${userId}`);
+      alert(
+        `Ошибка при удалении участника с ID: ${userId}, возможно данный участник уже удален`
+      );
     }
   };
 
