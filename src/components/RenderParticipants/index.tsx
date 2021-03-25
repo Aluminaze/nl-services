@@ -23,6 +23,7 @@ export interface RenderParticipantsProps {
   disableWorkWithParticipants: boolean;
   deleteParticipant: (userId: string) => void;
   setWinner: (userId: string) => void;
+  unsetWinner: (userId: string) => void;
 }
 
 const RenderParticipants = (props: RenderParticipantsProps) => {
@@ -34,6 +35,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
     disableWorkWithParticipants,
     deleteParticipant,
     setWinner,
+    unsetWinner,
   } = props;
   const classes = useStyles();
   const participantsData: ParticipantInfoStruct[] = participants
@@ -65,7 +67,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
         cancellationText: "Нет",
         confirmationText: "Да",
       }).then(() => {
-        setWinner(participantId);
+        unsetWinner(participantId);
       });
     } else {
       setWinner(participantId);

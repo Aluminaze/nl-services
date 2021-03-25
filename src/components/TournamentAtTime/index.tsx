@@ -256,17 +256,23 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   };
 
   const setWinner = (userId: string): void => {
-    if (winnerId === userId) {
-      // NOTE: Здесь реализована логика когда решили поменять победителя
-      refWinner.set(WINNER_ID_DEF_VALUE);
-      addActionLog(ACTION_LOG_TYPE_UNSET_WINNER, userId, sumOfCounts);
-      updateUserScore(ACTION_TYPE_ADD, userId, sumOfCounts);
-    } else {
-      // NOTE: Здесь реализована логика когда выбирают победителя
+    if (winnerId !== userId) {
       refWinner.set(userId);
       addActionLog(ACTION_LOG_TYPE_SET_WINNER, userId, sumOfCounts);
       updateUserScore(ACTION_TYPE_ADD, userId, -sumOfCounts);
     }
+  };
+
+  const unsetWinner = (userId: string): void => {
+    refWinner.get().then((snapshot: any) => {
+      const currentWinnerId: string = snapshot.val();
+
+      if (currentWinnerId === userId) {
+        refWinner.set(WINNER_ID_DEF_VALUE);
+        addActionLog(ACTION_LOG_TYPE_UNSET_WINNER, userId, sumOfCounts);
+        updateUserScore(ACTION_TYPE_ADD, userId, sumOfCounts);
+      }
+    });
   };
 
   const addActionLog = (
@@ -370,6 +376,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
             winnerId={winnerId}
             disableWorkWithParticipants={disableWorkWithParticipants}
             setWinner={setWinner}
+            unsetWinner={unsetWinner}
             deleteParticipant={deleteParticipant}
           />
         </ul>
