@@ -42,6 +42,7 @@ const LoggedIn = (props: LoggedInProps) => {
   const [currentDate, loadingCurrentDate] = useObjectVal<string>(
     refCurrentDate
   );
+  const [disabledButton, setDisabledButton] = useState<boolean>(false);
 
   useEffect(() => {
     if (usersData) {
@@ -59,6 +60,7 @@ const LoggedIn = (props: LoggedInProps) => {
   }, [usersData]);
 
   const createEventWithTournaments = () => {
+    setDisabledButton(true);
     const dateNow: string = getCurrentDate();
 
     refTournaments
@@ -79,6 +81,7 @@ const LoggedIn = (props: LoggedInProps) => {
 
     setTimeout(() => {
       refCurrentDate.set(dateNow);
+      setDisabledButton(false);
     }, 1500);
   };
 
@@ -125,6 +128,7 @@ const LoggedIn = (props: LoggedInProps) => {
               size="small"
               color="primary"
               onClick={() => createEventWithTournaments()}
+              disabled={disabledButton}
             >
               Создать турнирную сетку
             </Button>
