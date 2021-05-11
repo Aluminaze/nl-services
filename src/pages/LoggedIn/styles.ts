@@ -4,20 +4,21 @@ import { HEADER_HEIGHT } from "utils/constants";
 const useStyles = makeStyles(() => {
   return {
     main: {
+      gridArea: "main",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      width: "100%",
-      height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+      // width: "100%",
+      // height: `calc(100vh - ${HEADER_HEIGHT}px)`,
     },
     nav: {
-      flexBasis: "15%",
+      gridArea: "nav",
+      // flexBasis: "15%",
       display: "flex",
       flexDirection: "column",
-      height: "100%",
+      // height: "100%",
       borderRight: `2px solid #d9dde3`,
-      padding: "20px 0",
-
+      // padding: "20px 0",
       backgroundColor: "rgba(199,199,199, .1)",
     },
     content: {

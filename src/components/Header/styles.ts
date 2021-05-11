@@ -6,12 +6,13 @@ const useStyles = makeStyles(() => {
 
   return {
     header: {
+      gridArea: "header",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
       padding: "0 15px",
-      width: "100%",
-      height: HEADER_HEIGHT,
+      // width: "100%",
+      minHeight: HEADER_HEIGHT,
       backgroundColor: theme.palette.primary.main,
     },
     headerLabel: {

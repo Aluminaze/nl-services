@@ -36,12 +36,12 @@ const LoggedIn = (props: LoggedInProps) => {
   // firebase refs
   const refUsers = database.ref("users");
   const refCurrentDate = database.ref("currentDate");
-  const [usersData, loadingUsersData] = useObjectVal<{
-    [key: string]: UserStruct;
-  }>(refUsers);
-  const [currentDate, loadingCurrentDate] = useObjectVal<string>(
-    refCurrentDate
-  );
+  const [usersData, loadingUsersData] =
+    useObjectVal<{
+      [key: string]: UserStruct;
+    }>(refUsers);
+  const [currentDate, loadingCurrentDate] =
+    useObjectVal<string>(refCurrentDate);
   const [disabledButton, setDisabledButton] = useState<boolean>(false);
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const LoggedIn = (props: LoggedInProps) => {
   } else {
     if (user && user.email && allEmailsOfUsers.includes(user.email)) {
       return (
-        <main className={classes.main}>
+        <>
           <nav className={classes.nav}>
             <Button
               size="small"
@@ -134,27 +134,29 @@ const LoggedIn = (props: LoggedInProps) => {
             </Button>
           </nav>
 
-          <article className={classes.content}>
-            <Switch>
-              <Route exact path="/tournament">
-                <Tournament
-                  currentDate={currentDate ? currentDate : ""}
-                  loadingCurrentDate={loadingCurrentDate}
-                />
-              </Route>
-              <Route exact path="/rating">
-                <TournamentRating />
-              </Route>
-              <Route exact path="/history">
-                <TournamentHistory />
-              </Route>
-              <Route exact path="/action-logs">
-                <ActionLogsForYear />
-              </Route>
-              <Redirect to="/tournament" />
-            </Switch>
-          </article>
-        </main>
+          <main className={classes.main}>
+            <article className={classes.content}>
+              <Switch>
+                <Route exact path="/tournament">
+                  <Tournament
+                    currentDate={currentDate ? currentDate : ""}
+                    loadingCurrentDate={loadingCurrentDate}
+                  />
+                </Route>
+                <Route exact path="/rating">
+                  <TournamentRating />
+                </Route>
+                <Route exact path="/history">
+                  <TournamentHistory />
+                </Route>
+                <Route exact path="/action-logs">
+                  <ActionLogsForYear />
+                </Route>
+                <Redirect to="/tournament" />
+              </Switch>
+            </article>
+          </main>
+        </>
       );
     }
 

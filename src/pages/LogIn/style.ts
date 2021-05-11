@@ -4,11 +4,12 @@ import { HEADER_HEIGHT } from "utils/constants";
 const useStyles = makeStyles(() => {
   return {
     main: {
+      gridArea: "main",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       width: "100%",
-      height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+      // height: `calc(100vh - ${HEADER_HEIGHT}px)`,
     },
     content: {
       display: "flex",
