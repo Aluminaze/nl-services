@@ -13,18 +13,13 @@ const useStyles = makeStyles(() => {
     },
     nav: {
       gridArea: "nav",
-      // flexBasis: "15%",
-
-      // height: "100%",
-      borderRight: `2px solid #d9dde3`,
-      // padding: "20px 0",
-      backgroundColor: "rgba(199,199,199, .1)",
-      position: "relative",
-    },
-    navButtons: {
-      display: "flex",
       flexDirection: "column",
       position: "fixed",
+      top: 40,
+      bottom: 0,
+      display: "flex",
+      borderRight: `2px solid #d9dde3`,
+      backgroundColor: "rgba(199,199,199, .1)",
     },
     content: {
       height: "100%",

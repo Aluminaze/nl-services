@@ -134,37 +134,35 @@ const LoggedIn = (props: LoggedInProps) => {
     if (user && user.email && allEmailsOfUsers.includes(user.email)) {
       return (
         <>
-          <nav className={classes.nav}>
-            <div className={classes.navButtons}>
-              <List>
-                {navData.map((nav: INavData) => (
-                  <ListItem
-                    button
-                    onClick={() => history.push(nav.doHistoryPush)}
-                    key={nav.title}
-                  >
-                    <ListItemIcon>{nav.icon}</ListItemIcon>
-                    <ListItemText primary={nav.title} />
-                  </ListItem>
-                ))}
-              </List>
-
-              <Divider />
-
-              <List>
+          <div className={classes.nav}>
+            <List>
+              {navData.map((nav: INavData) => (
                 <ListItem
                   button
-                  onClick={() => createEventWithTournaments()}
-                  disabled={disabledButton}
+                  onClick={() => history.push(nav.doHistoryPush)}
+                  key={nav.title}
                 >
-                  <ListItemIcon>
-                    <AddCircleIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText primary={"Создать турнирную сетку"} />
+                  <ListItemIcon>{nav.icon}</ListItemIcon>
+                  <ListItemText primary={nav.title} />
                 </ListItem>
-              </List>
-            </div>
-          </nav>
+              ))}
+            </List>
+
+            <Divider />
+
+            <List>
+              <ListItem
+                button
+                onClick={() => createEventWithTournaments()}
+                disabled={disabledButton}
+              >
+                <ListItemIcon>
+                  <AddCircleIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary={"Создать турнирную сетку"} />
+              </ListItem>
+            </List>
+          </div>
 
           <main className={classes.main}>
             {/* <article className={classes.content}>
