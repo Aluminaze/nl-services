@@ -11,7 +11,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 const useStyles = makeStyles(() => ({
   wrapper: {
     display: "grid",
-    gridTemplateColumns: "287px auto",
+    gridTemplateColumns: "290px auto",
     gridTemplateRows: "40px auto",
     gridTemplateAreas: `'header header' 'nav main'`,
     height: "100vh",

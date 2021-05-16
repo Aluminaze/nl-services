@@ -27,6 +27,12 @@ const useStyles = makeStyles(() => {
       padding: "20px",
       overflow: "hidden",
     },
+    iconWrap: {
+      margin: "0 10px 0 0",
+    },
+    listItem: {
+      width: 290,
+    },
   };
 });
 
