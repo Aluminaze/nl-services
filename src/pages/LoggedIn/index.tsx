@@ -5,17 +5,56 @@ import Home from "pages/Home";
 import Tournament from "pages/Tournament";
 import TournamentRating from "pages/TournamentRating";
 import TournamentHistory from "pages/TournamentHistory";
-import { Button, CircularProgress } from "@material-ui/core";
+import { Button, CircularProgress, ListItemText } from "@material-ui/core";
 import { Context } from "index";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { UserStruct } from "interfacesAndTypes";
 import { EMAIL_DEFAULT_VALUE, WINNER_ID_DEF_VALUE } from "utils/constants";
 import ActionLogsForYear from "pages/ActionLogsForYear";
 import getCurrentDate from "utils/getCurrentDate";
+import Divider from "@material-ui/core/Divider";
+import StarIcon from "@material-ui/icons/Star";
+import TimelineIcon from "@material-ui/icons/Timeline";
+import HistoryIcon from "@material-ui/icons/History";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ImportContactsIcon from "@material-ui/icons/ImportContacts";
+import EventNoteIcon from "@material-ui/icons/EventNote";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 // firebase
 import firebase from "firebase/app";
 import "firebase/database";
+
+interface INavData {
+  title: string;
+  doHistoryPush: string;
+  icon: React.ReactNode;
+}
+
+const navData: INavData[] = [
+  {
+    title: "Турнирная таблица",
+    doHistoryPush: "/tournament",
+    icon: <EventNoteIcon fontSize="small" />,
+  },
+  {
+    title: "Рейтинг",
+    doHistoryPush: "/raiting",
+    icon: <TimelineIcon fontSize="small" />,
+  },
+  {
+    title: "История турниров",
+    doHistoryPush: "/history",
+    icon: <HistoryIcon fontSize="small" />,
+  },
+  {
+    title: "Журнал событий",
+    doHistoryPush: "/action-logs",
+    icon: <ImportContactsIcon fontSize="small" />,
+  },
+];
 
 interface LoggedInProps {
   user: firebase.User | null | undefined;
@@ -97,42 +136,33 @@ const LoggedIn = (props: LoggedInProps) => {
         <>
           <nav className={classes.nav}>
             <div className={classes.navButtons}>
-              <Button
-                size="small"
-                color="default"
-                onClick={() => history.push("/tournament")}
-              >
-                Турнирная таблица
-              </Button>
-              <Button
-                size="small"
-                color="default"
-                onClick={() => history.push("/rating")}
-              >
-                Рейтинг
-              </Button>
-              <Button
-                size="small"
-                color="default"
-                onClick={() => history.push("/history")}
-              >
-                История турниров
-              </Button>
-              <Button
-                size="small"
-                color="default"
-                onClick={() => history.push("/action-logs")}
-              >
-                Журнал событий
-              </Button>
-              <Button
-                size="small"
-                color="primary"
-                onClick={() => createEventWithTournaments()}
-                disabled={disabledButton}
-              >
-                Создать турнирную сетку
-              </Button>
+              <List>
+                {navData.map((nav: INavData) => (
+                  <ListItem
+                    button
+                    onClick={() => history.push(nav.doHistoryPush)}
+                    key={nav.title}
+                  >
+                    <ListItemIcon>{nav.icon}</ListItemIcon>
+                    <ListItemText primary={nav.title} />
+                  </ListItem>
+                ))}
+              </List>
+
+              <Divider />
+
+              <List>
+                <ListItem
+                  button
+                  onClick={() => createEventWithTournaments()}
+                  disabled={disabledButton}
+                >
+                  <ListItemIcon>
+                    <AddCircleIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primary={"Создать турнирную сетку"} />
+                </ListItem>
+              </List>
             </div>
           </nav>
 
