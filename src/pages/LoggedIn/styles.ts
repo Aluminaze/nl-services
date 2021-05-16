@@ -1,25 +1,32 @@
 import { makeStyles } from "@material-ui/core";
-import { HEADER_HEIGHT } from "utils/constants";
 
 const useStyles = makeStyles(() => {
   return {
+    container: {
+      gridArea: "container",
+      display: "grid",
+      gridTemplateRows: "1fr",
+      gridTemplateColumns: "auto 1fr",
+      gridTemplateAreas: `'nav main'`,
+    },
     main: {
       gridArea: "main",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      // width: "100%",
-      // height: `calc(100vh - ${HEADER_HEIGHT}px)`,
     },
     nav: {
       gridArea: "nav",
       flexDirection: "column",
-      position: "fixed",
-      top: 40,
-      bottom: 0,
       display: "flex",
       borderRight: `2px solid #d9dde3`,
       backgroundColor: "rgba(199,199,199, .1)",
+      position: "relative",
+    },
+    navButtons: {
+      position: "sticky",
+      top: 40,
+      bottom: 0,
     },
     content: {
       height: "100%",
@@ -27,11 +34,13 @@ const useStyles = makeStyles(() => {
       padding: "20px",
       overflow: "hidden",
     },
-    iconWrap: {
-      margin: "0 10px 0 0",
+    listTitle: {
+      margin: "0 0 0 10px",
     },
     listItem: {
-      width: 290,
+      width: "auto",
+      maxWidth: 265,
+      height: 48,
     },
   };
 });

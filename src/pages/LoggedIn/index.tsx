@@ -18,10 +18,10 @@ import TimelineIcon from "@material-ui/icons/Timeline";
 import HistoryIcon from "@material-ui/icons/History";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import EventNoteIcon from "@material-ui/icons/EventNote";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
+import PostAddIcon from "@material-ui/icons/PostAdd";
+import Hidden from "@material-ui/core/Hidden";
 
 // firebase
 import firebase from "firebase/app";
@@ -133,35 +133,47 @@ const LoggedIn = (props: LoggedInProps) => {
   } else {
     if (user && user.email && allEmailsOfUsers.includes(user.email)) {
       return (
-        <>
+        <div className={classes.container}>
           <div className={classes.nav}>
-            <List>
-              {navData.map((nav: INavData) => (
+            <div className={classes.navButtons}>
+              <List>
+                {navData.map((nav: INavData) => (
+                  <ListItem
+                    button
+                    onClick={() => history.push(nav.doHistoryPush)}
+                    key={nav.title}
+                    classes={{ root: classes.listItem }}
+                  >
+                    {nav.icon}
+                    <Hidden smDown>
+                      <ListItemText
+                        className={classes.listTitle}
+                        primary={nav.title}
+                      />
+                    </Hidden>
+                  </ListItem>
+                ))}
+              </List>
+
+              <Divider />
+
+              <List>
                 <ListItem
                   button
-                  onClick={() => history.push(nav.doHistoryPush)}
-                  key={nav.title}
+                  onClick={() => createEventWithTournaments()}
+                  disabled={disabledButton}
+                  classes={{ root: classes.listItem }}
                 >
-                  <ListItemIcon>{nav.icon}</ListItemIcon>
-                  <ListItemText primary={nav.title} />
+                  <PostAddIcon fontSize="small" />
+                  <Hidden smDown>
+                    <ListItemText
+                      className={classes.listTitle}
+                      primary={"Создать турнирную сетку"}
+                    />
+                  </Hidden>
                 </ListItem>
-              ))}
-            </List>
-
-            <Divider />
-
-            <List>
-              <ListItem
-                button
-                onClick={() => createEventWithTournaments()}
-                disabled={disabledButton}
-              >
-                <ListItemIcon>
-                  <AddCircleIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary={"Создать турнирную сетку"} />
-              </ListItem>
-            </List>
+              </List>
+            </div>
           </div>
 
           <main className={classes.main}>

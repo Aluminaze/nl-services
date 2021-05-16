@@ -11,16 +11,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 const useStyles = makeStyles(() => ({
   wrapper: {
     display: "grid",
-    gridTemplateColumns: "290px auto",
-    gridTemplateRows: "40px auto",
-    gridTemplateAreas: `'header header' 'nav main'`,
-    height: "100vh",
-  },
-  wrapperAuth: {
-    display: "grid",
-    gridTemplateColumns: ".2fr .8fr",
-    gridTemplateRows: "1fr 99fr",
-    gridTemplateAreas: `'header header' 'main main'`,
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "40px 1fr",
+    gridTemplateAreas: `'header' 'container'`,
     height: "100vh",
   },
 }));
@@ -38,6 +31,9 @@ function App() {
     firebase.auth().signInWithPopup(provider);
   };
 
+  //
+  // TODO: Объединить в один
+  //
   if (user) {
     return (
       <div className={classes.wrapper}>
@@ -48,7 +44,7 @@ function App() {
   }
 
   return (
-    <div className={classes.wrapperAuth}>
+    <div className={classes.wrapper}>
       <Header user={user} />
       <LogIn logIn={logIn} isLoading={loading} />
     </div>
