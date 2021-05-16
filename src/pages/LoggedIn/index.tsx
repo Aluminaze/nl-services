@@ -1,19 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Switch, Route, useHistory, Redirect } from "react-router-dom";
-import useStyles from "./styles";
-import Home from "pages/Home";
-import Tournament from "pages/Tournament";
-import TournamentRating from "pages/TournamentRating";
-import TournamentHistory from "pages/TournamentHistory";
-import { Button, CircularProgress, ListItemText } from "@material-ui/core";
-import { Context } from "index";
 import { useObjectVal } from "react-firebase-hooks/database";
-import { UserStruct } from "interfacesAndTypes";
-import { EMAIL_DEFAULT_VALUE, WINNER_ID_DEF_VALUE } from "utils/constants";
-import ActionLogsForYear from "pages/ActionLogsForYear";
-import getCurrentDate from "utils/getCurrentDate";
+import Button from "@material-ui/core/Button";
+import ListItemText from "@material-ui/core/ListItemText";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
-import StarIcon from "@material-ui/icons/Star";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import HistoryIcon from "@material-ui/icons/History";
 import List from "@material-ui/core/List";
@@ -21,7 +12,20 @@ import ListItem from "@material-ui/core/ListItem";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import Hidden from "@material-ui/core/Hidden";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
+import { EMAIL_DEFAULT_VALUE, WINNER_ID_DEF_VALUE } from "utils/constants";
+import { UserStruct } from "interfacesAndTypes";
+import { Context } from "index";
+import getCurrentDate from "utils/getCurrentDate";
+import useStyles from "./styles";
+import Home from "pages/Home";
+import Tournament from "pages/Tournament";
+import ActionLogsForYear from "pages/ActionLogsForYear";
+import TournamentRating from "pages/TournamentRating";
+import TournamentHistory from "pages/TournamentHistory";
 
 // firebase
 import firebase from "firebase/app";
@@ -41,7 +45,7 @@ const navData: INavData[] = [
   },
   {
     title: "Рейтинг",
-    doHistoryPush: "/raiting",
+    doHistoryPush: "/rating",
     icon: <TimelineIcon fontSize="small" />,
   },
   {
@@ -82,6 +86,18 @@ const LoggedIn = (props: LoggedInProps) => {
   const [currentDate, loadingCurrentDate] =
     useObjectVal<string>(refCurrentDate);
   const [disabledButton, setDisabledButton] = useState<boolean>(false);
+  const [isNavTitleDisabled, setIsNavTitleDisabled] = useState<boolean>(false);
+  const matchesDownSM: boolean = useMediaQuery((theme: any) =>
+    theme.breakpoints.down("sm")
+  );
+
+  useEffect(() => {
+    if (matchesDownSM) {
+      setIsNavTitleDisabled(true);
+    } else {
+      setIsNavTitleDisabled(false);
+    }
+  }, [matchesDownSM]);
 
   useEffect(() => {
     if (usersData) {
@@ -135,49 +151,63 @@ const LoggedIn = (props: LoggedInProps) => {
       return (
         <div className={classes.container}>
           <div className={classes.nav}>
-            <div className={classes.navButtons}>
-              <List>
-                {navData.map((nav: INavData) => (
-                  <ListItem
-                    button
-                    onClick={() => history.push(nav.doHistoryPush)}
-                    key={nav.title}
-                    classes={{ root: classes.listItem }}
-                  >
-                    {nav.icon}
-                    <Hidden smDown>
-                      <ListItemText
-                        className={classes.listTitle}
-                        primary={nav.title}
-                      />
-                    </Hidden>
-                  </ListItem>
-                ))}
-              </List>
+            <div className={classes.navBar}>
+              <div className={classes.navButtons}>
+                <div>
+                  <List>
+                    {navData.map((nav: INavData) => (
+                      <ListItem
+                        button
+                        onClick={() => history.push(nav.doHistoryPush)}
+                        key={nav.title}
+                        classes={{ root: classes.listItem }}
+                      >
+                        {nav.icon}
 
-              <Divider />
+                        {!isNavTitleDisabled && (
+                          <ListItemText
+                            className={classes.listTitle}
+                            primary={nav.title}
+                          />
+                        )}
+                      </ListItem>
+                    ))}
+                  </List>
+                  <Divider />
+                  <List>
+                    <ListItem
+                      button
+                      onClick={() => createEventWithTournaments()}
+                      disabled={disabledButton}
+                      classes={{ root: classes.listItem }}
+                    >
+                      <PostAddIcon fontSize="small" />
+                      {!isNavTitleDisabled && (
+                        <ListItemText
+                          className={classes.listTitle}
+                          primary={"Создать турнирную сетку"}
+                        />
+                      )}
+                    </ListItem>
+                  </List>
+                </div>
 
-              <List>
-                <ListItem
-                  button
-                  onClick={() => createEventWithTournaments()}
-                  disabled={disabledButton}
-                  classes={{ root: classes.listItem }}
+                <Button
+                  aria-label="open"
+                  onClick={() => setIsNavTitleDisabled(!isNavTitleDisabled)}
                 >
-                  <PostAddIcon fontSize="small" />
-                  <Hidden smDown>
-                    <ListItemText
-                      className={classes.listTitle}
-                      primary={"Создать турнирную сетку"}
-                    />
-                  </Hidden>
-                </ListItem>
-              </List>
+                  {isNavTitleDisabled ? (
+                    <ArrowForwardIosIcon />
+                  ) : (
+                    <ArrowBackIosIcon />
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
 
           <main className={classes.main}>
-            {/* <article className={classes.content}>
+            <article className={classes.content}>
               <Switch>
                 <Route exact path="/tournament">
                   <Tournament
@@ -198,7 +228,7 @@ const LoggedIn = (props: LoggedInProps) => {
               </Switch>
             </article>
           </main>
-        </>
+        </div>
       );
     }
 

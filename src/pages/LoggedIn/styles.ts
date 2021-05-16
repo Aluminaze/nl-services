@@ -24,9 +24,14 @@ const useStyles = makeStyles(() => {
       position: "relative",
     },
     navButtons: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      height: "calc(100vh - 40px)",
+    },
+    navBar: {
       position: "sticky",
       top: 40,
-      bottom: 0,
     },
     content: {
       height: "100%",
@@ -41,6 +46,8 @@ const useStyles = makeStyles(() => {
       width: "auto",
       maxWidth: 265,
       height: 48,
+      display: "flex",
+      justifyContent: "center",
     },
   };
 });
