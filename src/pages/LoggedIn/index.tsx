@@ -96,46 +96,48 @@ const LoggedIn = (props: LoggedInProps) => {
       return (
         <>
           <nav className={classes.nav}>
-            <Button
-              size="small"
-              color="default"
-              onClick={() => history.push("/tournament")}
-            >
-              Турнирная таблица
-            </Button>
-            <Button
-              size="small"
-              color="default"
-              onClick={() => history.push("/rating")}
-            >
-              Рейтинг
-            </Button>
-            <Button
-              size="small"
-              color="default"
-              onClick={() => history.push("/history")}
-            >
-              История турниров
-            </Button>
-            <Button
-              size="small"
-              color="default"
-              onClick={() => history.push("/action-logs")}
-            >
-              Журнал событий
-            </Button>
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => createEventWithTournaments()}
-              disabled={disabledButton}
-            >
-              Создать турнирную сетку
-            </Button>
+            <div className={classes.navButtons}>
+              <Button
+                size="small"
+                color="default"
+                onClick={() => history.push("/tournament")}
+              >
+                Турнирная таблица
+              </Button>
+              <Button
+                size="small"
+                color="default"
+                onClick={() => history.push("/rating")}
+              >
+                Рейтинг
+              </Button>
+              <Button
+                size="small"
+                color="default"
+                onClick={() => history.push("/history")}
+              >
+                История турниров
+              </Button>
+              <Button
+                size="small"
+                color="default"
+                onClick={() => history.push("/action-logs")}
+              >
+                Журнал событий
+              </Button>
+              <Button
+                size="small"
+                color="primary"
+                onClick={() => createEventWithTournaments()}
+                disabled={disabledButton}
+              >
+                Создать турнирную сетку
+              </Button>
+            </div>
           </nav>
 
           <main className={classes.main}>
-            <article className={classes.content}>
+            {/* <article className={classes.content}>
               <Switch>
                 <Route exact path="/tournament">
                   <Tournament

@@ -7,6 +7,8 @@ const useStyles = makeStyles(() => {
   return {
     header: {
       gridArea: "header",
+      position: "fixed",
+      width: "100%",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
@@ -14,6 +16,7 @@ const useStyles = makeStyles(() => {
       // width: "100%",
       minHeight: HEADER_HEIGHT,
       backgroundColor: theme.palette.primary.main,
+      zIndex: 100,
     },
     headerLabel: {
       fontSize: 18,

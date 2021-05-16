@@ -14,12 +14,17 @@ const useStyles = makeStyles(() => {
     nav: {
       gridArea: "nav",
       // flexBasis: "15%",
-      display: "flex",
-      flexDirection: "column",
+
       // height: "100%",
       borderRight: `2px solid #d9dde3`,
       // padding: "20px 0",
       backgroundColor: "rgba(199,199,199, .1)",
+      position: "relative",
+    },
+    navButtons: {
+      display: "flex",
+      flexDirection: "column",
+      position: "fixed",
     },
     content: {
       height: "100%",
