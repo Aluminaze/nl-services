@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Switch, Route, useHistory, Redirect } from "react-router-dom";
 import { useObjectVal } from "react-firebase-hooks/database";
-import Button from "@material-ui/core/Button";
 import ListItemText from "@material-ui/core/ListItemText";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
@@ -12,9 +11,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Hidden from "@material-ui/core/Hidden";
 
 import { EMAIL_DEFAULT_VALUE, WINNER_ID_DEF_VALUE } from "utils/constants";
 import { UserStruct } from "interfacesAndTypes";
@@ -86,18 +83,6 @@ const LoggedIn = (props: LoggedInProps) => {
   const [currentDate, loadingCurrentDate] =
     useObjectVal<string>(refCurrentDate);
   const [disabledButton, setDisabledButton] = useState<boolean>(false);
-  const [isNavTitleDisabled, setIsNavTitleDisabled] = useState<boolean>(false);
-  const matchesDownSM: boolean = useMediaQuery((theme: any) =>
-    theme.breakpoints.down("sm")
-  );
-
-  useEffect(() => {
-    if (matchesDownSM) {
-      setIsNavTitleDisabled(true);
-    } else {
-      setIsNavTitleDisabled(false);
-    }
-  }, [matchesDownSM]);
 
   useEffect(() => {
     if (usersData) {
@@ -151,58 +136,42 @@ const LoggedIn = (props: LoggedInProps) => {
       return (
         <div className={classes.container}>
           <div className={classes.nav}>
-            <div className={classes.navBar}>
-              <div className={classes.navButtons}>
-                <div>
-                  <List>
-                    {navData.map((nav: INavData) => (
-                      <ListItem
-                        button
-                        onClick={() => history.push(nav.doHistoryPush)}
-                        key={nav.title}
-                        classes={{ root: classes.listItem }}
-                      >
-                        {nav.icon}
-
-                        {!isNavTitleDisabled && (
-                          <ListItemText
-                            className={classes.listTitle}
-                            primary={nav.title}
-                          />
-                        )}
-                      </ListItem>
-                    ))}
-                  </List>
-                  <Divider />
-                  <List>
-                    <ListItem
-                      button
-                      onClick={() => createEventWithTournaments()}
-                      disabled={disabledButton}
-                      classes={{ root: classes.listItem }}
-                    >
-                      <PostAddIcon fontSize="small" />
-                      {!isNavTitleDisabled && (
-                        <ListItemText
-                          className={classes.listTitle}
-                          primary={"Создать турнирную сетку"}
-                        />
-                      )}
-                    </ListItem>
-                  </List>
-                </div>
-
-                <Button
-                  aria-label="open"
-                  onClick={() => setIsNavTitleDisabled(!isNavTitleDisabled)}
+            <div className={classes.navButtons}>
+              <List>
+                {navData.map((nav: INavData) => (
+                  <ListItem
+                    button
+                    onClick={() => history.push(nav.doHistoryPush)}
+                    key={nav.title}
+                    classes={{ root: classes.listItem }}
+                  >
+                    {nav.icon}
+                    <Hidden smDown>
+                      <ListItemText
+                        className={classes.listTitle}
+                        primary={nav.title}
+                      />
+                    </Hidden>
+                  </ListItem>
+                ))}
+              </List>
+              <Divider />
+              <List>
+                <ListItem
+                  button
+                  onClick={() => createEventWithTournaments()}
+                  disabled={disabledButton}
+                  classes={{ root: classes.listItem }}
                 >
-                  {isNavTitleDisabled ? (
-                    <ArrowForwardIosIcon />
-                  ) : (
-                    <ArrowBackIosIcon />
-                  )}
-                </Button>
-              </div>
+                  <PostAddIcon fontSize="small" />
+                  <Hidden smDown>
+                    <ListItemText
+                      className={classes.listTitle}
+                      primary={"Создать турнирную сетку"}
+                    />
+                  </Hidden>
+                </ListItem>
+              </List>
             </div>
           </div>
 

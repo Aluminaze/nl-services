@@ -24,14 +24,11 @@ const useStyles = makeStyles(() => {
       position: "relative",
     },
     navButtons: {
+      position: "sticky",
+      top: 40,
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
-      height: "calc(100vh - 40px)",
-    },
-    navBar: {
-      position: "sticky",
-      top: 40,
     },
     content: {
       height: "100%",
