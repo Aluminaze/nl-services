@@ -39,35 +39,33 @@ const Tournament = (props: TournamentProps) => {
 
           return (
             <div className={classes.table} key={index}>
-              <div className={classes.tableWrapper}>
-                <div className={classes.tableContainer}>
-                  <h1>Текущая дата турнира: {tournamentData.id}</h1>
+              <div className={classes.tableContainer}>
+                <h1>Текущая дата турнира: {tournamentData.id}</h1>
 
-                  <TournamentAtTime
-                    tournamentDateId={currentDate}
-                    timeKey={TIME_KEY_11}
-                    tournamentSnapshot={tournamentSnapshot}
-                    participants={tournamentData.time11?.participants}
-                  />
-                  <TournamentAtTime
-                    tournamentDateId={currentDate}
-                    timeKey={TIME_KEY_15}
-                    tournamentSnapshot={tournamentSnapshot}
-                    participants={tournamentData.time15?.participants}
-                  />
-                  <TournamentAtTime
-                    tournamentDateId={currentDate}
-                    timeKey={TIME_KEY_19}
-                    tournamentSnapshot={tournamentSnapshot}
-                    participants={tournamentData.time19?.participants}
-                  />
-                  <TournamentAtTime
-                    tournamentDateId={currentDate}
-                    timeKey={TIME_KEY_23}
-                    tournamentSnapshot={tournamentSnapshot}
-                    participants={tournamentData.time23?.participants}
-                  />
-                </div>
+                <TournamentAtTime
+                  tournamentDateId={currentDate}
+                  timeKey={TIME_KEY_11}
+                  tournamentSnapshot={tournamentSnapshot}
+                  participants={tournamentData.time11?.participants}
+                />
+                <TournamentAtTime
+                  tournamentDateId={currentDate}
+                  timeKey={TIME_KEY_15}
+                  tournamentSnapshot={tournamentSnapshot}
+                  participants={tournamentData.time15?.participants}
+                />
+                <TournamentAtTime
+                  tournamentDateId={currentDate}
+                  timeKey={TIME_KEY_19}
+                  tournamentSnapshot={tournamentSnapshot}
+                  participants={tournamentData.time19?.participants}
+                />
+                <TournamentAtTime
+                  tournamentDateId={currentDate}
+                  timeKey={TIME_KEY_23}
+                  tournamentSnapshot={tournamentSnapshot}
+                  participants={tournamentData.time23?.participants}
+                />
               </div>
             </div>
           );

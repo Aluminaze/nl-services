@@ -1,14 +1,21 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   tableBlock: {
     display: "flex",
     justifyContent: "space-between",
+
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      border: "1px solid black",
+      borderRadius: 15,
+      padding: "0 0 15px 0",
+      margin: "0 0 20px 0",
+    },
   },
   tableBlockInfo: {
     minHeight: 190,
     minWidth: 310,
-    width: "100%",
     margin: "10px 10px 10px 0",
     border: "1px solid gray",
     borderRadius: 5,
@@ -16,6 +23,11 @@ const useStyles = makeStyles(() => ({
 
     "& h2": {
       fontSize: 18,
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "auto",
+      border: "none",
     },
   },
   tableBlockInfoHeader: {
@@ -47,6 +59,12 @@ const useStyles = makeStyles(() => ({
     minWidth: 325,
     flexBasis: "40%",
     margin: "10px 0 0 0",
+
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      justifyContent: "center",
+      margin: 0,
+    },
   },
   infoIconWrapper: {
     display: "flex",

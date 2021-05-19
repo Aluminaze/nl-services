@@ -176,26 +176,24 @@ const LoggedIn = (props: LoggedInProps) => {
           </div>
 
           <main className={classes.main}>
-            <article className={classes.content}>
-              <Switch>
-                <Route exact path="/tournament">
-                  <Tournament
-                    currentDate={currentDate ? currentDate : ""}
-                    loadingCurrentDate={loadingCurrentDate}
-                  />
-                </Route>
-                <Route exact path="/rating">
-                  <TournamentRating />
-                </Route>
-                <Route exact path="/history">
-                  <TournamentHistory />
-                </Route>
-                <Route exact path="/action-logs">
-                  <ActionLogsForYear />
-                </Route>
-                <Redirect to="/tournament" />
-              </Switch>
-            </article>
+            <Switch>
+              <Route exact path="/tournament">
+                <Tournament
+                  currentDate={currentDate ? currentDate : ""}
+                  loadingCurrentDate={loadingCurrentDate}
+                />
+              </Route>
+              <Route exact path="/rating">
+                <TournamentRating />
+              </Route>
+              <Route exact path="/history">
+                <TournamentHistory />
+              </Route>
+              <Route exact path="/action-logs">
+                <ActionLogsForYear />
+              </Route>
+              <Redirect to="/tournament" />
+            </Switch>
           </main>
         </div>
       );

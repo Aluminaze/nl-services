@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   row: {
     display: "flex",
     alignItems: "center",
@@ -15,6 +15,10 @@ const useStyles = makeStyles(() => ({
     borderRadius: 4,
     backgroundColor: "rgba(0,0,0,.1)",
     padding: "5px 15px 5px 10px",
+
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
   },
   rowTextUnregular: {
     backgroundColor: "rgba(162,17,17,.8)",

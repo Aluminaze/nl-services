@@ -14,6 +14,7 @@ const useStyles = makeStyles(() => {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      padding: 20,
     },
     nav: {
       gridArea: "nav",
@@ -29,12 +30,6 @@ const useStyles = makeStyles(() => {
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
-    },
-    content: {
-      height: "100%",
-      width: "100%",
-      padding: "20px",
-      overflow: "hidden",
     },
     listTitle: {
       margin: "0 0 0 10px",
