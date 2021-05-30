@@ -14,8 +14,6 @@ const useStyles = makeStyles(() => ({
   },
   tableContainer: {
     width: "100%",
-    padding: "20px 25px",
-    overflowY: "auto",
   },
   tableRow: {
     display: "flex",

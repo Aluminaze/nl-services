@@ -13,10 +13,13 @@ const useStyles = makeStyles(() => {
       alignItems: "center",
       justifyContent: "space-between",
       padding: "0 15px",
-      // width: "100%",
       minHeight: HEADER_HEIGHT,
       backgroundColor: theme.palette.primary.main,
       zIndex: 1500,
+
+      [theme.breakpoints.down("sm")]: {
+        padding: "0 12px 0 0",
+      },
     },
     headerLabel: {
       fontSize: 18,

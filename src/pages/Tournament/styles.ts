@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   tableContainer: {
     width: "100%",
     height: "100%",
-    padding: "20px 25px",
 
     "& h1": {
       fontWeight: 500,
@@ -19,8 +18,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 
     [theme.breakpoints.down("sm")]: {
-      padding: "10px 0",
-
       "& h1": {
         fontSize: "1.2rem",
       },

@@ -19,9 +19,8 @@ import DateFnsUtils from "@date-io/date-fns";
 const TournamentHistory = () => {
   const classes = useStyles();
   const { database } = useContext(Context);
-  const [tournamentFullDate, setTournamentFullDate] = useState<Date | null>(
-    null
-  );
+  const [tournamentFullDate, setTournamentFullDate] =
+    useState<Date | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   // firebase refs
@@ -84,8 +83,6 @@ const TournamentHistory = () => {
               return (
                 <div className={classes.tableWrapper} key={index}>
                   <div className={classes.tableContainer}>
-                    <h1>История турнира по дате: {tournamentData.id}</h1>
-
                     <TournamentAtTime
                       tournamentDateId={selectedDate}
                       timeKey={TIME_KEY_11}

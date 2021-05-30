@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     maxHeight: "100%",
     display: "flex",
@@ -14,6 +14,10 @@ const useStyles = makeStyles(() => ({
   },
   headerTitle: {
     fontWeight: 500,
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.2rem",
+    },
   },
   headerDatePicker: {
     flexBasis: "25%",
@@ -23,7 +27,6 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     flexBasis: "90%",
     overflowY: "auto",
-    padding: "10px",
   },
   tableWrapper: {
     height: "100%",
@@ -33,9 +36,8 @@ const useStyles = makeStyles(() => ({
     height: "auto",
     padding: "20px 25px",
 
-    "& h1": {
-      fontSize: 22,
-      margin: "0 0 15px 0",
+    [theme.breakpoints.down("sm")]: {
+      padding: "10px 0",
     },
   },
 }));
