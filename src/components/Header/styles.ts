@@ -12,21 +12,18 @@ const useStyles = makeStyles(() => {
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      padding: "0 15px",
       minHeight: HEADER_HEIGHT,
       backgroundColor: theme.palette.primary.main,
       zIndex: 1500,
-
-      [theme.breakpoints.down("sm")]: {
-        padding: "0 12px 0 0",
-      },
     },
     headerLabel: {
       fontSize: 18,
       color: "#fff",
+      padding: "0 0 0 12px",
     },
     headerUserInfo: {
       display: "flex",
+      padding: "0 12px 0 0",
 
       "& h2": {
         alignSelf: "center",

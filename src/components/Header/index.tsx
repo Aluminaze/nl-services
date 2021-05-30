@@ -45,18 +45,25 @@ const Header = (props: HeaderProps): React.ReactElement => {
 
   return (
     <header className={classes.header}>
-      <Hidden mdUp>
-        <IconButton
-          aria-label="nav"
-          color="secondary"
-          onClick={handleClickOpen}
-        >
-          <MenuIcon color="secondary" />
-        </IconButton>
-      </Hidden>
-      <Hidden smDown>
+      {user ? (
+        <>
+          <Hidden mdUp>
+            <IconButton
+              aria-label="nav"
+              color="secondary"
+              onClick={handleClickOpen}
+            >
+              <MenuIcon color="secondary" />
+            </IconButton>
+          </Hidden>
+
+          <Hidden smDown>
+            <h1 className={classes.headerLabel}>NLS</h1>
+          </Hidden>
+        </>
+      ) : (
         <h1 className={classes.headerLabel}>NLS</h1>
-      </Hidden>
+      )}
 
       {user && (
         <div className={classes.headerUserInfo}>
