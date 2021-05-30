@@ -1,16 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Switch, Route, useHistory, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { useObjectVal } from "react-firebase-hooks/database";
-import ListItemText from "@material-ui/core/ListItemText";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Divider from "@material-ui/core/Divider";
-import TimelineIcon from "@material-ui/icons/Timeline";
-import HistoryIcon from "@material-ui/icons/History";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ImportContactsIcon from "@material-ui/icons/ImportContacts";
-import EventNoteIcon from "@material-ui/icons/EventNote";
-import PostAddIcon from "@material-ui/icons/PostAdd";
 import Hidden from "@material-ui/core/Hidden";
 
 import { EMAIL_DEFAULT_VALUE, WINNER_ID_DEF_VALUE } from "utils/constants";
@@ -27,35 +18,7 @@ import TournamentHistory from "pages/TournamentHistory";
 // firebase
 import firebase from "firebase/app";
 import "firebase/database";
-
-interface INavData {
-  title: string;
-  doHistoryPush: string;
-  icon: React.ReactNode;
-}
-
-const navData: INavData[] = [
-  {
-    title: "Турнирная таблица",
-    doHistoryPush: "/tournament",
-    icon: <EventNoteIcon fontSize="small" />,
-  },
-  {
-    title: "Рейтинг",
-    doHistoryPush: "/rating",
-    icon: <TimelineIcon fontSize="small" />,
-  },
-  {
-    title: "История турниров",
-    doHistoryPush: "/history",
-    icon: <HistoryIcon fontSize="small" />,
-  },
-  {
-    title: "Журнал событий",
-    doHistoryPush: "/action-logs",
-    icon: <ImportContactsIcon fontSize="small" />,
-  },
-];
+import TournamentsNavigation from "components/TournamentsNavigation";
 
 interface LoggedInProps {
   user: firebase.User | null | undefined;
@@ -64,7 +27,6 @@ interface LoggedInProps {
 const LoggedIn = (props: LoggedInProps) => {
   const { user } = props;
   const classes = useStyles();
-  const history = useHistory();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [allDataOfUsers, setAllDataOfUsers] = useState<UserStruct[]>([]);
   const [allEmailsOfUsers, setAllEmailsOfUsers] = useState<string[]>([]);
@@ -135,46 +97,12 @@ const LoggedIn = (props: LoggedInProps) => {
     if (user && user.email && allEmailsOfUsers.includes(user.email)) {
       return (
         <div className={classes.container}>
-          <div className={classes.nav}>
-            <div className={classes.navButtons}>
-              <List>
-                {navData.map((nav: INavData) => (
-                  <ListItem
-                    button
-                    onClick={() => history.push(nav.doHistoryPush)}
-                    key={nav.title}
-                    classes={{ root: classes.listItem }}
-                  >
-                    {nav.icon}
-                    <Hidden smDown>
-                      <ListItemText
-                        className={classes.listTitle}
-                        primary={nav.title}
-                      />
-                    </Hidden>
-                  </ListItem>
-                ))}
-              </List>
-              <Divider />
-              <List>
-                <ListItem
-                  button
-                  onClick={() => createEventWithTournaments()}
-                  disabled={disabledButton}
-                  classes={{ root: classes.listItem }}
-                >
-                  <PostAddIcon fontSize="small" />
-                  <Hidden smDown>
-                    <ListItemText
-                      className={classes.listTitle}
-                      primary={"Создать турнирную сетку"}
-                    />
-                  </Hidden>
-                </ListItem>
-              </List>
-            </div>
-          </div>
-
+          <Hidden xsDown>
+            <TournamentsNavigation
+              createEventWithTournaments={createEventWithTournaments}
+              disabledButton={disabledButton}
+            />
+          </Hidden>
           <main className={classes.main}>
             <Switch>
               <Route exact path="/tournament">

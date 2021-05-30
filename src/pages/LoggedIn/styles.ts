@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return {
     container: {
       gridArea: "container",
@@ -8,6 +8,12 @@ const useStyles = makeStyles(() => {
       gridTemplateRows: "1fr",
       gridTemplateColumns: "auto 1fr",
       gridTemplateAreas: `'nav main'`,
+
+      [theme.breakpoints.down("xs")]: {
+        gridTemplateRows: "1fr",
+        gridTemplateColumns: "auto",
+        gridTemplateAreas: "main",
+      },
     },
     main: {
       gridArea: "main",
@@ -15,31 +21,6 @@ const useStyles = makeStyles(() => {
       justifyContent: "center",
       alignItems: "center",
       padding: 20,
-    },
-    nav: {
-      gridArea: "nav",
-      flexDirection: "column",
-      display: "flex",
-      borderRight: `2px solid #d9dde3`,
-      backgroundColor: "rgba(199,199,199, .1)",
-      position: "relative",
-    },
-    navButtons: {
-      position: "sticky",
-      top: 40,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-    },
-    listTitle: {
-      margin: "0 0 0 10px",
-    },
-    listItem: {
-      width: "auto",
-      maxWidth: 265,
-      height: 48,
-      display: "flex",
-      justifyContent: "center",
     },
   };
 });
