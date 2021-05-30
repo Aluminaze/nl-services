@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down("sm")]: {
       minHeight: "auto",
       border: "none",
+      minWidth: "auto",
     },
   },
   tableBlockInfoHeader: {
@@ -51,9 +52,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: "10px 0 0 0",
   },
   tableBlockAdding: {
+    width: "100%",
     border: "1px solid gray",
     borderRadius: 5,
     padding: "10px",
+
+    [theme.breakpoints.down("sm")]: {
+      margin: "0 10px",
+    },
   },
   tableBlockActions: {
     minWidth: 325,
@@ -64,6 +70,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       display: "flex",
       justifyContent: "center",
       margin: 0,
+      minWidth: "auto",
     },
   },
   infoIconWrapper: {

@@ -28,13 +28,11 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
     addNewParticipant,
   } = props;
   const classes = useStyles();
-  const [selectedParticipantName, setSelectedParticipantName] = useState<
-    string | null
-  >(null);
+  const [selectedParticipantName, setSelectedParticipantName] =
+    useState<string | null>(null);
   const [inputParticipantName, setInputParticipantName] = useState<string>("");
-  const [inputAmountOfMeat, setInputAmountOfMeat] = useState<string | null>(
-    null
-  );
+  const [inputAmountOfMeat, setInputAmountOfMeat] =
+    useState<string | null>(null);
   const [inputAmount, setInputAmount] = useState<string>("");
   const [isOpenAddedDialog, setIsOpenAddedDialog] = useState<boolean>(false);
   const [isOpenСountDialog, setIsOpenCountDialog] = useState<boolean>(false);
@@ -73,7 +71,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           }}
           id={`participant-autocomplete-${timeKey}`}
           options={allUserNames}
-          style={{ width: 300 }}
+          style={{ minWidth: 215 }}
           renderInput={(params) => (
             <TextField
               {...params}

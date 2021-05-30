@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => {
       gridArea: "main",
       display: "flex",
       justifyContent: "center",
-      alignItems: "center",
+      alignItems: "flex-start",
       padding: 20,
     },
   };

@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down("sm")]: {
       width: "100%",
+      minWidth: "auto",
     },
   },
   rowTextUnregular: {

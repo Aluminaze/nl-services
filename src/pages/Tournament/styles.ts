@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     height: "auto",
   },
@@ -16,6 +16,14 @@ const useStyles = makeStyles(() => ({
     "& h1": {
       fontWeight: 500,
       margin: "0 0 15px 0",
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      padding: "10px 0",
+
+      "& h1": {
+        fontSize: "1.2rem",
+      },
     },
   },
 }));
