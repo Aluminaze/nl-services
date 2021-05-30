@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => {
       // width: "100%",
       minHeight: HEADER_HEIGHT,
       backgroundColor: theme.palette.primary.main,
-      zIndex: 100,
+      zIndex: 1500,
     },
     headerLabel: {
       fontSize: 18,
@@ -31,6 +31,9 @@ const useStyles = makeStyles(() => {
         fontSize: 14,
         margin: "0 10px 0 0",
       },
+    },
+    dialog: {
+      padding: "48px 0 0 0",
     },
   };
 });

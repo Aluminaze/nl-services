@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import useStyles from "./styles";
 import { useHistory } from "react-router-dom";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -11,6 +11,14 @@ import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import Hidden from "@material-ui/core/Hidden";
+import { WINNER_ID_DEF_VALUE } from "utils/constants";
+import { Context } from "index";
+
+import getCurrentDate from "utils/getCurrentDate";
+
+// firebase
+import firebase from "firebase/app";
+import "firebase/database";
 
 interface INavData {
   title: string;
@@ -41,17 +49,44 @@ const navData: INavData[] = [
   },
 ];
 
-interface TournamentsNavigationProps {
-  createEventWithTournaments: () => void;
-  disabledButton: boolean;
-}
+interface TournamentsNavigationProps {}
 
 const TournamentsNavigation = (
   props: TournamentsNavigationProps
 ): JSX.Element => {
   const classes = useStyles();
-  const { createEventWithTournaments, disabledButton } = props;
   const history = useHistory();
+  const { database } = useContext(Context);
+  const refTournaments = firebase.database().ref("tournaments");
+  const refTournamentsPush = refTournaments.push();
+  const [disabledButton, setDisabledButton] = useState<boolean>(false);
+  const refCurrentDate = database.ref("currentDate");
+
+  const createEventWithTournaments = () => {
+    setDisabledButton(true);
+    const dateNow: string = getCurrentDate();
+
+    refTournaments
+      .orderByChild("id")
+      .equalTo(dateNow)
+      .get()
+      .then((snapshot) => {
+        if (!snapshot.exists()) {
+          refTournamentsPush.set({
+            id: dateNow,
+            time11: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+            time15: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+            time19: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+            time23: { winner: WINNER_ID_DEF_VALUE, participants: {} },
+          });
+        }
+      });
+
+    setTimeout(() => {
+      refCurrentDate.set(dateNow);
+      setDisabledButton(false);
+    }, 1500);
+  };
 
   return (
     <div className={classes.nav}>
@@ -65,12 +100,7 @@ const TournamentsNavigation = (
               classes={{ root: classes.listItem }}
             >
               {nav.icon}
-              <Hidden smDown>
-                <ListItemText
-                  className={classes.listTitle}
-                  primary={nav.title}
-                />
-              </Hidden>
+              <ListItemText className={classes.listTitle} primary={nav.title} />
             </ListItem>
           ))}
         </List>
@@ -83,12 +113,10 @@ const TournamentsNavigation = (
             classes={{ root: classes.listItem }}
           >
             <PostAddIcon fontSize="small" />
-            <Hidden smDown>
-              <ListItemText
-                className={classes.listTitle}
-                primary={"Создать турнирную сетку"}
-              />
-            </Hidden>
+            <ListItemText
+              className={classes.listTitle}
+              primary={"Создать турнирную сетку"}
+            />
           </ListItem>
         </List>
       </div>

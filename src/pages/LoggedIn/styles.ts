@@ -9,10 +9,10 @@ const useStyles = makeStyles((theme: Theme) => {
       gridTemplateColumns: "auto 1fr",
       gridTemplateAreas: `'nav main'`,
 
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down("sm")]: {
         gridTemplateRows: "1fr",
         gridTemplateColumns: "auto",
-        gridTemplateAreas: "main",
+        gridTemplateAreas: `'main'`,
       },
     },
     main: {

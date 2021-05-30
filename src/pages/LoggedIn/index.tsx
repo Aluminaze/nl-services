@@ -3,22 +3,20 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { useObjectVal } from "react-firebase-hooks/database";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Hidden from "@material-ui/core/Hidden";
-
-import { EMAIL_DEFAULT_VALUE, WINNER_ID_DEF_VALUE } from "utils/constants";
+import { EMAIL_DEFAULT_VALUE } from "utils/constants";
 import { UserStruct } from "interfacesAndTypes";
 import { Context } from "index";
-import getCurrentDate from "utils/getCurrentDate";
 import useStyles from "./styles";
 import Home from "pages/Home";
 import Tournament from "pages/Tournament";
 import ActionLogsForYear from "pages/ActionLogsForYear";
 import TournamentRating from "pages/TournamentRating";
 import TournamentHistory from "pages/TournamentHistory";
+import TournamentsNavigation from "components/TournamentsNavigation";
 
 // firebase
 import firebase from "firebase/app";
 import "firebase/database";
-import TournamentsNavigation from "components/TournamentsNavigation";
 
 interface LoggedInProps {
   user: firebase.User | null | undefined;
@@ -32,8 +30,6 @@ const LoggedIn = (props: LoggedInProps) => {
   const [allEmailsOfUsers, setAllEmailsOfUsers] = useState<string[]>([]);
 
   const { database } = useContext(Context);
-  const refTournaments = firebase.database().ref("tournaments");
-  const refTournamentsPush = refTournaments.push();
 
   // firebase refs
   const refUsers = database.ref("users");
@@ -44,7 +40,6 @@ const LoggedIn = (props: LoggedInProps) => {
     }>(refUsers);
   const [currentDate, loadingCurrentDate] =
     useObjectVal<string>(refCurrentDate);
-  const [disabledButton, setDisabledButton] = useState<boolean>(false);
 
   useEffect(() => {
     if (usersData) {
@@ -61,32 +56,6 @@ const LoggedIn = (props: LoggedInProps) => {
     }
   }, [usersData]);
 
-  const createEventWithTournaments = () => {
-    setDisabledButton(true);
-    const dateNow: string = getCurrentDate();
-
-    refTournaments
-      .orderByChild("id")
-      .equalTo(dateNow)
-      .get()
-      .then((snapshot) => {
-        if (!snapshot.exists()) {
-          refTournamentsPush.set({
-            id: dateNow,
-            time11: { winner: WINNER_ID_DEF_VALUE, participants: {} },
-            time15: { winner: WINNER_ID_DEF_VALUE, participants: {} },
-            time19: { winner: WINNER_ID_DEF_VALUE, participants: {} },
-            time23: { winner: WINNER_ID_DEF_VALUE, participants: {} },
-          });
-        }
-      });
-
-    setTimeout(() => {
-      refCurrentDate.set(dateNow);
-      setDisabledButton(false);
-    }, 1500);
-  };
-
   if (loadingUsersData) {
     return (
       <main className={classes.main}>
@@ -97,11 +66,8 @@ const LoggedIn = (props: LoggedInProps) => {
     if (user && user.email && allEmailsOfUsers.includes(user.email)) {
       return (
         <div className={classes.container}>
-          <Hidden xsDown>
-            <TournamentsNavigation
-              createEventWithTournaments={createEventWithTournaments}
-              disabledButton={disabledButton}
-            />
+          <Hidden smDown>
+            <TournamentsNavigation />
           </Hidden>
           <main className={classes.main}>
             <Switch>

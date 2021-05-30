@@ -14,17 +14,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-
-    [theme.breakpoints.down("xs")]: {
-      flexDirection: "row",
-    },
   },
   listTitle: {
     margin: "0 0 0 10px",
   },
   listItem: {
     width: "auto",
-    maxWidth: 265,
     height: 48,
     display: "flex",
     justifyContent: "center",
