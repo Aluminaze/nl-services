@@ -10,7 +10,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import PostAddIcon from "@material-ui/icons/PostAdd";
-import Hidden from "@material-ui/core/Hidden";
 import { WINNER_ID_DEF_VALUE } from "utils/constants";
 import { Context } from "index";
 
@@ -49,13 +48,16 @@ const navData: INavData[] = [
   },
 ];
 
-interface TournamentsNavigationProps {}
+interface TournamentsNavigationProps {
+  handleDialogClose?: () => void;
+}
 
 const TournamentsNavigation = (
   props: TournamentsNavigationProps
 ): JSX.Element => {
   const classes = useStyles();
   const history = useHistory();
+  const { handleDialogClose } = props;
   const { database } = useContext(Context);
   const refTournaments = firebase.database().ref("tournaments");
   const refTournamentsPush = refTournaments.push();
@@ -95,7 +97,10 @@ const TournamentsNavigation = (
           {navData.map((nav: INavData) => (
             <ListItem
               button
-              onClick={() => history.push(nav.doHistoryPush)}
+              onClick={() => {
+                history.push(nav.doHistoryPush);
+                handleDialogClose && handleDialogClose();
+              }}
               key={nav.title}
               classes={{ root: classes.listItem }}
             >
@@ -108,7 +113,10 @@ const TournamentsNavigation = (
         <List>
           <ListItem
             button
-            onClick={() => createEventWithTournaments()}
+            onClick={() => {
+              createEventWithTournaments();
+              handleDialogClose && handleDialogClose();
+            }}
             disabled={disabledButton}
             classes={{ root: classes.listItem }}
           >

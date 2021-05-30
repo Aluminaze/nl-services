@@ -88,7 +88,7 @@ const Header = (props: HeaderProps): React.ReactElement => {
         TransitionComponent={Transition}
         className={classes.dialog}
       >
-        <TournamentsNavigation />
+        <TournamentsNavigation handleDialogClose={handleClose} />
       </Dialog>
     </header>
   );
