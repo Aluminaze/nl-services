@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       minHeight: "auto",
       border: "none",
       minWidth: "auto",
+      margin: "10px 0",
     },
   },
   tableBlockInfoHeader: {
@@ -46,6 +47,15 @@ const useStyles = makeStyles((theme: Theme) => ({
       margin: "0 0 0 31px",
       fontWeight: 400,
       fontSize: 16,
+    },
+
+    [theme.breakpoints.down("xs")]: {
+      "& h2": {
+        fontSize: "1rem",
+      },
+      "& h3": {
+        fontSize: ".85rem",
+      },
     },
   },
   list: {

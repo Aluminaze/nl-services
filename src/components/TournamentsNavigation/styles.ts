@@ -17,6 +17,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   listTitle: {
     margin: "0 0 0 10px",
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: ".85rem",
+    },
+  },
+  listText: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: ".85rem",
+    },
   },
   listItem: {
     width: "auto",

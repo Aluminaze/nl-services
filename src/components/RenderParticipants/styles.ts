@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: "5px 0",
   },
   rowText: {
+    width: "100%",
     minWidth: 250,
     display: "flex",
     alignItems: "center",
@@ -23,6 +24,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   rowTextUnregular: {
     backgroundColor: "rgba(162,17,17,.8)",
+  },
+  text: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: ".85rem",
+    },
   },
   textRegular: {
     color: "#000",
@@ -66,6 +72,14 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: "#f44336",
       fontSize: 18,
     },
+
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1rem",
+
+      "& strong": {
+        fontSize: "1rem",
+      },
+    },
   },
   confirmMessageText: {
     color: "#000",
@@ -73,6 +87,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     "& strong": {
       color: "#f44336",
       fontSize: 18,
+    },
+
+    [theme.breakpoints.down("xs")]: {
+      fontSize: ".85rem",
+
+      "& strong": {
+        fontSize: ".85rem",
+      },
     },
   },
 }));

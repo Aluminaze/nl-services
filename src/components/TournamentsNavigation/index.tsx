@@ -105,7 +105,11 @@ const TournamentsNavigation = (
               classes={{ root: classes.listItem }}
             >
               {nav.icon}
-              <ListItemText className={classes.listTitle} primary={nav.title} />
+              <ListItemText
+                className={classes.listTitle}
+                classes={{ primary: classes.listText }}
+                primary={nav.title}
+              />
             </ListItem>
           ))}
         </List>
@@ -123,6 +127,7 @@ const TournamentsNavigation = (
             <PostAddIcon fontSize="small" />
             <ListItemText
               className={classes.listTitle}
+              classes={{ primary: classes.listText }}
               primary={"Создать турнирную сетку"}
             />
           </ListItem>
