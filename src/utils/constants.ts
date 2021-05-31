@@ -1,4 +1,4 @@
-export const HEADER_HEIGHT: number = 40;
+export const HEADER_HEIGHT: number = 48;
 
 // TIME KEYS
 export const TIME_KEY_11: string = "time11";

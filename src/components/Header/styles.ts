@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => {
       justifyContent: "space-between",
       minHeight: HEADER_HEIGHT,
       backgroundColor: theme.palette.primary.main,
-      zIndex: 1500,
+      zIndex: 100,
     },
     headerLabel: {
       fontSize: 18,
@@ -32,8 +32,8 @@ const useStyles = makeStyles(() => {
         margin: "0 10px 0 0",
       },
     },
-    dialog: {
-      padding: "48px 0 0 0",
+    dialogBar: {
+      position: "relative",
     },
   };
 });
