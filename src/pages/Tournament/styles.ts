@@ -3,6 +3,11 @@ import { makeStyles, Theme } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     height: "auto",
+
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      maxWidth: 310,
+    },
   },
   table: {
     display: "flex",

@@ -2,7 +2,7 @@ import { makeStyles, Theme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    maxHeight: "100%",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
   },
@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    flexBasis: "10%",
   },
   headerTitle: {
     fontWeight: 500,
@@ -25,11 +24,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   table: {
     display: "flex",
     justifyContent: "center",
-    flexBasis: "90%",
-    overflowY: "auto",
   },
   tableWrapper: {
     height: "100%",
+
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: 310,
+      width: "100%",
+    },
   },
   tableContainer: {
     width: "100%",
