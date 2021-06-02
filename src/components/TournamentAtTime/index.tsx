@@ -42,13 +42,10 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     string[]
   >([]);
   const [sumOfCounts, setSumOfCounts] = useState<number>(0);
-  const [isOpenActionLogsDialog, setIsOpenActionLogsDialog] = useState<boolean>(
-    false
-  );
-  const [
-    disableWorkWithParticipants,
-    setDisableWorkWithParticipants,
-  ] = useState<boolean>(false);
+  const [isOpenActionLogsDialog, setIsOpenActionLogsDialog] =
+    useState<boolean>(false);
+  const [disableWorkWithParticipants, setDisableWorkWithParticipants] =
+    useState<boolean>(false);
 
   // firebase refs
   const refUsers = database.ref("users");
@@ -405,7 +402,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
               onClick={() => setIsAdding(true)}
               disabled={disableWorkWithParticipants}
             >
-              Добавить участника
+              <span className={classes.btnLabel}>Добавить участника</span>
             </Button>
           )}
         </div>

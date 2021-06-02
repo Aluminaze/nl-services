@@ -22,6 +22,12 @@ const useStyles = makeStyles((theme: Theme) => ({
         fontSize: "1.2rem",
       },
     },
+
+    [theme.breakpoints.down("xs")]: {
+      "& h1": {
+        fontSize: "1.1rem",
+      },
+    },
   },
   listWrapper: {
     display: "flex",

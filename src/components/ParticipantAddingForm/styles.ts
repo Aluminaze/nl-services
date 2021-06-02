@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   title: {
     fontSize: 16,
   },
@@ -12,6 +12,13 @@ const useStyles = makeStyles(() => ({
 
     "& button": {
       margin: "0 10px 0 0",
+    },
+  },
+  btnLabel: {
+    fontSize: ".85rem",
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: ".7rem",
     },
   },
 }));

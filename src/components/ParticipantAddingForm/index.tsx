@@ -110,7 +110,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           onClick={storeNewParticipant}
           disabled={inputParticipantName && inputAmountOfMeat ? false : true}
         >
-          Сохранить
+          <span className={classes.btnLabel}>Сохранить</span>
         </Button>
         <Button
           variant="contained"
@@ -118,7 +118,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           color="primary"
           onClick={() => setIsAdding(false)}
         >
-          Отмена
+          <span className={classes.btnLabel}>Отмена</span>
         </Button>
       </div>
 

@@ -90,6 +90,13 @@ const useStyles = makeStyles((theme: Theme) => ({
       cursor: "pointer",
     },
   },
+  btnLabel: {
+    fontSize: ".85rem",
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: ".7rem",
+    },
+  },
 }));
 
 export default useStyles;
