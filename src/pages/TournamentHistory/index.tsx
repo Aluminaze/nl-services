@@ -27,7 +27,7 @@ const TournamentHistory = () => {
   const refTournaments = database.ref("tournaments");
 
   // firenase data
-  const [tournamentsAtDay] = useList(
+  const [tournamentsAtDay, loadingTournamentsAtDay] = useList(
     refTournaments.orderByChild("id").equalTo(selectedDate)
   );
 
@@ -74,7 +74,7 @@ const TournamentHistory = () => {
           </MuiPickersUtilsProvider>
         </div>
       </header>
-      {selectedDate && (
+      {selectedDate && !loadingTournamentsAtDay && (
         <div className={classes.table}>
           {tournamentsAtDay?.length ? (
             tournamentsAtDay.map((tournamentSnapshot, index: number) => {
@@ -112,7 +112,7 @@ const TournamentHistory = () => {
               );
             })
           ) : (
-            <div>
+            <div className={classes.tableInfo}>
               <h1>Турнир по введенной дате не найден!</h1>
             </div>
           )}

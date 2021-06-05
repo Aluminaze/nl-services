@@ -46,6 +46,21 @@ const useStyles = makeStyles((theme: Theme) => ({
       padding: "10px 0",
     },
   },
+  tableInfo: {
+    margin: "20px 0",
+
+    [theme.breakpoints.down("sm")]: {
+      "& h1": {
+        fontSize: "1.2rem",
+      },
+    },
+
+    [theme.breakpoints.down("xs")]: {
+      "& h1": {
+        fontSize: "1.1rem",
+      },
+    },
+  },
 }));
 
 export default useStyles;
