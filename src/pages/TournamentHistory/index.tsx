@@ -19,16 +19,15 @@ import DateFnsUtils from "@date-io/date-fns";
 const TournamentHistory = () => {
   const classes = useStyles();
   const { database } = useContext(Context);
-  const [tournamentFullDate, setTournamentFullDate] = useState<Date | null>(
-    null
-  );
+  const [tournamentFullDate, setTournamentFullDate] =
+    useState<Date | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   // firebase refs
   const refTournaments = database.ref("tournaments");
 
   // firenase data
-  const [tournamentsAtDay] = useList(
+  const [tournamentsAtDay, loadingTournamentsAtDay] = useList(
     refTournaments.orderByChild("id").equalTo(selectedDate)
   );
 
@@ -75,7 +74,7 @@ const TournamentHistory = () => {
           </MuiPickersUtilsProvider>
         </div>
       </header>
-      {selectedDate && (
+      {selectedDate && !loadingTournamentsAtDay && (
         <div className={classes.table}>
           {tournamentsAtDay?.length ? (
             tournamentsAtDay.map((tournamentSnapshot, index: number) => {
@@ -84,8 +83,6 @@ const TournamentHistory = () => {
               return (
                 <div className={classes.tableWrapper} key={index}>
                   <div className={classes.tableContainer}>
-                    <h1>История турнира по дате: {tournamentData.id}</h1>
-
                     <TournamentAtTime
                       tournamentDateId={selectedDate}
                       timeKey={TIME_KEY_11}
@@ -115,7 +112,7 @@ const TournamentHistory = () => {
               );
             })
           ) : (
-            <div>
+            <div className={classes.tableInfo}>
               <h1>Турнир по введенной дате не найден!</h1>
             </div>
           )}

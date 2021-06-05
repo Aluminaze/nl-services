@@ -3,26 +3,17 @@ import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles(() => ({
   container: {
     height: "100%",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    maxWidth: 600,
   },
   alignCenter: {
     justifyContent: "center",
   },
-  tableWrapper: {
-    flexBasis: "50%",
-    height: "95%",
-    border: "1px solid black",
-    borderRadius: 15,
-    padding: "10px",
-  },
   tableContainer: {
     width: "100%",
-    minWidth: 500,
-    height: "100%",
-    padding: "20px 25px",
-    overflowY: "auto",
   },
   tableRow: {
     display: "flex",

@@ -1,14 +1,17 @@
-import { makeStyles } from "@material-ui/core";
-import { HEADER_HEIGHT } from "utils/constants";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return {
     main: {
+      gridArea: "container",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       width: "100%",
-      height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+
+      [theme.breakpoints.down("sm")]: {
+        padding: "10px",
+      },
     },
     content: {
       display: "flex",
@@ -18,14 +21,19 @@ const useStyles = makeStyles(() => {
       height: "100%",
     },
     authBlock: {
-      width: 600,
-      height: 350,
+      minWidth: 600,
+      minHeight: 350,
       padding: "20px 30px",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
       border: "1px solid rgba(151,151,151, .5)",
       borderRadius: "15px",
+
+      [theme.breakpoints.down("sm")]: {
+        minWidth: "auto",
+        minHeight: "auto",
+      },
     },
     authBlockHeader: {
       display: "flex",
@@ -35,6 +43,12 @@ const useStyles = makeStyles(() => {
 
       "& h1": {
         fontSize: 20,
+      },
+
+      [theme.breakpoints.down("sm")]: {
+        "& h1": {
+          fontSize: "1.2rem",
+        },
       },
     },
   };

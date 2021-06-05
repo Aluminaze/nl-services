@@ -1,6 +1,6 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   dialog: {
     width: "80vw",
     height: "80vh",
@@ -11,6 +11,10 @@ const useStyles = makeStyles(() => ({
     "& li": {
       margin: "5px 0",
       color: "#000",
+
+      [theme.breakpoints.down("xs")]: {
+        fontSize: ".85rem",
+      },
     },
   },
   dialogInputBlock: {
@@ -26,6 +30,10 @@ const useStyles = makeStyles(() => ({
   },
   titleText: {
     margin: "0 0 0 5px",
+
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1rem",
+    },
   },
   messageText: {
     color: "#000",

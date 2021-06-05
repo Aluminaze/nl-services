@@ -33,12 +33,21 @@ const styles = (theme: Theme) =>
     root: {
       margin: 0,
       padding: theme.spacing(2),
+
+      [theme.breakpoints.down("xs")]: {
+        padding: 10,
+      },
     },
     closeButton: {
       position: "absolute",
       right: theme.spacing(1),
       top: theme.spacing(1),
       color: theme.palette.grey[500],
+
+      [theme.breakpoints.down("xs")]: {
+        top: 0,
+        right: 0,
+      },
     },
   });
 
@@ -61,13 +70,8 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
 });
 
 const ActionLogsDialog = (props: ActionLogsDialogProps) => {
-  const {
-    isDialogOpen,
-    actionLogsData,
-    setIsDialogOpen,
-    date,
-    timeKey,
-  } = props;
+  const { isDialogOpen, actionLogsData, setIsDialogOpen, date, timeKey } =
+    props;
   const classes = useStyles();
 
   const handleClose = (): void => {

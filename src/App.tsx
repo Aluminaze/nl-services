@@ -10,11 +10,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
-    position: "absolute",
-    left: 0,
-    top: 0,
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gridTemplateRows: "40px 1fr",
+    gridTemplateAreas: `'header' 'container'`,
     height: "100vh",
-    width: "100vw",
   },
 }));
 
@@ -31,15 +31,22 @@ function App() {
     firebase.auth().signInWithPopup(provider);
   };
 
+  //
+  // TODO: Объединить в один
+  //
+  if (user) {
+    return (
+      <div className={classes.wrapper}>
+        <Header user={user} />
+        <LoggedIn user={user} />
+      </div>
+    );
+  }
+
   return (
     <div className={classes.wrapper}>
       <Header user={user} />
-
-      {user ? (
-        <LoggedIn user={user} />
-      ) : (
-        <LogIn logIn={logIn} isLoading={loading} />
-      )}
+      <LogIn logIn={logIn} isLoading={loading} />
     </div>
   );
 }

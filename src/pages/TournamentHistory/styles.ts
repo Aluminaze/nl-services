@@ -1,8 +1,8 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    maxHeight: "100%",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
   },
@@ -10,10 +10,17 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    flexBasis: "10%",
   },
   headerTitle: {
     fontWeight: 500,
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.2rem",
+    },
+
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "1.1rem",
+    },
   },
   headerDatePicker: {
     flexBasis: "25%",
@@ -21,51 +28,38 @@ const useStyles = makeStyles(() => ({
   table: {
     display: "flex",
     justifyContent: "center",
-    flexBasis: "90%",
-    overflowY: "auto",
-    padding: "10px",
   },
   tableWrapper: {
     height: "100%",
+
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: 310,
+      width: "100%",
+    },
   },
   tableContainer: {
     width: "100%",
     height: "auto",
     padding: "20px 25px",
 
-    "& h1": {
-      fontSize: 22,
-      margin: "0 0 15px 0",
+    [theme.breakpoints.down("sm")]: {
+      padding: "10px 0",
     },
   },
-  tableBlock: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  tableBlockInfo: {
-    minHeight: 190,
-    width: "100%",
-    margin: "10px 10px 10px 0",
-    border: "1px solid gray",
-    borderRadius: 5,
-    padding: "10px",
+  tableInfo: {
+    margin: "20px 0",
 
-    "& h2": {
-      fontSize: 18,
+    [theme.breakpoints.down("sm")]: {
+      "& h1": {
+        fontSize: "1.2rem",
+      },
     },
-  },
-  list: {
-    margin: "10px 0 0 0",
-  },
-  tableBlockAdding: {
-    border: "1px solid gray",
-    borderRadius: 5,
-    padding: "10px",
-  },
-  tableBlockButtons: {
-    minWidth: 325,
-    flexBasis: "40%",
-    margin: "10px 0 0 0",
+
+    [theme.breakpoints.down("xs")]: {
+      "& h1": {
+        fontSize: "1.1rem",
+      },
+    },
   },
 }));
 

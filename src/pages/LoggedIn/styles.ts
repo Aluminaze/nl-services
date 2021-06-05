@@ -1,30 +1,34 @@
-import { makeStyles } from "@material-ui/core";
-import { HEADER_HEIGHT } from "utils/constants";
+import { makeStyles, Theme } from "@material-ui/core";
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return {
+    container: {
+      gridArea: "container",
+      display: "grid",
+      gridTemplateRows: "1fr",
+      gridTemplateColumns: "auto 1fr",
+      gridTemplateAreas: `'nav main'`,
+
+      [theme.breakpoints.down("sm")]: {
+        gridTemplateRows: "1fr",
+        gridTemplateColumns: "auto",
+        gridTemplateAreas: `'main'`,
+      },
+    },
     main: {
+      gridArea: "main",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "flex-start",
+      padding: 20,
+    },
+    contentWrapper: {
+      gridArea: "container",
+      width: "100%",
+      height: "100%",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      width: "100%",
-      height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-    },
-    nav: {
-      flexBasis: "15%",
-      display: "flex",
-      flexDirection: "column",
-      height: "100%",
-      borderRight: `2px solid #d9dde3`,
-      padding: "20px 0",
-
-      backgroundColor: "rgba(199,199,199, .1)",
-    },
-    content: {
-      height: "100%",
-      width: "100%",
-      padding: "20px",
-      overflow: "hidden",
     },
   };
 });

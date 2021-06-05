@@ -6,20 +6,24 @@ const useStyles = makeStyles(() => {
 
   return {
     header: {
+      gridArea: "header",
+      position: "fixed",
+      width: "100%",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      padding: "0 15px",
-      width: "100%",
-      height: HEADER_HEIGHT,
+      minHeight: HEADER_HEIGHT,
       backgroundColor: theme.palette.primary.main,
+      zIndex: 100,
     },
     headerLabel: {
       fontSize: 18,
       color: "#fff",
+      padding: "0 0 0 12px",
     },
     headerUserInfo: {
       display: "flex",
+      padding: "0 12px 0 0",
 
       "& h2": {
         alignSelf: "center",
@@ -27,6 +31,9 @@ const useStyles = makeStyles(() => {
         fontSize: 14,
         margin: "0 10px 0 0",
       },
+    },
+    dialogBar: {
+      position: "relative",
     },
   };
 });

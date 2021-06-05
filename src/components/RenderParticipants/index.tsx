@@ -138,21 +138,23 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
                     )}
                   </div>
                   <span
-                    className={
+                    className={clsx(
+                      classes.text,
                       winnerId === participantData.id
                         ? classes.textUnregular
                         : classes.textRegular
-                    }
+                    )}
                   >
                     {getUserNameById(participantData.id, usersValData)}
                   </span>
                 </div>
                 <span
-                  className={
+                  className={clsx(
+                    classes.text,
                     winnerId === participantData.id
                       ? classes.textUnregular
                       : classes.textRegular
-                  }
+                  )}
                 >
                   {participantData.count}
                 </span>
