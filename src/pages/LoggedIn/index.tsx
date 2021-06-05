@@ -26,13 +26,14 @@ const LoggedIn = (props: LoggedInProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [allDataOfUsers, setAllDataOfUsers] = useState<UserStruct[]>([]);
   const [allEmailsOfUsers, setAllEmailsOfUsers] = useState<string[]>([]);
+  const [completeVerifyUser, setCompleteVerifyUser] = useState<boolean>(false);
 
   const { database } = useContext(Context);
 
   // firebase refs
   const refUsers = database.ref("users");
   const refCurrentDate = database.ref("currentDate");
-  const [usersData, loadingUsersData] =
+  const [usersData] =
     useObjectVal<{
       [key: string]: UserStruct;
     }>(refUsers);
@@ -51,10 +52,11 @@ const LoggedIn = (props: LoggedInProps) => {
         }
       });
       setAllEmailsOfUsers(tempAllEmailsOfUsers);
+      setCompleteVerifyUser(true);
     }
   }, [usersData]);
 
-  if (loadingUsersData) {
+  if (!completeVerifyUser && loadingCurrentDate) {
     return (
       <div className={classes.contentWrapper}>
         <CircularLoader />
