@@ -28,20 +28,20 @@ const Transition = React.forwardRef(function Transition(
 const Header = (props: HeaderProps): React.ReactElement => {
   const { user } = props;
   const classes = useStyles();
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isAdminDialogOpen, setIsAdminDialogOpen] = useState<boolean>(false);
 
   const LogOut = () => {
     firebase.auth().signOut();
   };
 
-  const [open, setOpen] = React.useState(false);
+  const [isNavDialogOpen, setIsNavDialogOpen] = React.useState(false);
 
   const handleClickOpen = () => {
-    setOpen(!open);
+    setIsNavDialogOpen(!isNavDialogOpen);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setIsNavDialogOpen(false);
   };
 
   return (
@@ -69,7 +69,9 @@ const Header = (props: HeaderProps): React.ReactElement => {
       {user && (
         <div className={classes.headerUserInfo}>
           {user.email === "aluminaze@gmail.com" ? (
-            <h2 onClick={() => setIsDialogOpen(!isDialogOpen)}>{user.email}</h2>
+            <h2 onClick={() => setIsAdminDialogOpen(!isAdminDialogOpen)}>
+              {user.email}
+            </h2>
           ) : (
             <h2>{user.email}</h2>
           )}
@@ -85,13 +87,13 @@ const Header = (props: HeaderProps): React.ReactElement => {
       )}
 
       <AdminDialog
-        isDialogOpen={isDialogOpen}
-        setIsDialogOpen={setIsDialogOpen}
+        isDialogOpen={isAdminDialogOpen}
+        setIsDialogOpen={setIsAdminDialogOpen}
       />
 
       <Dialog
         fullScreen
-        open={open}
+        open={isNavDialogOpen}
         onClose={handleClose}
         TransitionComponent={Transition}
       >
