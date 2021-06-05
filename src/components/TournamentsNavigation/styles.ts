@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
     [theme.breakpoints.down("sm")]: {
       fontSize: ".85rem",
+      color: "red",
     },
   },
   listText: {
