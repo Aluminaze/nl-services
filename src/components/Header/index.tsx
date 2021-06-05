@@ -12,9 +12,7 @@ import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
 import TournamentsNavigation from "components/TournamentsNavigation";
 import Hidden from "@material-ui/core/Hidden";
-import Toolbar from "@material-ui/core/Toolbar";
 import CloseIcon from "@material-ui/icons/Close";
-import AppBar from "@material-ui/core/AppBar";
 
 interface HeaderProps {
   user: firebase.User | null | undefined;
@@ -97,19 +95,12 @@ const Header = (props: HeaderProps): React.ReactElement => {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar className={classes.dialogBar}>
-          <Toolbar variant="dense">
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <TournamentsNavigation handleDialogClose={handleClose} />
+        <div className={classes.dialogBar}>
+          <IconButton onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <TournamentsNavigation handleDialogClose={handleClose} mobileVersion />
       </Dialog>
     </header>
   );

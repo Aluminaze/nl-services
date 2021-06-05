@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => {
       },
     },
     dialogBar: {
-      position: "relative",
+      boxShadow: "0px 8px 8px 0px rgba(34, 60, 80, 0.2)",
     },
   };
 });
