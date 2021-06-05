@@ -10,7 +10,7 @@ import {
   TIME_KEY_19,
   TIME_KEY_23,
 } from "utils/constants";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularLoader from "components/CircularLoader";
 
 interface TournamentProps {
   currentDate: string;
@@ -71,7 +71,7 @@ const Tournament = (props: TournamentProps) => {
           );
         })
       ) : (
-        <CircularProgress color="primary" />
+        <CircularLoader />
       )}
     </section>
   );

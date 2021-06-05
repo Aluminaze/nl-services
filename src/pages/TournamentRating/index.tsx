@@ -4,7 +4,7 @@ import { UserStruct } from "interfacesAndTypes";
 import { useObjectVal } from "react-firebase-hooks/database";
 import useStyles from "./styles";
 import clsx from "clsx";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularLoader from "components/CircularLoader";
 
 const TournamentRating = () => {
   const classes = useStyles();
@@ -25,7 +25,7 @@ const TournamentRating = () => {
       className={clsx(classes.container, loading ? classes.alignCenter : null)}
     >
       {loading ? (
-        <CircularProgress color="primary" />
+        <CircularLoader />
       ) : (
         <ul className={classes.tableContainer}>
           {usersData.length

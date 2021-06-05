@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useObjectVal } from "react-firebase-hooks/database";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Hidden from "@material-ui/core/Hidden";
 import { EMAIL_DEFAULT_VALUE } from "utils/constants";
 import { UserStruct } from "interfacesAndTypes";
@@ -13,8 +12,7 @@ import ActionLogsForYear from "pages/ActionLogsForYear";
 import TournamentRating from "pages/TournamentRating";
 import TournamentHistory from "pages/TournamentHistory";
 import TournamentsNavigation from "components/TournamentsNavigation";
-
-// firebase
+import CircularLoader from "components/CircularLoader";
 import firebase from "firebase/app";
 import "firebase/database";
 
@@ -59,7 +57,7 @@ const LoggedIn = (props: LoggedInProps) => {
   if (loadingUsersData) {
     return (
       <div className={classes.contentWrapper}>
-        <CircularProgress color="primary" />
+        <CircularLoader />
       </div>
     );
   } else {

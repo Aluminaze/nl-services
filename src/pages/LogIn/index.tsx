@@ -2,7 +2,7 @@ import React from "react";
 import useStyles from "./style";
 import Button from "@material-ui/core/Button";
 import { Switch, Route, Redirect } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularLoader from "components/CircularLoader";
 
 interface LogInProps {
   isLoading: boolean;
@@ -19,7 +19,7 @@ const LogIn = (props: LogInProps) => {
         <Switch>
           <Route exact path="/">
             {isLoading ? (
-              <CircularProgress color="primary" />
+              <CircularLoader />
             ) : (
               <section className={classes.authBlock}>
                 <div className={classes.authBlockHeader}>
