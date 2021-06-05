@@ -12,10 +12,7 @@ import EventNoteIcon from "@material-ui/icons/EventNote";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import { WINNER_ID_DEF_VALUE } from "utils/constants";
 import { Context } from "index";
-
 import getCurrentDate from "utils/getCurrentDate";
-
-// firebase
 import firebase from "firebase/app";
 import "firebase/database";
 
