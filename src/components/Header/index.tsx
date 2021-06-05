@@ -96,8 +96,8 @@ const Header = (props: HeaderProps): React.ReactElement => {
         TransitionComponent={Transition}
       >
         <div className={classes.dialogBar}>
-          <IconButton onClick={handleClose}>
-            <CloseIcon />
+          <IconButton color="secondary" onClick={handleClose}>
+            <CloseIcon color="secondary" />
           </IconButton>
         </div>
         <TournamentsNavigation handleDialogClose={handleClose} mobileVersion />
