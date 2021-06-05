@@ -58,9 +58,9 @@ const LoggedIn = (props: LoggedInProps) => {
 
   if (loadingUsersData) {
     return (
-      <main className={classes.main}>
+      <div className={classes.contentWrapper}>
         <CircularProgress color="primary" />
-      </main>
+      </div>
     );
   } else {
     if (user && user.email && allEmailsOfUsers.includes(user.email)) {
@@ -94,9 +94,9 @@ const LoggedIn = (props: LoggedInProps) => {
     }
 
     return (
-      <main className={classes.main}>
+      <div className={classes.contentWrapper}>
         <Home />
-      </main>
+      </div>
     );
   }
 };
