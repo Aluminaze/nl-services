@@ -12,10 +12,7 @@ import EventNoteIcon from "@material-ui/icons/EventNote";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import { WINNER_ID_DEF_VALUE } from "utils/constants";
 import { Context } from "index";
-
 import getCurrentDate from "utils/getCurrentDate";
-
-// firebase
 import firebase from "firebase/app";
 import "firebase/database";
 
@@ -50,6 +47,7 @@ const navData: INavData[] = [
 
 interface TournamentsNavigationProps {
   handleDialogClose?: () => void;
+  mobileVersion?: boolean;
 }
 
 const TournamentsNavigation = (
@@ -57,7 +55,7 @@ const TournamentsNavigation = (
 ): JSX.Element => {
   const classes = useStyles();
   const history = useHistory();
-  const { handleDialogClose } = props;
+  const { handleDialogClose, mobileVersion } = props;
   const { database } = useContext(Context);
   const refTournaments = firebase.database().ref("tournaments");
   const refTournamentsPush = refTournaments.push();
@@ -90,49 +88,57 @@ const TournamentsNavigation = (
     }, 1500);
   };
 
-  return (
-    <div className={classes.nav}>
-      <div className={classes.navButtons}>
-        <List>
-          {navData.map((nav: INavData) => (
-            <ListItem
-              button
-              onClick={() => {
-                history.push(nav.doHistoryPush);
-                handleDialogClose && handleDialogClose();
-              }}
-              key={nav.title}
-              classes={{ root: classes.listItem }}
-            >
-              {nav.icon}
-              <ListItemText
-                className={classes.listTitle}
-                classes={{ primary: classes.listText }}
-                primary={nav.title}
-              />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
+  const navigation = (
+    <>
+      <List>
+        {navData.map((nav: INavData) => (
           <ListItem
             button
             onClick={() => {
-              createEventWithTournaments();
+              history.push(nav.doHistoryPush);
               handleDialogClose && handleDialogClose();
             }}
-            disabled={disabledButton}
+            key={nav.title}
             classes={{ root: classes.listItem }}
           >
-            <PostAddIcon fontSize="small" />
+            {nav.icon}
             <ListItemText
               className={classes.listTitle}
               classes={{ primary: classes.listText }}
-              primary={"Создать турнирную сетку"}
+              primary={nav.title}
             />
           </ListItem>
-        </List>
-      </div>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        <ListItem
+          button
+          onClick={() => {
+            createEventWithTournaments();
+            handleDialogClose && handleDialogClose();
+          }}
+          disabled={disabledButton}
+          classes={{ root: classes.listItem }}
+        >
+          <PostAddIcon fontSize="small" />
+          <ListItemText
+            className={classes.listTitle}
+            classes={{ primary: classes.listText }}
+            primary={"Создать турнирную сетку"}
+          />
+        </ListItem>
+      </List>
+    </>
+  );
+
+  if (mobileVersion) {
+    return navigation;
+  }
+
+  return (
+    <div className={classes.nav}>
+      <div className={classes.navButtons}>{navigation}</div>
     </div>
   );
 };

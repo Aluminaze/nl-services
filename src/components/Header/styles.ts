@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => {
       },
     },
     dialogBar: {
-      position: "relative",
+      backgroundColor: theme.palette.primary.main,
     },
   };
 });

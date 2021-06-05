@@ -12,9 +12,7 @@ import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
 import TournamentsNavigation from "components/TournamentsNavigation";
 import Hidden from "@material-ui/core/Hidden";
-import Toolbar from "@material-ui/core/Toolbar";
 import CloseIcon from "@material-ui/icons/Close";
-import AppBar from "@material-ui/core/AppBar";
 
 interface HeaderProps {
   user: firebase.User | null | undefined;
@@ -30,20 +28,20 @@ const Transition = React.forwardRef(function Transition(
 const Header = (props: HeaderProps): React.ReactElement => {
   const { user } = props;
   const classes = useStyles();
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isAdminDialogOpen, setIsAdminDialogOpen] = useState<boolean>(false);
 
   const LogOut = () => {
     firebase.auth().signOut();
   };
 
-  const [open, setOpen] = React.useState(false);
+  const [isNavDialogOpen, setIsNavDialogOpen] = React.useState(false);
 
   const handleClickOpen = () => {
-    setOpen(!open);
+    setIsNavDialogOpen(!isNavDialogOpen);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setIsNavDialogOpen(false);
   };
 
   return (
@@ -71,7 +69,9 @@ const Header = (props: HeaderProps): React.ReactElement => {
       {user && (
         <div className={classes.headerUserInfo}>
           {user.email === "aluminaze@gmail.com" ? (
-            <h2 onClick={() => setIsDialogOpen(!isDialogOpen)}>{user.email}</h2>
+            <h2 onClick={() => setIsAdminDialogOpen(!isAdminDialogOpen)}>
+              {user.email}
+            </h2>
           ) : (
             <h2>{user.email}</h2>
           )}
@@ -87,29 +87,22 @@ const Header = (props: HeaderProps): React.ReactElement => {
       )}
 
       <AdminDialog
-        isDialogOpen={isDialogOpen}
-        setIsDialogOpen={setIsDialogOpen}
+        isDialogOpen={isAdminDialogOpen}
+        setIsDialogOpen={setIsAdminDialogOpen}
       />
 
       <Dialog
         fullScreen
-        open={open}
+        open={isNavDialogOpen}
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar className={classes.dialogBar}>
-          <Toolbar variant="dense">
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <TournamentsNavigation handleDialogClose={handleClose} />
+        <div className={classes.dialogBar}>
+          <IconButton color="secondary" onClick={handleClose}>
+            <CloseIcon color="secondary" />
+          </IconButton>
+        </div>
+        <TournamentsNavigation handleDialogClose={handleClose} mobileVersion />
       </Dialog>
     </header>
   );
