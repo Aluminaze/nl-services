@@ -7,7 +7,7 @@ import _ from "lodash";
 import { TimeKeyStruct } from "interfacesAndTypes";
 import AlertDialog from "components/Dialogs/AlertDialog";
 import { MAX_SUM_OF_COUNTS } from "utils/constants";
-import clsx from "clsx";
+import { ButtonBlack } from "components/Buttons";
 
 interface ParticipantAddingFormProps {
   timeKey: TimeKeyStruct;
@@ -105,18 +105,14 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
 
       <div className={classes.buttonsWrapper}>
         {inputParticipantName && inputAmountOfMeat ? (
-          <Button
+          <ButtonBlack
             variant="contained"
             size="small"
-            color="primary"
             onClick={storeNewParticipant}
-          >
-            <span className={clsx(classes.btn, classes.btnLabel)}>
-              Сохранить
-            </span>
-          </Button>
+            label="Сохранить"
+          />
         ) : (
-          <Button variant="contained" size="small" color="primary" disabled>
+          <Button variant="contained" size="small" color="secondary" disabled>
             <span className={classes.btnLabel}>Сохранить</span>
           </Button>
         )}
