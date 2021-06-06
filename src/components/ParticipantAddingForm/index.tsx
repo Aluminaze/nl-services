@@ -103,15 +103,21 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
       </div>
 
       <div className={classes.buttonsWrapper}>
-        <Button
-          variant="contained"
-          size="small"
-          color="primary"
-          onClick={storeNewParticipant}
-          disabled={inputParticipantName && inputAmountOfMeat ? false : true}
-        >
-          <span className={classes.btnLabel}>Сохранить</span>
-        </Button>
+        {inputParticipantName && inputAmountOfMeat ? (
+          <Button
+            variant="contained"
+            size="small"
+            color="primary"
+            onClick={storeNewParticipant}
+          >
+            <span className={classes.btnLabel}>Сохранить</span>
+          </Button>
+        ) : (
+          <Button variant="contained" size="small" color="primary" disabled>
+            <span className={classes.btnLabel}>Сохранить</span>
+          </Button>
+        )}
+
         <Button
           variant="contained"
           size="small"
