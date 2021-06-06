@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: ".7rem",
     },
   },
+  btn: {
+    color: "white",
+  },
 }));
 
 export default useStyles;
