@@ -1,18 +1,18 @@
-interface initialURLReducerInterface {
+export interface initialURLReducerInterface {
   initialURL: string | null;
 }
 
-enum initialURLActionTypes {
+export enum initialURLActionTypes {
   SET_URL = "SET_URL",
   RESET_URL = "RESET_URL",
 }
 
-interface SetInitialURLActionInterface {
+export interface SetInitialURLActionInterface {
   type: initialURLActionTypes.SET_URL;
   payload: initialURLReducerInterface;
 }
 
-interface ResetInitialURLActionInterface {
+export interface ResetInitialURLActionInterface {
   type: initialURLActionTypes.RESET_URL;
 }
 

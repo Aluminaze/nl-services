@@ -10,6 +10,8 @@ import "firebase/database";
 import firebaseConfig from "firebaseConfig";
 import { ContextProps } from "interfacesAndTypes";
 import { ConfirmProvider } from "material-ui-confirm";
+import { Provider } from "react-redux";
+import { store } from "redux/store";
 
 const theme = createMuiTheme({
   palette: {
@@ -42,7 +44,9 @@ ReactDOM.render(
           <Context.Provider
             value={{ auth: firebase.auth(), database: firebase.database() }}
           >
-            <App />
+            <Provider store={store}>
+              <App />
+            </Provider>
           </Context.Provider>
         </ConfirmProvider>
       </MuiThemeProvider>

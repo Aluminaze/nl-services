@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import Header from "components/Header";
 import LogIn from "pages/LogIn";
@@ -7,6 +7,11 @@ import { Context } from "./index";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/rootReducer";
+import useReduxDispatch from "redux/hooks/useReduxDispatch";
+import { setInitialURLActionCreator } from "redux/reducers/actions";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -22,6 +27,18 @@ function App() {
   const classes = useStyles();
   const { auth } = useContext(Context);
   const [user, loading] = useAuthState(auth);
+
+  const location = useLocation();
+  const dispatch = useReduxDispatch();
+
+  const initialURL = useSelector<RootState>(
+    (state) => state.initialURLReducer.initialURL
+  );
+
+  useEffect(() => {
+    dispatch(setInitialURLActionCreator({ initialURL: location.pathname }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const logIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
