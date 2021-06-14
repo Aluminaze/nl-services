@@ -48,22 +48,14 @@ function App() {
     firebase.auth().signInWithPopup(provider);
   };
 
-  //
-  // TODO: Объединить в один
-  //
-  if (user) {
-    return (
-      <div className={classes.wrapper}>
-        <Header user={user} />
-        <LoggedIn user={user} />
-      </div>
-    );
-  }
-
   return (
     <div className={classes.wrapper}>
       <Header user={user} />
-      <LogIn logIn={logIn} isLoading={loading} />
+      {user ? (
+        <LoggedIn user={user} />
+      ) : (
+        <LogIn logIn={logIn} isLoading={loading} />
+      )}
     </div>
   );
 }
