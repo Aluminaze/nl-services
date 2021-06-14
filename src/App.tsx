@@ -7,7 +7,7 @@ import { Context } from "./index";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/rootReducer";
 import useReduxDispatch from "redux/hooks/useReduxDispatch";
@@ -28,6 +28,7 @@ function App() {
   const { auth } = useContext(Context);
   const [user, loading] = useAuthState(auth);
 
+  const history = useHistory();
   const location = useLocation();
   const dispatch = useReduxDispatch();
 
@@ -47,6 +48,13 @@ function App() {
     });
     firebase.auth().signInWithPopup(provider);
   };
+
+  useEffect(() => {
+    if (user?.email && initialURL) {
+      history.push(`${initialURL}`);
+      dispatch(setInitialURLActionCreator({ initialURL: null }));
+    }
+  }, [user, initialURL, history, dispatch]);
 
   return (
     <div className={classes.wrapper}>
