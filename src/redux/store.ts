@@ -1,6 +1,14 @@
 import { rootReducer } from "./rootReducer";
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
+import createSagaMiddleware from "redux-saga";
 
-export const store = createStore(rootReducer);
+import { composeWithDevTools } from "redux-devtools-extension";
+
+const sagaMiddleware = createSagaMiddleware();
+
+export const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
+);
 
 export type ReduxDispatch = typeof store.dispatch;
