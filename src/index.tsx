@@ -41,9 +41,7 @@ ReactDOM.render(
     <Router>
       <MuiThemeProvider theme={theme}>
         <ConfirmProvider>
-          <Context.Provider
-            value={{ auth: firebase.auth(), database: firebase.database() }}
-          >
+          <Context.Provider value={initContextState}>
             <Provider store={store}>
               <App />
             </Provider>

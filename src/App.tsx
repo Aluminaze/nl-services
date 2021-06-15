@@ -41,6 +41,13 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (user?.email && initialURL) {
+      history.push(`${initialURL}`);
+      dispatch(setInitialURLActionCreator({ initialURL: null }));
+    }
+  }, [user, initialURL, history, dispatch]);
+
   const logIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({
@@ -48,13 +55,6 @@ function App() {
     });
     firebase.auth().signInWithPopup(provider);
   };
-
-  useEffect(() => {
-    if (user?.email && initialURL) {
-      history.push(`${initialURL}`);
-      dispatch(setInitialURLActionCreator({ initialURL: null }));
-    }
-  }, [user, initialURL, history, dispatch]);
 
   return (
     <div className={classes.wrapper}>
