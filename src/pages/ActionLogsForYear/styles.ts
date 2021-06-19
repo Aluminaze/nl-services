@@ -2,16 +2,15 @@ import { makeStyles, Theme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    maxHeight: "100%",
     display: "flex",
     flexDirection: "column",
+    minHeight: "100%",
   },
   header: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     flexBasis: "10%",
-    margin: "0 0 15px 0",
 
     "& h1": {
       fontWeight: 500,
@@ -35,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflowY: "auto",
     borderTop: "1px solid rgba(0, 0, 0, 0.3)",
     padding: "10px 0",
+    margin: "10px 0 0 0",
   },
   list: {
     padding: "15px 0 10px 0",
