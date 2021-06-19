@@ -22,26 +22,25 @@ interface LoggedInProps {}
 
 const LoggedIn = (props: LoggedInProps) => {
   const classes = useStyles();
-  const [allEmailsOfUsers, setAllEmailsOfUsers] = useState<string[]>([]);
-  const [completeVerifyUser, setCompleteVerifyUser] = useState<boolean>(false);
 
   const { database } = useContext(Context);
   const userData = useSelector((state: RootState) => state.userReducer);
+  const [hasAccess, setHasAccess] = useState<boolean>(false);
+  const [checkingAccess, setCheckingAccess] = useState<boolean>(true);
 
   // firebase refs
   const refUsers = firebase.database().ref("users");
   const refCurrentDate = database.ref("currentDate");
 
-  const [usersData, loadingUsersData] = useListVals<UserStruct>(refUsers);
-
+  const [usersData] = useListVals<UserStruct>(refUsers);
   const [currentDate, loadingCurrentDate] =
     useObjectVal<string>(refCurrentDate);
 
   //
-  // NOTE: Collecting all user emails
+  // NOTE: Access check
   //
   useEffect(() => {
-    if (usersData) {
+    if (usersData?.length) {
       const collectedEmails: string[] = [];
 
       usersData.forEach((userData: UserStruct) => {
@@ -50,19 +49,22 @@ const LoggedIn = (props: LoggedInProps) => {
         }
       });
 
-      setAllEmailsOfUsers(collectedEmails);
-      setCompleteVerifyUser(true);
-    }
-  }, [usersData]);
+      setHasAccess(
+        !!usersData.find((user: UserStruct) => user.email === userData.email)
+      );
 
-  if (!completeVerifyUser && loadingCurrentDate && loadingUsersData) {
+      setCheckingAccess(false);
+    }
+  }, [userData.email, usersData]);
+
+  if (checkingAccess) {
     return (
       <div className={classes.contentWrapper}>
         <CircularLoader />
       </div>
     );
   } else {
-    if (allEmailsOfUsers.includes(userData.email)) {
+    if (hasAccess) {
       return (
         <div className={classes.container}>
           <Hidden smDown>
