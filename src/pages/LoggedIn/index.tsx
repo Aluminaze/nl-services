@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useListVals, useObjectVal } from "react-firebase-hooks/database";
 import Hidden from "@material-ui/core/Hidden";
-import { EMAIL_DEFAULT_VALUE } from "utils/constants";
 import { UserStruct } from "interfacesAndTypes";
 import { Context } from "index";
 import useStyles from "./styles";
