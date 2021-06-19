@@ -23,8 +23,6 @@ interface LoggedInProps {
 const LoggedIn = (props: LoggedInProps) => {
   const { user } = props;
   const classes = useStyles();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [allDataOfUsers, setAllDataOfUsers] = useState<UserStruct[]>([]);
   const [allEmailsOfUsers, setAllEmailsOfUsers] = useState<string[]>([]);
   const [completeVerifyUser, setCompleteVerifyUser] = useState<boolean>(false);
 
@@ -43,7 +41,6 @@ const LoggedIn = (props: LoggedInProps) => {
   useEffect(() => {
     if (usersData) {
       const tempAllDataOfUsers: UserStruct[] = Object.values(usersData);
-      setAllDataOfUsers(tempAllDataOfUsers);
 
       const tempAllEmailsOfUsers: string[] = [];
       tempAllDataOfUsers.forEach((userData: UserStruct) => {
