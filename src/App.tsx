@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import Header from "components/Header";
 import LogIn from "pages/LogIn";
 import LoggedIn from "pages/LoggedIn";
-import { Context } from "./index";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -11,7 +10,10 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/rootReducer";
 import useReduxDispatch from "redux/hooks/useReduxDispatch";
-import { setInitialURLActionCreator } from "redux/reducers/actions";
+import { setInitialURLActionCreator } from "redux/reducers/initialURL/actions";
+import { useListVals } from "react-firebase-hooks/database";
+import { UserStruct } from "interfacesAndTypes";
+import { setUserActionCreator } from "redux/reducers/user/actions";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -25,16 +27,34 @@ const useStyles = makeStyles(() => ({
 
 function App() {
   const classes = useStyles();
-  const { auth } = useContext(Context);
-  const [user, loading] = useAuthState(auth);
-
   const history = useHistory();
   const location = useLocation();
   const dispatch = useReduxDispatch();
 
+  const [user, loadingUser] = useAuthState(firebase.auth());
+  const refUsers = firebase.database().ref("users");
+  const [usersData, loadingUsersData] = useListVals<UserStruct>(refUsers);
   const initialURL = useSelector<RootState>(
     (state) => state.initialURLReducer.initialURL
   );
+  const authorizedUserData = useSelector<RootState>(
+    (state) => state.userReducer
+  );
+
+  //
+  // NOTE: SET USER AFTER SUCCESS LOGIN
+  //
+  useEffect(() => {
+    if (!loadingUser && user && !loadingUsersData && usersData?.length) {
+      const loggedInUserData: UserStruct | undefined = usersData.find(
+        (userData: UserStruct) => userData.email === user.email
+      );
+
+      if (loggedInUserData) {
+        dispatch(setUserActionCreator(loggedInUserData));
+      }
+    }
+  }, [dispatch, loadingUser, loadingUsersData, user, usersData]);
 
   useEffect(() => {
     dispatch(setInitialURLActionCreator({ initialURL: location.pathname }));
@@ -62,7 +82,7 @@ function App() {
       {user ? (
         <LoggedIn user={user} />
       ) : (
-        <LogIn logIn={logIn} isLoading={loading} />
+        <LogIn logIn={logIn} isLoading={loadingUser} />
       )}
     </div>
   );
