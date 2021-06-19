@@ -34,12 +34,13 @@ function App() {
   const [user, loadingUser] = useAuthState(firebase.auth());
   const refUsers = firebase.database().ref("users");
   const [usersData, loadingUsersData] = useListVals<UserStruct>(refUsers);
-  const initialURL = useSelector<RootState>(
-    (state) => state.initialURLReducer.initialURL
+  const initialURL = useSelector(
+    (state: RootState) => state.initialURLReducer.initialURL
   );
-  const authorizedUserData = useSelector<RootState>(
-    (state) => state.userReducer
+  const authorizedUserData = useSelector(
+    (state: RootState) => state.userReducer
   );
+  console.log("~ authorizedUserData", authorizedUserData);
 
   //
   // NOTE: SET USER AFTER SUCCESS LOGIN
@@ -51,22 +52,33 @@ function App() {
       );
 
       if (loggedInUserData) {
-        dispatch(setUserActionCreator(loggedInUserData));
+        dispatch(
+          setUserActionCreator({
+            ...loggedInUserData,
+            isAuthorized: true,
+          })
+        );
       }
     }
   }, [dispatch, loadingUser, loadingUsersData, user, usersData]);
 
+  //
+  // NOTE: SAVE INCOMING URL PATH FOR FUTURE REDIRECT
+  //
   useEffect(() => {
     dispatch(setInitialURLActionCreator({ initialURL: location.pathname }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //
+  // NOTE: REDIRECT LOGIC AFTER SUCCESS LOGIN
+  //
   useEffect(() => {
-    if (user?.email && initialURL) {
+    if (authorizedUserData.email && initialURL) {
       history.push(`${initialURL}`);
       dispatch(setInitialURLActionCreator({ initialURL: null }));
     }
-  }, [user, initialURL, history, dispatch]);
+  }, [authorizedUserData.email, dispatch, history, initialURL]);
 
   const logIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();

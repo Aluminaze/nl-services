@@ -1,12 +1,17 @@
 import { UserStruct } from "interfacesAndTypes";
 
-const initialState: UserStruct = {
+export interface UserReducerInterface extends UserStruct {
+  isAuthorized: boolean;
+}
+
+const initialState: UserReducerInterface = {
   id: "",
   name: "",
   score: 0,
   email: "",
   tournaments: false,
   sieges: false,
+  isAuthorized: false,
 };
 
 export enum userActionTypes {
@@ -17,7 +22,7 @@ export enum userActionTypes {
 
 export interface SetUserActionInterface {
   type: userActionTypes.SET_USER;
-  payload: UserStruct;
+  payload: UserReducerInterface;
 }
 
 export interface ResetUserActionInterface {
@@ -37,7 +42,7 @@ type UserActions =
 export const userReducer = (
   state = initialState,
   action: UserActions
-): UserStruct => {
+): UserReducerInterface => {
   switch (action.type) {
     case userActionTypes.SET_USER:
       return {
@@ -48,6 +53,7 @@ export const userReducer = (
         email: action.payload.email,
         tournaments: action.payload.tournaments,
         sieges: action.payload.sieges,
+        isAuthorized: action.payload.isAuthorized,
       };
     case userActionTypes.RESET_USER:
       return {
@@ -58,6 +64,7 @@ export const userReducer = (
         email: "",
         tournaments: false,
         sieges: false,
+        isAuthorized: false,
       };
     case userActionTypes.UPDATE_SCORE:
       return {

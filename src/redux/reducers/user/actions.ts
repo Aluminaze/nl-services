@@ -1,8 +1,11 @@
-import { UserStruct } from "interfacesAndTypes";
-import { SetUserActionInterface, userActionTypes } from "./userReducer";
+import {
+  SetUserActionInterface,
+  userActionTypes,
+  UserReducerInterface,
+} from "./userReducer";
 
 export const setUserActionCreator = (
-  payload: UserStruct
+  payload: UserReducerInterface
 ): SetUserActionInterface => ({
   type: userActionTypes.SET_USER,
   payload,
