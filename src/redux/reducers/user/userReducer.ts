@@ -9,22 +9,22 @@ const initialState: UserStruct = {
   sieges: false,
 };
 
-enum userActionTypes {
+export enum userActionTypes {
   SET_USER = "SET_USER",
   RESET_USER = "RESET_USER",
   UPDATE_SCORE = "UPDATE_SCORE",
 }
 
-interface SetUserActionInterface {
+export interface SetUserActionInterface {
   type: userActionTypes.SET_USER;
   payload: UserStruct;
 }
 
-interface ResetUserActionInterface {
+export interface ResetUserActionInterface {
   type: userActionTypes.RESET_USER;
 }
 
-interface UpdateScoreActionInterface {
+export interface UpdateScoreActionInterface {
   type: userActionTypes.UPDATE_SCORE;
   payload: number;
 }
