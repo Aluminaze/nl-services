@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import Header from "components/Header";
 import LogIn from "pages/LogIn";
@@ -29,7 +29,8 @@ function App() {
   const location = useLocation();
   const dispatch = useReduxDispatch();
 
-  const [user, loadingUser] = useAuthState(firebase.auth());
+  const [appInitCompleted, setAppInitCompleted] = useState<boolean>(false);
+  const [user] = useAuthState(firebase.auth());
   const initialURL = useSelector(
     (state: RootState) => state.initialURLReducer.initialURL
   );
@@ -48,6 +49,7 @@ function App() {
           isAuthorized: true,
         })
       );
+      setAppInitCompleted(true);
     }
   }, [dispatch, user]);
 
@@ -83,7 +85,7 @@ function App() {
       {userData.isAuthorized ? (
         <LoggedIn />
       ) : (
-        <LogIn logIn={logIn} isLoading={loadingUser} />
+        <LogIn logIn={logIn} appInitCompleted={appInitCompleted} />
       )}
     </div>
   );
