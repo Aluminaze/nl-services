@@ -81,7 +81,7 @@ function App() {
     <div className={classes.wrapper}>
       <Header />
       {userData.isAuthorized ? (
-        <LoggedIn user={user} />
+        <LoggedIn />
       ) : (
         <LogIn logIn={logIn} isLoading={loadingUser} />
       )}

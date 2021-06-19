@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { useObjectVal } from "react-firebase-hooks/database";
+import { useListVals, useObjectVal } from "react-firebase-hooks/database";
 import Hidden from "@material-ui/core/Hidden";
 import { EMAIL_DEFAULT_VALUE } from "utils/constants";
 import { UserStruct } from "interfacesAndTypes";
@@ -15,52 +15,54 @@ import TournamentsNavigation from "components/TournamentsNavigation";
 import CircularLoader from "components/CircularLoader";
 import firebase from "firebase/app";
 import "firebase/database";
+import { RootState } from "redux/rootReducer";
+import { useSelector } from "react-redux";
 
-interface LoggedInProps {
-  user: firebase.User | null | undefined;
-}
+interface LoggedInProps {}
 
 const LoggedIn = (props: LoggedInProps) => {
-  const { user } = props;
   const classes = useStyles();
   const [allEmailsOfUsers, setAllEmailsOfUsers] = useState<string[]>([]);
   const [completeVerifyUser, setCompleteVerifyUser] = useState<boolean>(false);
 
   const { database } = useContext(Context);
+  const userData = useSelector((state: RootState) => state.userReducer);
 
   // firebase refs
-  const refUsers = database.ref("users");
+  const refUsers = firebase.database().ref("users");
   const refCurrentDate = database.ref("currentDate");
-  const [usersData] =
-    useObjectVal<{
-      [key: string]: UserStruct;
-    }>(refUsers);
+
+  const [usersData, loadingUsersData] = useListVals<UserStruct>(refUsers);
+
   const [currentDate, loadingCurrentDate] =
     useObjectVal<string>(refCurrentDate);
 
+  //
+  // NOTE: Collecting all user emails
+  //
   useEffect(() => {
     if (usersData) {
-      const tempAllDataOfUsers: UserStruct[] = Object.values(usersData);
+      const collectedEmails: string[] = [];
 
-      const tempAllEmailsOfUsers: string[] = [];
-      tempAllDataOfUsers.forEach((userData: UserStruct) => {
+      usersData.forEach((userData: UserStruct) => {
         if (userData.email !== EMAIL_DEFAULT_VALUE) {
-          tempAllEmailsOfUsers.push(userData.email);
+          collectedEmails.push(userData.email);
         }
       });
-      setAllEmailsOfUsers(tempAllEmailsOfUsers);
+
+      setAllEmailsOfUsers(collectedEmails);
       setCompleteVerifyUser(true);
     }
   }, [usersData]);
 
-  if (!completeVerifyUser && loadingCurrentDate) {
+  if (!completeVerifyUser && loadingCurrentDate && loadingUsersData) {
     return (
       <div className={classes.contentWrapper}>
         <CircularLoader />
       </div>
     );
   } else {
-    if (user && user.email && allEmailsOfUsers.includes(user.email)) {
+    if (allEmailsOfUsers.includes(userData.email)) {
       return (
         <div className={classes.container}>
           <Hidden smDown>
