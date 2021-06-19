@@ -41,14 +41,6 @@ const LoggedIn = (props: LoggedInProps) => {
   //
   useEffect(() => {
     if (usersData?.length) {
-      const collectedEmails: string[] = [];
-
-      usersData.forEach((userData: UserStruct) => {
-        if (userData.email !== EMAIL_DEFAULT_VALUE) {
-          collectedEmails.push(userData.email);
-        }
-      });
-
       setHasAccess(
         !!usersData.find((user: UserStruct) => user.email === userData.email)
       );
