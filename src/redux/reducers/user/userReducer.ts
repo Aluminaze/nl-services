@@ -46,7 +46,6 @@ export const userReducer = (
   switch (action.type) {
     case userActionTypes.SET_USER:
       return {
-        ...state,
         id: action.payload.id,
         name: action.payload.name,
         score: action.payload.score,
@@ -57,7 +56,6 @@ export const userReducer = (
       };
     case userActionTypes.RESET_USER:
       return {
-        ...state,
         id: "",
         name: "",
         score: 0,

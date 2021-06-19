@@ -10,3 +10,7 @@ export const setUserActionCreator = (
   type: userActionTypes.SET_USER,
   payload,
 });
+
+export const resetUserActionCreator = () => ({
+  type: userActionTypes.RESET_USER,
+});
