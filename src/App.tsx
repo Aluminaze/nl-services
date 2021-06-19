@@ -11,8 +11,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "redux/rootReducer";
 import useReduxDispatch from "redux/hooks/useReduxDispatch";
 import { setInitialURLActionCreator } from "redux/reducers/initialURL/actions";
-import { useListVals } from "react-firebase-hooks/database";
-import { UserStruct } from "interfacesAndTypes";
 import { setUserActionCreator } from "redux/reducers/user/actions";
 
 const useStyles = makeStyles(() => ({
@@ -32,35 +30,26 @@ function App() {
   const dispatch = useReduxDispatch();
 
   const [user, loadingUser] = useAuthState(firebase.auth());
-  const refUsers = firebase.database().ref("users");
-  const [usersData, loadingUsersData] = useListVals<UserStruct>(refUsers);
   const initialURL = useSelector(
     (state: RootState) => state.initialURLReducer.initialURL
   );
-  const authorizedUserData = useSelector(
-    (state: RootState) => state.userReducer
-  );
-  console.log("~ authorizedUserData", authorizedUserData);
+
+  const userData = useSelector((state: RootState) => state.userReducer);
 
   //
   // NOTE: SET USER AFTER SUCCESS LOGIN
   //
   useEffect(() => {
-    if (!loadingUser && user && !loadingUsersData && usersData?.length) {
-      const loggedInUserData: UserStruct | undefined = usersData.find(
-        (userData: UserStruct) => userData.email === user.email
+    if (user && user.email && user.displayName) {
+      dispatch(
+        setUserActionCreator({
+          email: user.email,
+          name: user.displayName,
+          isAuthorized: true,
+        })
       );
-
-      if (loggedInUserData) {
-        dispatch(
-          setUserActionCreator({
-            ...loggedInUserData,
-            isAuthorized: true,
-          })
-        );
-      }
     }
-  }, [dispatch, loadingUser, loadingUsersData, user, usersData]);
+  }, [dispatch, user]);
 
   //
   // NOTE: SAVE INCOMING URL PATH FOR FUTURE REDIRECT
@@ -74,11 +63,11 @@ function App() {
   // NOTE: REDIRECT LOGIC AFTER SUCCESS LOGIN
   //
   useEffect(() => {
-    if (authorizedUserData.email && initialURL) {
+    if (userData.email && initialURL) {
       history.push(`${initialURL}`);
       dispatch(setInitialURLActionCreator({ initialURL: null }));
     }
-  }, [authorizedUserData.email, dispatch, history, initialURL]);
+  }, [userData.email, dispatch, history, initialURL]);
 
   const logIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -90,8 +79,8 @@ function App() {
 
   return (
     <div className={classes.wrapper}>
-      <Header user={user} />
-      {user ? (
+      <Header />
+      {userData.isAuthorized ? (
         <LoggedIn user={user} />
       ) : (
         <LogIn logIn={logIn} isLoading={loadingUser} />

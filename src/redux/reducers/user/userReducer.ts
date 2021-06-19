@@ -1,23 +1,18 @@
-import { UserStruct } from "interfacesAndTypes";
-
-export interface UserReducerInterface extends UserStruct {
+export interface UserReducerInterface {
+  email: string;
+  name: string;
   isAuthorized: boolean;
 }
 
 const initialState: UserReducerInterface = {
-  id: "",
-  name: "",
-  score: 0,
   email: "",
-  tournaments: false,
-  sieges: false,
+  name: "",
   isAuthorized: false,
 };
 
 export enum userActionTypes {
   SET_USER = "SET_USER",
   RESET_USER = "RESET_USER",
-  UPDATE_SCORE = "UPDATE_SCORE",
 }
 
 export interface SetUserActionInterface {
@@ -29,15 +24,7 @@ export interface ResetUserActionInterface {
   type: userActionTypes.RESET_USER;
 }
 
-export interface UpdateScoreActionInterface {
-  type: userActionTypes.UPDATE_SCORE;
-  payload: number;
-}
-
-type UserActions =
-  | SetUserActionInterface
-  | ResetUserActionInterface
-  | UpdateScoreActionInterface;
+type UserActions = SetUserActionInterface | ResetUserActionInterface;
 
 export const userReducer = (
   state = initialState,
@@ -46,28 +33,15 @@ export const userReducer = (
   switch (action.type) {
     case userActionTypes.SET_USER:
       return {
-        id: action.payload.id,
-        name: action.payload.name,
-        score: action.payload.score,
         email: action.payload.email,
-        tournaments: action.payload.tournaments,
-        sieges: action.payload.sieges,
+        name: action.payload.name,
         isAuthorized: action.payload.isAuthorized,
       };
     case userActionTypes.RESET_USER:
       return {
-        id: "",
-        name: "",
-        score: 0,
         email: "",
-        tournaments: false,
-        sieges: false,
+        name: "",
         isAuthorized: false,
-      };
-    case userActionTypes.UPDATE_SCORE:
-      return {
-        ...state,
-        score: action.payload,
       };
     default:
       return state;
