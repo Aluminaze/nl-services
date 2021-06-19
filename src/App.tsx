@@ -37,7 +37,7 @@ function App() {
   const userData = useSelector((state: RootState) => state.userReducer);
 
   //
-  // NOTE: SET USER AFTER SUCCESS LOGIN
+  // NOTE: Add user to store after success login
   //
   useEffect(() => {
     if (user && user.email && user.displayName) {
@@ -52,7 +52,7 @@ function App() {
   }, [dispatch, user]);
 
   //
-  // NOTE: SAVE INCOMING URL PATH FOR FUTURE REDIRECT
+  // NOTE: Save incoming url path for redirect
   //
   useEffect(() => {
     dispatch(setInitialURLActionCreator({ initialURL: location.pathname }));
@@ -60,7 +60,7 @@ function App() {
   }, []);
 
   //
-  // NOTE: REDIRECT LOGIC AFTER SUCCESS LOGIN
+  // NOTE: Redirect logic after success login
   //
   useEffect(() => {
     if (userData.email && initialURL) {
@@ -69,7 +69,7 @@ function App() {
     }
   }, [userData.email, dispatch, history, initialURL]);
 
-  const logIn = () => {
+  const logIn = (): void => {
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({
       prompt: "select_account",
