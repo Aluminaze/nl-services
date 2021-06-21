@@ -17,6 +17,7 @@ import getUserNameById from "utils/getUserNameById";
 import InfoIcon from "@material-ui/icons/Info";
 import ActionLogsDialog from "components/Dialogs/ActionLogsDialog";
 import getCurrentDate from "utils/getCurrentDate";
+import useUser from "redux/hooks/useUser";
 
 interface TournamentAtTimeProps {
   tournamentDateId: string;
@@ -36,7 +37,8 @@ const ACTION_LOG_TYPE_UNSET_WINNER: string = "UNSET_WNNER";
 const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const { tournamentDateId, timeKey, tournamentSnapshot, participants } = props;
   const classes = useStyles();
-  const { database, auth } = useContext(Context);
+  const { database } = useContext(Context);
+  const userData = useUser();
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [selectedParticipantNames, setSelectedParticipantNames] = useState<
     string[]
@@ -293,8 +295,9 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
 
     if (usersValData) {
       const findedUser: UserStruct | undefined = usersValData.find(
-        (userData: UserStruct) => userData.email === auth.currentUser?.email
+        (user: UserStruct) => user.email === userData.email
       );
+      console.log("~ findedUser", findedUser);
 
       if (findedUser) {
         const tournamentActionLog: string = `в турнире [${tournamentDateId} ${getTimeByTimeKey(
