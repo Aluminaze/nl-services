@@ -7,12 +7,11 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/rootReducer";
 import useReduxDispatch from "redux/hooks/useReduxDispatch";
 import { setInitialURLActionCreator } from "redux/reducers/initialURL/actions";
 import { setUserActionCreator } from "redux/reducers/user/actions";
 import useUser from "redux/hooks/useUser";
+import useInitialURL from "redux/hooks/useInitialURL";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -32,9 +31,7 @@ function App() {
 
   const [appInitCompleted, setAppInitCompleted] = useState<boolean>(false);
   const [user] = useAuthState(firebase.auth());
-  const initialURL = useSelector(
-    (state: RootState) => state.initialURLReducer.initialURL
-  );
+  const initialURL = useInitialURL();
   const userData = useUser();
 
   //
