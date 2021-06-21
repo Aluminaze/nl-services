@@ -1,4 +1,3 @@
-import firebase from "firebase/app";
 import {
   TIME_KEY_11,
   TIME_KEY_15,
@@ -9,11 +8,6 @@ import {
 //
 // INTERFACES
 //
-export interface ContextProps {
-  auth: firebase.auth.Auth;
-  database: firebase.database.Database;
-}
-
 export interface ParticipantInfoStruct {
   id: string;
   count: number;

@@ -7,11 +7,11 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/rootReducer";
 import useReduxDispatch from "redux/hooks/useReduxDispatch";
 import { setInitialURLActionCreator } from "redux/reducers/initialURL/actions";
 import { setUserActionCreator } from "redux/reducers/user/actions";
+import useUser from "redux/hooks/useUser";
+import useInitialURL from "redux/hooks/useInitialURL";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -30,12 +30,18 @@ function App() {
   const dispatch = useReduxDispatch();
 
   const [appInitCompleted, setAppInitCompleted] = useState<boolean>(false);
-  const [user] = useAuthState(firebase.auth());
-  const initialURL = useSelector(
-    (state: RootState) => state.initialURLReducer.initialURL
-  );
+  const [user, loadingUser] = useAuthState(firebase.auth());
+  const initialURL = useInitialURL();
+  const userData = useUser();
 
-  const userData = useSelector((state: RootState) => state.userReducer);
+  //
+  // NOTE: Change init app status
+  //
+  useEffect(() => {
+    if (!loadingUser) {
+      setAppInitCompleted(true);
+    }
+  }, [loadingUser]);
 
   //
   // NOTE: Add user to store after success login

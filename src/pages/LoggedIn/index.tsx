@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useListVals, useObjectVal } from "react-firebase-hooks/database";
 import Hidden from "@material-ui/core/Hidden";
 import { UserStruct } from "interfacesAndTypes";
-import { Context } from "index";
 import useStyles from "./styles";
 import Home from "pages/Home";
 import Tournament from "pages/Tournament";
@@ -14,21 +13,20 @@ import TournamentsNavigation from "components/TournamentsNavigation";
 import CircularLoader from "components/CircularLoader";
 import firebase from "firebase/app";
 import "firebase/database";
-import { RootState } from "redux/rootReducer";
-import { useSelector } from "react-redux";
+import useUser from "redux/hooks/useUser";
 
 interface LoggedInProps {}
 
 const LoggedIn = (props: LoggedInProps) => {
   const classes = useStyles();
 
-  const { database } = useContext(Context);
-  const userData = useSelector((state: RootState) => state.userReducer);
+  const database = firebase.database();
+  const userData = useUser();
   const [hasAccess, setHasAccess] = useState<boolean>(false);
   const [checkingAccess, setCheckingAccess] = useState<boolean>(true);
 
   // firebase refs
-  const refUsers = firebase.database().ref("users");
+  const refUsers = database.ref("users");
   const refCurrentDate = database.ref("currentDate");
 
   const [usersData] = useListVals<UserStruct>(refUsers);

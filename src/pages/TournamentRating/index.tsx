@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
-import { Context } from "index";
+import React from "react";
 import { UserStruct } from "interfacesAndTypes";
 import { useObjectVal } from "react-firebase-hooks/database";
 import useStyles from "./styles";
 import clsx from "clsx";
 import CircularLoader from "components/CircularLoader";
+import firebase from "firebase";
 
 const TournamentRating = () => {
   const classes = useStyles();
-  const { database } = useContext(Context);
+  const database = firebase.database();
 
   // firebase refs
   const refRatingUsers = database.ref("users");

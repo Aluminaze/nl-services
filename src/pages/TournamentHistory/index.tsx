@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Context } from "index";
+import React, { useEffect, useState } from "react";
 import { useList } from "react-firebase-hooks/database";
 import useStyles from "./styles";
 import { TournamentStruct } from "interfacesAndTypes";
@@ -15,10 +14,11 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import firebase from "firebase";
 
 const TournamentHistory = () => {
   const classes = useStyles();
-  const { database } = useContext(Context);
+  const database = firebase.database();
   const [tournamentFullDate, setTournamentFullDate] =
     useState<Date | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>("");

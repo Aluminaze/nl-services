@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { Context } from "index";
+import React from "react";
 import { useObjectVal } from "react-firebase-hooks/database";
 import useStyles from "./styles";
+import firebase from "firebase";
 
 const ActionLogsForYear = () => {
   const classes = useStyles();
-  const { database } = useContext(Context);
+  const database = firebase.database();
   const currentYear: number = new Date().getFullYear();
 
   // firebase refs
