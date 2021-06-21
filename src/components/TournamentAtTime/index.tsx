@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import ParticipantAddingForm from "components/ParticipantAddingForm";
 import RenderParticipants from "components/RenderParticipants";
@@ -10,7 +10,6 @@ import {
   UserStruct,
 } from "interfacesAndTypes";
 import getTimeByTimeKey from "utils/getTimeByTimeKey";
-import { Context } from "index";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { MAX_SUM_OF_COUNTS, WINNER_ID_DEF_VALUE } from "utils/constants";
 import getUserNameById from "utils/getUserNameById";
@@ -18,6 +17,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import ActionLogsDialog from "components/Dialogs/ActionLogsDialog";
 import getCurrentDate from "utils/getCurrentDate";
 import useUser from "redux/hooks/useUser";
+import firebase from "firebase";
 
 interface TournamentAtTimeProps {
   tournamentDateId: string;
@@ -37,7 +37,7 @@ const ACTION_LOG_TYPE_UNSET_WINNER: string = "UNSET_WNNER";
 const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const { tournamentDateId, timeKey, tournamentSnapshot, participants } = props;
   const classes = useStyles();
-  const { database } = useContext(Context);
+  const database = firebase.database();
   const userData = useUser();
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [selectedParticipantNames, setSelectedParticipantNames] = useState<
