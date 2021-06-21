@@ -30,9 +30,18 @@ function App() {
   const dispatch = useReduxDispatch();
 
   const [appInitCompleted, setAppInitCompleted] = useState<boolean>(false);
-  const [user] = useAuthState(firebase.auth());
+  const [user, loadingUser] = useAuthState(firebase.auth());
   const initialURL = useInitialURL();
   const userData = useUser();
+
+  //
+  // NOTE: Change init app status
+  //
+  useEffect(() => {
+    if (!loadingUser) {
+      setAppInitCompleted(true);
+    }
+  }, [loadingUser]);
 
   //
   // NOTE: Add user to store after success login
