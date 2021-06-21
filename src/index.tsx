@@ -8,7 +8,6 @@ import reportWebVitals from "./reportWebVitals";
 import firebase from "firebase/app";
 import "firebase/database";
 import firebaseConfig from "firebaseConfig";
-import { ContextProps } from "interfacesAndTypes";
 import { ConfirmProvider } from "material-ui-confirm";
 import { Provider } from "react-redux";
 import { store } from "redux/store";
@@ -26,26 +25,14 @@ const theme = createMuiTheme({
 
 firebase.initializeApp(firebaseConfig);
 
-//
-// CONTEXT
-//
-const initContextState: ContextProps = {
-  auth: firebase.auth(),
-  database: firebase.database(),
-};
-
-export const Context = React.createContext<ContextProps>(initContextState);
-
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <MuiThemeProvider theme={theme}>
         <ConfirmProvider>
-          <Context.Provider value={initContextState}>
-            <Provider store={store}>
-              <App />
-            </Provider>
-          </Context.Provider>
+          <Provider store={store}>
+            <App />
+          </Provider>
         </ConfirmProvider>
       </MuiThemeProvider>
     </Router>
