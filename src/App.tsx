@@ -12,6 +12,7 @@ import { RootState } from "redux/rootReducer";
 import useReduxDispatch from "redux/hooks/useReduxDispatch";
 import { setInitialURLActionCreator } from "redux/reducers/initialURL/actions";
 import { setUserActionCreator } from "redux/reducers/user/actions";
+import useUser from "redux/hooks/useUser";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -34,8 +35,7 @@ function App() {
   const initialURL = useSelector(
     (state: RootState) => state.initialURLReducer.initialURL
   );
-
-  const userData = useSelector((state: RootState) => state.userReducer);
+  const userData = useUser();
 
   //
   // NOTE: Add user to store after success login

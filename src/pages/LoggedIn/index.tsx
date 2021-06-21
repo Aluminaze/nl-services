@@ -14,8 +14,7 @@ import TournamentsNavigation from "components/TournamentsNavigation";
 import CircularLoader from "components/CircularLoader";
 import firebase from "firebase/app";
 import "firebase/database";
-import { RootState } from "redux/rootReducer";
-import { useSelector } from "react-redux";
+import useUser from "redux/hooks/useUser";
 
 interface LoggedInProps {}
 
@@ -23,7 +22,7 @@ const LoggedIn = (props: LoggedInProps) => {
   const classes = useStyles();
 
   const { database } = useContext(Context);
-  const userData = useSelector((state: RootState) => state.userReducer);
+  const userData = useUser();
   const [hasAccess, setHasAccess] = useState<boolean>(false);
   const [checkingAccess, setCheckingAccess] = useState<boolean>(true);
 
