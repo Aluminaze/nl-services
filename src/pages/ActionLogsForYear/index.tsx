@@ -12,9 +12,9 @@ const ActionLogsForYear = () => {
   const refActionLogsForYear = database.ref("actionLogs" + currentYear);
 
   // firebase data
-  const [actionLogsForYear] = useObjectVal<{ [key: string]: string }>(
-    refActionLogsForYear.limitToLast(100)
-  );
+  const [actionLogsForYear, loadtionActionLogsForYear] = useObjectVal<{
+    [key: string]: string;
+  }>(refActionLogsForYear.limitToLast(100));
   const actionLogsForYearData: string[] = actionLogsForYear
     ? Object.values(actionLogsForYear).reverse()
     : [];
@@ -25,19 +25,21 @@ const ActionLogsForYear = () => {
         <h1>Журнал событий</h1>
       </header>
 
-      <div className={classes.listWrapper}>
-        {actionLogsForYearData?.length ? (
-          <ul className={classes.list}>
-            {actionLogsForYearData.map((actionLog: string, index: number) => (
-              <li key={index}>{actionLog}</li>
-            ))}
-          </ul>
-        ) : (
-          <ul className={classes.list}>
-            <li>Записей нету</li>
-          </ul>
-        )}
-      </div>
+      {!loadtionActionLogsForYear && (
+        <div className={classes.listWrapper}>
+          {actionLogsForYearData?.length ? (
+            <ul className={classes.list}>
+              {actionLogsForYearData.map((actionLog: string, index: number) => (
+                <li key={index}>{actionLog}</li>
+              ))}
+            </ul>
+          ) : (
+            <ul className={classes.list}>
+              <li>Записей нету</li>
+            </ul>
+          )}
+        </div>
+      )}
     </section>
   );
 };

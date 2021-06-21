@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { useObjectVal } from "react-firebase-hooks/database";
+import { useListVals, useObjectVal } from "react-firebase-hooks/database";
 import Hidden from "@material-ui/core/Hidden";
-import { EMAIL_DEFAULT_VALUE } from "utils/constants";
 import { UserStruct } from "interfacesAndTypes";
 import { Context } from "index";
 import useStyles from "./styles";
@@ -15,55 +14,48 @@ import TournamentsNavigation from "components/TournamentsNavigation";
 import CircularLoader from "components/CircularLoader";
 import firebase from "firebase/app";
 import "firebase/database";
+import { RootState } from "redux/rootReducer";
+import { useSelector } from "react-redux";
 
-interface LoggedInProps {
-  user: firebase.User | null | undefined;
-}
+interface LoggedInProps {}
 
 const LoggedIn = (props: LoggedInProps) => {
-  const { user } = props;
   const classes = useStyles();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [allDataOfUsers, setAllDataOfUsers] = useState<UserStruct[]>([]);
-  const [allEmailsOfUsers, setAllEmailsOfUsers] = useState<string[]>([]);
-  const [completeVerifyUser, setCompleteVerifyUser] = useState<boolean>(false);
 
   const { database } = useContext(Context);
+  const userData = useSelector((state: RootState) => state.userReducer);
+  const [hasAccess, setHasAccess] = useState<boolean>(false);
+  const [checkingAccess, setCheckingAccess] = useState<boolean>(true);
 
   // firebase refs
-  const refUsers = database.ref("users");
+  const refUsers = firebase.database().ref("users");
   const refCurrentDate = database.ref("currentDate");
-  const [usersData] =
-    useObjectVal<{
-      [key: string]: UserStruct;
-    }>(refUsers);
+
+  const [usersData] = useListVals<UserStruct>(refUsers);
   const [currentDate, loadingCurrentDate] =
     useObjectVal<string>(refCurrentDate);
 
+  //
+  // NOTE: Access check
+  //
   useEffect(() => {
-    if (usersData) {
-      const tempAllDataOfUsers: UserStruct[] = Object.values(usersData);
-      setAllDataOfUsers(tempAllDataOfUsers);
+    if (usersData?.length) {
+      setHasAccess(
+        !!usersData.find((user: UserStruct) => user.email === userData.email)
+      );
 
-      const tempAllEmailsOfUsers: string[] = [];
-      tempAllDataOfUsers.forEach((userData: UserStruct) => {
-        if (userData.email !== EMAIL_DEFAULT_VALUE) {
-          tempAllEmailsOfUsers.push(userData.email);
-        }
-      });
-      setAllEmailsOfUsers(tempAllEmailsOfUsers);
-      setCompleteVerifyUser(true);
+      setCheckingAccess(false);
     }
-  }, [usersData]);
+  }, [userData.email, usersData]);
 
-  if (!completeVerifyUser && loadingCurrentDate) {
+  if (checkingAccess) {
     return (
       <div className={classes.contentWrapper}>
         <CircularLoader />
       </div>
     );
   } else {
-    if (user && user.email && allEmailsOfUsers.includes(user.email)) {
+    if (hasAccess) {
       return (
         <div className={classes.container}>
           <Hidden smDown>

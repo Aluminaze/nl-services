@@ -5,12 +5,12 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import CircularLoader from "components/CircularLoader";
 
 interface LogInProps {
-  isLoading: boolean;
+  appInitCompleted: boolean;
   logIn: () => void;
 }
 
 const LogIn = (props: LogInProps) => {
-  const { isLoading, logIn } = props;
+  const { appInitCompleted, logIn } = props;
   const classes = useStyles();
 
   return (
@@ -18,9 +18,7 @@ const LogIn = (props: LogInProps) => {
       <article className={classes.content}>
         <Switch>
           <Route exact path="/">
-            {isLoading ? (
-              <CircularLoader />
-            ) : (
+            {appInitCompleted ? (
               <section className={classes.authBlock}>
                 <div className={classes.authBlockHeader}>
                   <h1>Для начала работы</h1>
@@ -35,6 +33,8 @@ const LogIn = (props: LogInProps) => {
                   Войти
                 </Button>
               </section>
+            ) : (
+              <CircularLoader />
             )}
           </Route>
 

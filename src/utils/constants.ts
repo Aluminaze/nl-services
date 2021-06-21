@@ -7,6 +7,5 @@ export const TIME_KEY_19: string = "time19";
 export const TIME_KEY_23: string = "time23";
 
 export const WINNER_ID_DEF_VALUE: string = "unknown";
-export const EMAIL_DEFAULT_VALUE: string = "unknown";
 
 export const MAX_SUM_OF_COUNTS: number = 16;

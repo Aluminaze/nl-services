@@ -1,12 +1,17 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import Header from "components/Header";
 import LogIn from "pages/LogIn";
 import LoggedIn from "pages/LoggedIn";
-import { Context } from "./index";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useHistory, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/rootReducer";
+import useReduxDispatch from "redux/hooks/useReduxDispatch";
+import { setInitialURLActionCreator } from "redux/reducers/initialURL/actions";
+import { setUserActionCreator } from "redux/reducers/user/actions";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -20,10 +25,53 @@ const useStyles = makeStyles(() => ({
 
 function App() {
   const classes = useStyles();
-  const { auth } = useContext(Context);
-  const [user, loading] = useAuthState(auth);
+  const history = useHistory();
+  const location = useLocation();
+  const dispatch = useReduxDispatch();
 
-  const logIn = () => {
+  const [appInitCompleted, setAppInitCompleted] = useState<boolean>(false);
+  const [user] = useAuthState(firebase.auth());
+  const initialURL = useSelector(
+    (state: RootState) => state.initialURLReducer.initialURL
+  );
+
+  const userData = useSelector((state: RootState) => state.userReducer);
+
+  //
+  // NOTE: Add user to store after success login
+  //
+  useEffect(() => {
+    if (user && user.email && user.displayName) {
+      dispatch(
+        setUserActionCreator({
+          email: user.email,
+          name: user.displayName,
+          isAuthorized: true,
+        })
+      );
+      setAppInitCompleted(true);
+    }
+  }, [dispatch, user]);
+
+  //
+  // NOTE: Save incoming url path for redirect
+  //
+  useEffect(() => {
+    dispatch(setInitialURLActionCreator({ initialURL: location.pathname }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //
+  // NOTE: Redirect logic after success login
+  //
+  useEffect(() => {
+    if (userData.email && initialURL) {
+      history.push(`${initialURL}`);
+      dispatch(setInitialURLActionCreator({ initialURL: null }));
+    }
+  }, [userData.email, dispatch, history, initialURL]);
+
+  const logIn = (): void => {
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({
       prompt: "select_account",
@@ -31,22 +79,14 @@ function App() {
     firebase.auth().signInWithPopup(provider);
   };
 
-  //
-  // TODO: Объединить в один
-  //
-  if (user) {
-    return (
-      <div className={classes.wrapper}>
-        <Header user={user} />
-        <LoggedIn user={user} />
-      </div>
-    );
-  }
-
   return (
     <div className={classes.wrapper}>
-      <Header user={user} />
-      <LogIn logIn={logIn} isLoading={loading} />
+      <Header />
+      {userData.isAuthorized ? (
+        <LoggedIn />
+      ) : (
+        <LogIn logIn={logIn} appInitCompleted={appInitCompleted} />
+      )}
     </div>
   );
 }
