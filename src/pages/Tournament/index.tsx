@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { Context } from "index";
+import React from "react";
 import { useList } from "react-firebase-hooks/database";
 import useStyles from "./styles";
 import { TournamentStruct } from "interfacesAndTypes";
@@ -11,6 +10,7 @@ import {
   TIME_KEY_23,
 } from "utils/constants";
 import CircularLoader from "components/CircularLoader";
+import firebase from "firebase";
 
 interface TournamentProps {
   currentDate: string;
@@ -20,7 +20,7 @@ interface TournamentProps {
 const Tournament = (props: TournamentProps) => {
   const { currentDate, loadingCurrentDate } = props;
   const classes = useStyles();
-  const { database } = useContext(Context);
+  const database = firebase.database();
 
   // firebase refs
   const refTournaments = database.ref("tournaments");

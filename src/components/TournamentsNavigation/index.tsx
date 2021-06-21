@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import useStyles from "./styles";
 import { useHistory } from "react-router-dom";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -11,7 +11,6 @@ import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import { WINNER_ID_DEF_VALUE } from "utils/constants";
-import { Context } from "index";
 import getCurrentDate from "utils/getCurrentDate";
 import firebase from "firebase/app";
 import "firebase/database";
@@ -56,8 +55,8 @@ const TournamentsNavigation = (
   const classes = useStyles();
   const history = useHistory();
   const { handleDialogClose, mobileVersion } = props;
-  const { database } = useContext(Context);
-  const refTournaments = firebase.database().ref("tournaments");
+  const database = firebase.database();
+  const refTournaments = database.ref("tournaments");
   const refTournamentsPush = refTournaments.push();
   const [disabledButton, setDisabledButton] = useState<boolean>(false);
   const refCurrentDate = database.ref("currentDate");
