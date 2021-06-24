@@ -89,7 +89,7 @@ export const userReducer = (
         name: action.payload.name,
         score: action.payload.score,
         sieges: action.payload.sieges,
-        tournaments: action.payload.sieges,
+        tournaments: action.payload.tournaments,
       };
     default:
       return state;
