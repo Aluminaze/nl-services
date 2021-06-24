@@ -14,37 +14,47 @@ import CircularLoader from "components/CircularLoader";
 import firebase from "firebase/app";
 import "firebase/database";
 import useUser from "redux/hooks/useUser";
+import { useDispatch } from "react-redux";
+import { setUserAdditionalData } from "redux/reducers/user/actions";
 
 interface LoggedInProps {}
 
 const LoggedIn = (props: LoggedInProps) => {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
   const database = firebase.database();
   const userData = useUser();
-  const [hasAccess, setHasAccess] = useState<boolean>(false);
   const [checkingAccess, setCheckingAccess] = useState<boolean>(true);
 
   // firebase refs
   const refUsers = database.ref("users");
   const refCurrentDate = database.ref("currentDate");
 
-  const [usersData] = useListVals<UserStruct>(refUsers);
+  const [usersData, loadingUsersData] = useListVals<UserStruct>(refUsers);
   const [currentDate, loadingCurrentDate] =
     useObjectVal<string>(refCurrentDate);
 
-  //
-  // NOTE: Access check
-  //
   useEffect(() => {
-    if (usersData?.length) {
-      setHasAccess(
-        !!usersData.find((user: UserStruct) => user.email === userData.email)
+    if (!loadingUsersData) {
+      const userAdditionalData: UserStruct | undefined = usersData?.find(
+        (user: UserStruct) => user.email === userData.email
       );
+
+      if (userAdditionalData) {
+        dispatch(
+          setUserAdditionalData({
+            id: userAdditionalData.id,
+            name: userAdditionalData.name,
+            score: userAdditionalData.score,
+            sieges: userAdditionalData.sieges,
+            tournaments: userAdditionalData.tournaments,
+          })
+        );
+      }
 
       setCheckingAccess(false);
     }
-  }, [userData.email, usersData]);
+  }, [dispatch, loadingUsersData, userData.email, usersData]);
 
   if (checkingAccess) {
     return (
@@ -53,7 +63,7 @@ const LoggedIn = (props: LoggedInProps) => {
       </div>
     );
   } else {
-    if (hasAccess) {
+    if (userData.tournaments) {
       return (
         <div className={classes.container}>
           <Hidden smDown>
