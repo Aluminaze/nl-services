@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import useStyles from "./styles";
-import Button from "@material-ui/core/Button";
 import firebase from "firebase/app";
 import "firebase/auth";
 import AdminDialog from "components/Dialogs/AdminDialog";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
@@ -16,7 +14,15 @@ import CloseIcon from "@material-ui/icons/Close";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/rootReducer";
 import { resetUserActionCreator } from "redux/reducers/user/actions";
-
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import PersonIcon from "@material-ui/icons/Person";
+import Divider from "@material-ui/core/Divider";
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 interface HeaderProps {}
 
 const Transition = React.forwardRef(function Transition(
@@ -29,15 +35,32 @@ const Transition = React.forwardRef(function Transition(
 const Header = (props: HeaderProps): React.ReactElement => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [isAdminDialogOpen, setIsAdminDialogOpen] = useState<boolean>(false);
   const userData = useSelector((state: RootState) => state.userReducer);
+  const [isAdminDialogOpen, setIsAdminDialogOpen] = useState<boolean>(false);
+  const [isNavDialogOpen, setIsNavDialogOpen] = useState<boolean>(false);
+  const [isPopperOpen, setIsPopperOpen] = useState<boolean>(false);
+  const anchorRef = useRef<HTMLButtonElement>(null);
+
+  const handleTogglePopper = () => {
+    setIsPopperOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClosePopper = (event: React.MouseEvent<EventTarget>) => {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(event.target as HTMLElement)
+    ) {
+      return;
+    }
+
+    setIsPopperOpen(false);
+  };
 
   const LogOut = () => {
+    setIsPopperOpen(false);
     firebase.auth().signOut();
     dispatch(resetUserActionCreator());
   };
-
-  const [isNavDialogOpen, setIsNavDialogOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setIsNavDialogOpen(!isNavDialogOpen);
@@ -45,6 +68,12 @@ const Header = (props: HeaderProps): React.ReactElement => {
 
   const handleClose = () => {
     setIsNavDialogOpen(false);
+  };
+
+  const handleOpenAdminDialog = () => {
+    if (userData.email === "aluminaze@gmail.com") {
+      setIsAdminDialogOpen(!isAdminDialogOpen);
+    }
   };
 
   return (
@@ -70,22 +99,77 @@ const Header = (props: HeaderProps): React.ReactElement => {
       )}
 
       {userData.isAuthorized && (
-        <div className={classes.headerUserInfo}>
-          {userData.email === "aluminaze@gmail.com" ? (
-            <h2 onClick={() => setIsAdminDialogOpen(!isAdminDialogOpen)}>
-              {userData.email}
-            </h2>
-          ) : (
-            <h2>{userData.email}</h2>
+        <div className={classes.headerInfo}>
+          {!isPopperOpen && userData.name && userData.score !== null && (
+            <div
+              className={classes.headerInfoUser}
+              onClick={handleOpenAdminDialog}
+            >
+              <div className={classes.headerInfoUserRating}>
+                <span className={classes.headerInfoUserName}>
+                  {userData.name}
+                </span>
+                <span className={classes.headerInfoUserScore}>
+                  {userData.score}
+                </span>
+              </div>
+            </div>
           )}
-          <Button
-            variant="outlined"
-            size="small"
-            color="secondary"
-            onClick={LogOut}
+          <IconButton ref={anchorRef} onClick={handleTogglePopper}>
+            <PersonIcon color="secondary" />
+          </IconButton>
+          <Popper
+            open={isPopperOpen}
+            anchorEl={anchorRef.current}
+            role={undefined}
+            transition
+            disablePortal
           >
-            Выйти
-          </Button>
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                style={{
+                  transformOrigin:
+                    placement === "bottom" ? "center top" : "center bottom",
+                }}
+              >
+                <Paper>
+                  <ClickAwayListener onClickAway={handleClosePopper}>
+                    <MenuList autoFocusItem={isPopperOpen} id="menu-list-grow">
+                      <MenuItem>
+                        <div className={classes.menuItemIcon}>
+                          <AssignmentIndIcon fontSize="large" />
+                        </div>
+                        <div className={classes.menuItemUser}>
+                          <h1>{userData.fullName}</h1>
+                          <h2>{userData.email}</h2>
+                        </div>
+                      </MenuItem>
+                      <Divider className={classes.divider} />
+
+                      {userData.tournaments && (
+                        <MenuItem>
+                          <div className={classes.menuItemRating}>
+                            <h1>Личный рейтинг</h1>
+                            <div className={classes.menuItemRatingInfo}>
+                              <span>{userData.name}</span>
+                              <span>{userData.score}</span>
+                            </div>
+                          </div>
+                        </MenuItem>
+                      )}
+                      {userData.tournaments && (
+                        <Divider className={classes.divider} />
+                      )}
+                      <MenuItem onClick={LogOut}>
+                        <span>Выйти</span>
+                      </MenuItem>
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
         </div>
       )}
 
