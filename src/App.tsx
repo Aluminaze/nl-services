@@ -51,7 +51,7 @@ function App() {
       dispatch(
         setUserActionCreator({
           email: user.email,
-          name: user.displayName,
+          fullName: user.displayName,
           isAuthorized: true,
         })
       );

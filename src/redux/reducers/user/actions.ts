@@ -1,11 +1,11 @@
 import {
   SetUserActionInterface,
   userActionTypes,
-  UserReducerInterface,
+  PayloadSetUserInterface,
 } from "./userReducer";
 
 export const setUserActionCreator = (
-  payload: UserReducerInterface
+  payload: PayloadSetUserInterface
 ): SetUserActionInterface => ({
   type: userActionTypes.SET_USER,
   payload,
