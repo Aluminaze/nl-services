@@ -1,6 +1,6 @@
 import React from "react";
 import { UserStruct } from "interfacesAndTypes";
-import { useObjectVal } from "react-firebase-hooks/database";
+import { useListVals } from "react-firebase-hooks/database";
 import useStyles from "./styles";
 import clsx from "clsx";
 import CircularLoader from "components/CircularLoader";
@@ -11,24 +11,23 @@ const TournamentRating = () => {
   const database = firebase.database();
 
   // firebase refs
-  const refRatingUsers = database.ref("users");
+  const refUsers = database.ref("users");
 
   // firebase data
-  const [usersValData, loading] =
-    useObjectVal<{ [key: string]: UserStruct }>(refRatingUsers);
-  const usersData: UserStruct[] = usersValData
-    ? Object.values(usersValData)
-    : [];
+  const [usersData, loadingUsersData] = useListVals<UserStruct>(refUsers);
 
   return (
     <section
-      className={clsx(classes.container, loading ? classes.alignCenter : null)}
+      className={clsx(
+        classes.container,
+        loadingUsersData ? classes.alignCenter : null
+      )}
     >
-      {loading ? (
+      {loadingUsersData ? (
         <CircularLoader />
       ) : (
         <ul className={classes.tableContainer}>
-          {usersData.length
+          {usersData?.length
             ? usersData.map((userData: UserStruct, index: number) => (
                 <li
                   className={clsx(
