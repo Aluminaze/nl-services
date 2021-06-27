@@ -30,6 +30,11 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     flexBasis: "20%",
   },
+  customTableRow: {
+    "& .MuiTableCell-root": {
+      padding: "8px",
+    },
+  },
 }));
 
 export default useStyles;
