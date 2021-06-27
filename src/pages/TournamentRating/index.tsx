@@ -46,7 +46,7 @@ const TournamentRating = () => {
     { name: "score", title: "Очки" },
   ]);
   const [sorting, setSorting] = useState<Sorting[]>([
-    { columnName: "city", direction: "asc" },
+    { columnName: "name", direction: "asc" },
   ]);
 
   useEffect(() => {
