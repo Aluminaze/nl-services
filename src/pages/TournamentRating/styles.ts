@@ -33,6 +33,7 @@ const useStyles = makeStyles(() => ({
   customTableRow: {
     "& .MuiTableCell-root": {
       padding: "8px",
+      fontSize: "1rem",
     },
   },
 }));
