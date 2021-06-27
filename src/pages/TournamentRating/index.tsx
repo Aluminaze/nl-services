@@ -26,6 +26,11 @@ interface ITableRow {
   score: number;
 }
 
+interface ITableColumnExtensions {
+  columnName: string;
+  width: string;
+}
+
 const CustomTableRow = (props: Table.DataRowProps): JSX.Element => {
   const classes = useStyles();
   return <Table.Row {...props} className={classes.customTableRow} />;
@@ -47,6 +52,10 @@ const TournamentRating = () => {
   ]);
   const [sorting, setSorting] = useState<Sorting[]>([
     { columnName: "name", direction: "asc" },
+  ]);
+  const [tableColumnExtensions] = useState<ITableColumnExtensions[]>([
+    { columnName: "name", width: "auto" },
+    { columnName: "score", width: "30%" },
   ]);
 
   useEffect(() => {
@@ -73,7 +82,10 @@ const TournamentRating = () => {
           <Grid rows={tableRows} columns={tableColumns}>
             <SortingState sorting={sorting} onSortingChange={setSorting} />
             <IntegratedSorting />
-            <Table rowComponent={CustomTableRow} />
+            <Table
+              rowComponent={CustomTableRow}
+              columnExtensions={tableColumnExtensions}
+            />
             <TableHeaderRow showSortingControls />
           </Grid>
         </ul>
