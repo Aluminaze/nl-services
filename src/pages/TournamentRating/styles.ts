@@ -36,6 +36,13 @@ const useStyles = makeStyles(() => ({
       fontSize: "1rem",
     },
   },
+  selectedRow: {
+    backgroundColor: "rgba(0, 153, 51, .9)",
+
+    "& .MuiTableCell-root": {
+      color: "white",
+    },
+  },
 }));
 
 export default useStyles;

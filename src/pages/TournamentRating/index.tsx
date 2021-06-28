@@ -15,6 +15,7 @@ import {
   IntegratedSorting,
   Sorting,
 } from "@devexpress/dx-react-grid";
+import useUser from "redux/hooks/useUser";
 
 interface ITableColumn {
   name: string;
@@ -32,8 +33,19 @@ interface ITableColumnExtensions {
 }
 
 const CustomTableRow = (props: Table.DataRowProps): JSX.Element => {
+  const { row } = props;
+  const userData = useUser();
+
   const classes = useStyles();
-  return <Table.Row {...props} className={classes.customTableRow} />;
+  return (
+    <Table.Row
+      {...props}
+      className={clsx(
+        classes.customTableRow,
+        row.name === userData.name && classes.selectedRow
+      )}
+    />
+  );
 };
 
 const TournamentRating = () => {
