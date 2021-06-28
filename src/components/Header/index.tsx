@@ -23,6 +23,8 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import PersonIcon from "@material-ui/icons/Person";
 import Divider from "@material-ui/core/Divider";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
+import { useLocation } from "react-router-dom";
+
 interface HeaderProps {}
 
 const Transition = React.forwardRef(function Transition(
@@ -40,6 +42,7 @@ const Header = (props: HeaderProps): React.ReactElement => {
   const [isNavDialogOpen, setIsNavDialogOpen] = useState<boolean>(false);
   const [isPopperOpen, setIsPopperOpen] = useState<boolean>(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
+  const location = useLocation();
 
   const handleTogglePopper = () => {
     setIsPopperOpen((prevOpen) => !prevOpen);
@@ -56,25 +59,27 @@ const Header = (props: HeaderProps): React.ReactElement => {
     setIsPopperOpen(false);
   };
 
-  const LogOut = () => {
+  const LogOut = (): void => {
     setIsPopperOpen(false);
     firebase.auth().signOut();
     dispatch(resetUserActionCreator());
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (): void => {
     setIsNavDialogOpen(!isNavDialogOpen);
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setIsNavDialogOpen(false);
   };
 
-  const handleOpenAdminDialog = () => {
+  const handleOpenAdminDialog = (): void => {
     if (userData.email === "aluminaze@gmail.com") {
       setIsAdminDialogOpen(!isAdminDialogOpen);
     }
   };
+
+  const checkLocation = (): boolean => location.pathname !== "/rating";
 
   return (
     <header className={classes.header}>
@@ -100,21 +105,24 @@ const Header = (props: HeaderProps): React.ReactElement => {
 
       {userData.isAuthorized && (
         <div className={classes.headerInfo}>
-          {!isPopperOpen && userData.name && userData.score !== null && (
-            <div
-              className={classes.headerInfoUser}
-              onClick={handleOpenAdminDialog}
-            >
-              <div className={classes.headerInfoUserRating}>
-                <span className={classes.headerInfoUserName}>
-                  {userData.name}
-                </span>
-                <span className={classes.headerInfoUserScore}>
-                  {userData.score}
-                </span>
+          {!isPopperOpen &&
+            userData.name &&
+            userData.score !== null &&
+            checkLocation() && (
+              <div
+                className={classes.headerInfoUser}
+                onClick={handleOpenAdminDialog}
+              >
+                <div className={classes.headerInfoUserRating}>
+                  <span className={classes.headerInfoUserName}>
+                    {userData.name}
+                  </span>
+                  <span className={classes.headerInfoUserScore}>
+                    {userData.score}
+                  </span>
+                </div>
               </div>
-            </div>
-          )}
+            )}
           <IconButton ref={anchorRef} onClick={handleTogglePopper}>
             <PersonIcon color="secondary" />
           </IconButton>
@@ -147,7 +155,7 @@ const Header = (props: HeaderProps): React.ReactElement => {
                       </MenuItem>
                       <Divider className={classes.divider} />
 
-                      {userData.tournaments && (
+                      {userData.tournaments && checkLocation() && (
                         <MenuItem>
                           <div className={classes.menuItemRating}>
                             <h1>Личный рейтинг</h1>
@@ -158,7 +166,7 @@ const Header = (props: HeaderProps): React.ReactElement => {
                           </div>
                         </MenuItem>
                       )}
-                      {userData.tournaments && (
+                      {userData.tournaments && checkLocation() && (
                         <Divider className={classes.divider} />
                       )}
                       <MenuItem onClick={LogOut}>
