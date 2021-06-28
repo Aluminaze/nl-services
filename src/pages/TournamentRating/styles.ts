@@ -15,20 +15,18 @@ const useStyles = makeStyles(() => ({
   tableContainer: {
     width: "100%",
   },
-  tableRow: {
-    display: "flex",
-    padding: "5px 0",
+  customTableRow: {
+    "& .MuiTableCell-root": {
+      padding: "8px",
+      fontSize: "1rem",
+    },
   },
-  tableRowWithBackground: {
-    backgroundColor: "rgba(0,0,0,.1)",
-  },
-  userName: {
-    flexBasis: "80%",
-    padding: "3px 10px",
-  },
-  userScore: {
-    textAlign: "center",
-    flexBasis: "20%",
+  selectedRow: {
+    backgroundColor: "rgba(0, 153, 51, .9)",
+
+    "& .MuiTableCell-root": {
+      color: "white",
+    },
   },
 }));
 
