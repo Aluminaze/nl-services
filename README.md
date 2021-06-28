@@ -5,7 +5,7 @@ ____
 > ### Front-end
 > * React
 > * TypeScript
-> * Context
+> * Redux
 > * Material UI
 
 > ### Back-end
