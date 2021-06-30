@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-import useStyles from "./styles";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import AdminDialog from "components/Dialogs/AdminDialog";
@@ -8,7 +7,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Dialog from "@material-ui/core/Dialog";
 import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
-import TournamentsNavigation from "components/TournamentsNavigation";
 import Hidden from "@material-ui/core/Hidden";
 import CloseIcon from "@material-ui/icons/Close";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +22,10 @@ import PersonIcon from "@material-ui/icons/Person";
 import Divider from "@material-ui/core/Divider";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import { useLocation } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
+
+import TournamentsNavigation from "components/TournamentsNavigation";
+import useStyles from "./styles";
 
 interface HeaderProps {}
 
@@ -43,6 +45,19 @@ const Header = (props: HeaderProps): React.ReactElement => {
   const [isPopperOpen, setIsPopperOpen] = useState<boolean>(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
+  const [showUserRating, setShowUserRating] = useState<boolean>(false);
+
+  const checkLocation = useCallback(() => {
+    return location.pathname !== "/rating";
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (userData.name.length && userData.score !== null && checkLocation()) {
+      setShowUserRating(true);
+    } else {
+      setShowUserRating(false);
+    }
+  }, [checkLocation, location.pathname, userData.name, userData.score]);
 
   const handleTogglePopper = () => {
     setIsPopperOpen((prevOpen) => !prevOpen);
@@ -79,8 +94,6 @@ const Header = (props: HeaderProps): React.ReactElement => {
     }
   };
 
-  const checkLocation = (): boolean => location.pathname !== "/rating";
-
   return (
     <header className={classes.header}>
       {userData.isAuthorized ? (
@@ -105,24 +118,32 @@ const Header = (props: HeaderProps): React.ReactElement => {
 
       {userData.isAuthorized && (
         <div className={classes.headerInfo}>
-          {!isPopperOpen &&
-            userData.name &&
-            userData.score !== null &&
-            checkLocation() && (
-              <div
-                className={classes.headerInfoUser}
-                onClick={handleOpenAdminDialog}
-              >
-                <div className={classes.headerInfoUserRating}>
-                  <span className={classes.headerInfoUserName}>
-                    {userData.name}
-                  </span>
-                  <span className={classes.headerInfoUserScore}>
-                    {userData.score}
-                  </span>
-                </div>
+          <CSSTransition
+            in={showUserRating}
+            timeout={300}
+            unmountOnExit
+            classNames={{
+              enter: classes.userRatingEnter,
+              enterActive: classes.userRatingEnterActive,
+              exit: classes.userRatingExit,
+              exitActive: classes.userRatingExitActive,
+            }}
+            onExit={() => console.log("exit")}
+          >
+            <div
+              className={classes.headerInfoUser}
+              onClick={handleOpenAdminDialog}
+            >
+              <div className={classes.headerInfoUserRating}>
+                <span className={classes.headerInfoUserName}>
+                  {userData.name}
+                </span>
+                <span className={classes.headerInfoUserScore}>
+                  {userData.score}
+                </span>
               </div>
-            )}
+            </div>
+          </CSSTransition>
           <IconButton ref={anchorRef} onClick={handleTogglePopper}>
             <PersonIcon color="secondary" />
           </IconButton>
@@ -154,21 +175,6 @@ const Header = (props: HeaderProps): React.ReactElement => {
                         </div>
                       </MenuItem>
                       <Divider className={classes.divider} />
-
-                      {userData.tournaments && checkLocation() && (
-                        <MenuItem>
-                          <div className={classes.menuItemRating}>
-                            <h1>Личный рейтинг</h1>
-                            <div className={classes.menuItemRatingInfo}>
-                              <span>{userData.name}</span>
-                              <span>{userData.score}</span>
-                            </div>
-                          </div>
-                        </MenuItem>
-                      )}
-                      {userData.tournaments && checkLocation() && (
-                        <Divider className={classes.divider} />
-                      )}
                       <MenuItem onClick={LogOut}>
                         <span>Выйти</span>
                       </MenuItem>

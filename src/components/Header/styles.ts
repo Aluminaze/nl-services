@@ -68,25 +68,22 @@ const useStyles = makeStyles(() => {
     divider: {
       margin: "8px 0",
     },
-    menuItemRating: {
-      display: "flex",
-      flexDirection: "column",
-      minWidth: "100%",
-      "& h1": {
-        fontSize: 14,
-      },
+    userRatingEnter: {
+      opacity: 0,
+      transform: "scale(0.9)",
     },
-    menuItemRatingInfo: {
-      display: "flex",
-      justifyContent: "space-between",
-      backgroundColor: theme.palette.primary.main,
-      padding: "3px 12px",
-      borderRadius: 5,
-      margin: "5px 0 0 0",
-
-      "& span": {
-        color: "white",
-      },
+    userRatingEnterActive: {
+      opacity: 1,
+      transform: "translateX(0)",
+      transition: "all 300ms",
+    },
+    userRatingExit: {
+      opacity: 1,
+    },
+    userRatingExitActive: {
+      opacity: 0,
+      transform: "scale(0.9)",
+      transition: "all 300ms",
     },
   };
 });
