@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useStyles from "./styles";
 import { useHistory } from "react-router-dom";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -12,6 +12,7 @@ import EventNoteIcon from "@material-ui/icons/EventNote";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import { WINNER_ID_DEF_VALUE } from "utils/constants";
 import getCurrentDate from "utils/getCurrentDate";
+import { CSSTransition } from "react-transition-group";
 import firebase from "firebase/app";
 import "firebase/database";
 
@@ -60,6 +61,11 @@ const TournamentsNavigation = (
   const refTournamentsPush = refTournaments.push();
   const [disabledButton, setDisabledButton] = useState<boolean>(false);
   const refCurrentDate = database.ref("currentDate");
+  const [showNavigation, setShowNavigation] = useState<boolean>(false);
+
+  useEffect(() => {
+    setShowNavigation(true);
+  }, []);
 
   const createEventWithTournaments = () => {
     setDisabledButton(true);
@@ -136,9 +142,20 @@ const TournamentsNavigation = (
   }
 
   return (
-    <div className={classes.nav}>
-      <div className={classes.navButtons}>{navigation}</div>
-    </div>
+    <CSSTransition
+      in={showNavigation}
+      timeout={1000}
+      classNames={{
+        enter: classes.navEnter,
+        enterActive: classes.navEnterActive,
+        exit: classes.navExit,
+        exitActive: classes.navExitActive,
+      }}
+    >
+      <div className={classes.nav}>
+        <div className={classes.navButtons}>{navigation}</div>
+      </div>
+    </CSSTransition>
   );
 };
 

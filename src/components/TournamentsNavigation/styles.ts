@@ -33,6 +33,25 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     justifyContent: "center",
   },
+
+  navEnter: {
+    opacity: 0,
+    transform: "translateX(-150px)",
+  },
+  navEnterActive: {
+    opacity: 1,
+    transform: "translateX(0px)",
+    transition: "all 400ms ease-out",
+  },
+  navExit: {
+    opacity: 1,
+    transform: "translateX(0px)",
+  },
+  navExitActive: {
+    opacity: 0,
+    transition: "all 400ms ease-in",
+    transform: "translateX(-150px)",
+  },
 }));
 
 export default useStyles;
