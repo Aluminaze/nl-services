@@ -128,7 +128,6 @@ const Header = (props: HeaderProps): React.ReactElement => {
               exit: classes.userRatingExit,
               exitActive: classes.userRatingExitActive,
             }}
-            onExit={() => console.log("exit")}
           >
             <div
               className={classes.headerInfoUser}
