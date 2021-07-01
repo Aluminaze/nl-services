@@ -1,4 +1,6 @@
 import { makeStyles, Theme } from "@material-ui/core";
+import { HEADER_HEIGHT } from "utils/constants";
+
 const useStyles = makeStyles((theme: Theme) => ({
   nav: {
     gridArea: "nav",
@@ -10,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   navButtons: {
     position: "sticky",
-    top: 40,
+    top: HEADER_HEIGHT,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
