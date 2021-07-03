@@ -297,7 +297,6 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
       const findedUser: UserStruct | undefined = usersValData.find(
         (user: UserStruct) => user.email === userData.email
       );
-      console.log("~ findedUser", findedUser);
 
       if (findedUser) {
         const tournamentActionLog: string = `в турнире [${tournamentDateId} ${getTimeByTimeKey(
