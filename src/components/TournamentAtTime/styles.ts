@@ -97,6 +97,23 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: ".7rem",
     },
   },
+  addingFormEnter: {
+    opacity: 0,
+    transform: "scale(0.9)",
+  },
+  addingFormEnterActive: {
+    opacity: 1,
+    transform: "translateX(0)",
+    transition: "all 300ms",
+  },
+  addingFormExit: {
+    opacity: 1,
+  },
+  addingFormExitActive: {
+    opacity: 0,
+    transform: "scale(0.9)",
+    transition: "all 300ms",
+  },
 }));
 
 export default useStyles;

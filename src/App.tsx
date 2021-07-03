@@ -17,9 +17,10 @@ const useStyles = makeStyles(() => ({
   wrapper: {
     display: "grid",
     gridTemplateColumns: "1fr",
-    gridTemplateRows: "40px 1fr",
+    gridTemplateRows: "auto 1fr",
     gridTemplateAreas: `'header' 'container'`,
     height: "100vh",
+    overflowY: "scroll",
   },
 }));
 

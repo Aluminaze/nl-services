@@ -34,6 +34,9 @@ const LoggedIn = (props: LoggedInProps) => {
   const [currentDate, loadingCurrentDate] =
     useObjectVal<string>(refCurrentDate);
 
+  //
+  // NOTE: Сохранение дополнительной информации о пользователе
+  //
   useEffect(() => {
     if (!loadingUsersData) {
       const userAdditionalData: UserStruct | undefined = usersData?.find(

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => {
       display: "flex",
       justifyContent: "center",
       alignItems: "flex-start",
-      padding: 20,
+      padding: "68px 20px 20px 20px",
     },
     contentWrapper: {
       gridArea: "container",

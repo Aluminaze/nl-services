@@ -6,6 +6,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: "center",
     margin: "5px 0",
   },
+  rowBlanck: {
+    width: "100%",
+    height: "100%",
+    padding: "5px 15px 5px 10px",
+    textAlign: "center",
+    fontSize: ".95rem",
+    color: "grey",
+  },
   rowText: {
     width: "100%",
     minWidth: 250,

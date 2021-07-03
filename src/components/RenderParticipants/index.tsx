@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import {
   ParticipantInfoStruct,
   ParticipantsStruct,
@@ -14,6 +14,7 @@ import { WINNER_ID_DEF_VALUE } from "utils/constants";
 import { useConfirm } from "material-ui-confirm";
 import getTimeByTimeKey from "utils/getTimeByTimeKey";
 import WarningIcon from "@material-ui/icons/Warning";
+import FlipMove from "react-flip-move";
 
 export interface RenderParticipantsProps {
   timeKey: string;
@@ -25,6 +26,89 @@ export interface RenderParticipantsProps {
   setWinner: (userId: string) => void;
   unsetWinner: (userId: string) => void;
 }
+
+interface ParticipantProps {
+  participantData: ParticipantInfoStruct;
+  winnerId: string | undefined;
+  hasWinner: boolean;
+  usersValData: UserStruct[];
+  disableWorkWithParticipants: boolean;
+  onSetWinner: (id: string) => void;
+  onDeleteParticipant: (id: string) => void;
+}
+
+const Participant = forwardRef((props: ParticipantProps, ref: any) => {
+  const classes = useStyles();
+  const {
+    participantData,
+    winnerId,
+    hasWinner,
+    usersValData,
+    disableWorkWithParticipants,
+    onSetWinner,
+    onDeleteParticipant,
+  } = props;
+  return (
+    <li className={classes.row} key={participantData.id} ref={ref}>
+      <div
+        className={clsx(
+          classes.rowText,
+          winnerId === participantData.id && classes.rowTextUnregular
+        )}
+      >
+        <div className={classes.rowTextElement}>
+          <div className={classes.rowTextElementCheckbox}>
+            {hasWinner && winnerId === participantData.id && (
+              <div
+                className={classes.checkboxWrapper}
+                onClick={() => onSetWinner(participantData.id)}
+              >
+                <CheckBoxIcon color="secondary" />
+              </div>
+            )}
+            {!hasWinner && (
+              <div
+                className={classes.checkboxWrapper}
+                onClick={() => onSetWinner(participantData.id)}
+              >
+                <CheckBoxOutlineBlankIcon />
+              </div>
+            )}
+          </div>
+          <span
+            className={clsx(
+              classes.text,
+              winnerId === participantData.id
+                ? classes.textUnregular
+                : classes.textRegular
+            )}
+          >
+            {getUserNameById(participantData.id, usersValData)}
+          </span>
+        </div>
+        <span
+          className={clsx(
+            classes.text,
+            winnerId === participantData.id
+              ? classes.textUnregular
+              : classes.textRegular
+          )}
+        >
+          {participantData.count}
+        </span>
+      </div>
+
+      {winnerId !== participantData.id && !disableWorkWithParticipants && (
+        <div
+          className={classes.iconWrapper}
+          onClick={() => onDeleteParticipant(participantData.id)}
+        >
+          <HighlightOffIcon color="error" />
+        </div>
+      )}
+    </li>
+  );
+});
 
 const RenderParticipants = (props: RenderParticipantsProps) => {
   const {
@@ -44,7 +128,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
   const [hasWinner, setHasWinner] = useState<boolean>(false);
   const confirmDelete = useConfirm();
 
-  const onSetWinner = (participantId: string) => {
+  const onSetWinner = (participantId: string): void => {
     if (hasWinner) {
       confirmDelete({
         title: (
@@ -74,7 +158,7 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
     }
   };
 
-  const onDeleteParticipant = (participantId: string) => {
+  const onDeleteParticipant = (participantId: string): void => {
     confirmDelete({
       title: (
         <div className={classes.confirmTitle}>
@@ -106,76 +190,26 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
     }
   }, [winnerId]);
 
-  if (participantsData.length) {
-    return (
-      <>
-        {participantsData.map(
-          (participantData: ParticipantInfoStruct, index: number) => (
-            <li className={classes.row} key={index}>
-              <div
-                className={clsx(
-                  classes.rowText,
-                  winnerId === participantData.id && classes.rowTextUnregular
-                )}
-              >
-                <div className={classes.rowTextElement}>
-                  <div className={classes.rowTextElementCheckbox}>
-                    {hasWinner && winnerId === participantData.id && (
-                      <div
-                        className={classes.checkboxWrapper}
-                        onClick={() => onSetWinner(participantData.id)}
-                      >
-                        <CheckBoxIcon color="secondary" />
-                      </div>
-                    )}
-                    {!hasWinner && (
-                      <div
-                        className={classes.checkboxWrapper}
-                        onClick={() => onSetWinner(participantData.id)}
-                      >
-                        <CheckBoxOutlineBlankIcon />
-                      </div>
-                    )}
-                  </div>
-                  <span
-                    className={clsx(
-                      classes.text,
-                      winnerId === participantData.id
-                        ? classes.textUnregular
-                        : classes.textRegular
-                    )}
-                  >
-                    {getUserNameById(participantData.id, usersValData)}
-                  </span>
-                </div>
-                <span
-                  className={clsx(
-                    classes.text,
-                    winnerId === participantData.id
-                      ? classes.textUnregular
-                      : classes.textRegular
-                  )}
-                >
-                  {participantData.count}
-                </span>
-              </div>
-
-              {winnerId !== participantData.id && !disableWorkWithParticipants && (
-                <div
-                  className={classes.iconWrapper}
-                  onClick={() => onDeleteParticipant(participantData.id)}
-                >
-                  <HighlightOffIcon color="error" />
-                </div>
-              )}
-            </li>
-          )
-        )}
-      </>
-    );
-  }
-
-  return null;
+  return (
+    <FlipMove>
+      {participantsData.length ? (
+        participantsData.map((participantData: ParticipantInfoStruct) => (
+          <Participant
+            key={participantData.id}
+            participantData={participantData}
+            usersValData={usersValData}
+            winnerId={winnerId}
+            hasWinner={hasWinner}
+            disableWorkWithParticipants={disableWorkWithParticipants}
+            onSetWinner={onSetWinner}
+            onDeleteParticipant={onDeleteParticipant}
+          />
+        ))
+      ) : (
+        <div className={classes.rowBlanck}>Список пуст</div>
+      )}
+    </FlipMove>
+  );
 };
 
 export default RenderParticipants;
