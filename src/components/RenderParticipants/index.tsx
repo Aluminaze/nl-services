@@ -190,26 +190,26 @@ const RenderParticipants = (props: RenderParticipantsProps) => {
     }
   }, [winnerId]);
 
-  if (participantsData.length) {
-    return (
-      <FlipMove>
-        {participantsData.map((participantData: ParticipantInfoStruct) => (
+  return (
+    <FlipMove>
+      {participantsData.length ? (
+        participantsData.map((participantData: ParticipantInfoStruct) => (
           <Participant
             key={participantData.id}
             participantData={participantData}
             usersValData={usersValData}
             winnerId={winnerId}
             hasWinner={hasWinner}
-            onSetWinner={onSetWinner}
             disableWorkWithParticipants={disableWorkWithParticipants}
+            onSetWinner={onSetWinner}
             onDeleteParticipant={onDeleteParticipant}
           />
-        ))}
-      </FlipMove>
-    );
-  }
-
-  return null;
+        ))
+      ) : (
+        <div className={classes.rowBlanck}>Список пуст</div>
+      )}
+    </FlipMove>
+  );
 };
 
 export default RenderParticipants;
