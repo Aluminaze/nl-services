@@ -9,7 +9,6 @@ import {
   TIME_KEY_19,
   TIME_KEY_23,
 } from "utils/constants";
-import CircularLoader from "components/CircularLoader";
 import firebase from "firebase";
 
 interface TournamentProps {
@@ -33,46 +32,44 @@ const Tournament = (props: TournamentProps) => {
     <section className={classes.container}>
       {!loadingTournamentsAtDay &&
       !loadingCurrentDate &&
-      tournamentsAtDay?.length ? (
-        tournamentsAtDay.map((tournamentSnapshot, index: number) => {
-          const tournamentData: TournamentStruct = tournamentSnapshot.val();
+      tournamentsAtDay?.length
+        ? tournamentsAtDay.map((tournamentSnapshot, index: number) => {
+            const tournamentData: TournamentStruct = tournamentSnapshot.val();
 
-          return (
-            <div className={classes.table} key={index}>
-              <div className={classes.tableContainer}>
-                <h1>Текущая дата турнира: {tournamentData.id}</h1>
+            return (
+              <div className={classes.table} key={index}>
+                <div className={classes.tableContainer}>
+                  <h1>Текущая дата турнира: {tournamentData.id}</h1>
 
-                <TournamentAtTime
-                  tournamentDateId={currentDate}
-                  timeKey={TIME_KEY_11}
-                  tournamentSnapshot={tournamentSnapshot}
-                  participants={tournamentData.time11?.participants}
-                />
-                <TournamentAtTime
-                  tournamentDateId={currentDate}
-                  timeKey={TIME_KEY_15}
-                  tournamentSnapshot={tournamentSnapshot}
-                  participants={tournamentData.time15?.participants}
-                />
-                <TournamentAtTime
-                  tournamentDateId={currentDate}
-                  timeKey={TIME_KEY_19}
-                  tournamentSnapshot={tournamentSnapshot}
-                  participants={tournamentData.time19?.participants}
-                />
-                <TournamentAtTime
-                  tournamentDateId={currentDate}
-                  timeKey={TIME_KEY_23}
-                  tournamentSnapshot={tournamentSnapshot}
-                  participants={tournamentData.time23?.participants}
-                />
+                  <TournamentAtTime
+                    tournamentDateId={currentDate}
+                    timeKey={TIME_KEY_11}
+                    tournamentSnapshot={tournamentSnapshot}
+                    participants={tournamentData.time11?.participants}
+                  />
+                  <TournamentAtTime
+                    tournamentDateId={currentDate}
+                    timeKey={TIME_KEY_15}
+                    tournamentSnapshot={tournamentSnapshot}
+                    participants={tournamentData.time15?.participants}
+                  />
+                  <TournamentAtTime
+                    tournamentDateId={currentDate}
+                    timeKey={TIME_KEY_19}
+                    tournamentSnapshot={tournamentSnapshot}
+                    participants={tournamentData.time19?.participants}
+                  />
+                  <TournamentAtTime
+                    tournamentDateId={currentDate}
+                    timeKey={TIME_KEY_23}
+                    tournamentSnapshot={tournamentSnapshot}
+                    participants={tournamentData.time23?.participants}
+                  />
+                </div>
               </div>
-            </div>
-          );
-        })
-      ) : (
-        <CircularLoader />
-      )}
+            );
+          })
+        : null}
     </section>
   );
 };
