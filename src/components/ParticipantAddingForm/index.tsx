@@ -14,7 +14,7 @@ interface ParticipantAddingFormProps {
   allUserNames: string[];
   selectedParticipantNames: string[];
   sumOfCounts: number;
-  setIsAdding: (status: boolean) => void;
+  setShowAddingForm: (status: boolean) => void;
   addNewParticipant: (userName: string, count: number) => void;
 }
 const amount: string[] = _.range(0, 17).map((num) => String(num));
@@ -25,15 +25,17 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
     allUserNames,
     selectedParticipantNames,
     sumOfCounts,
-    setIsAdding,
+    setShowAddingForm,
     addNewParticipant,
   } = props;
   const classes = useStyles();
-  const [selectedParticipantName, setSelectedParticipantName] =
-    useState<string | null>(null);
+  const [selectedParticipantName, setSelectedParticipantName] = useState<
+    string | null
+  >(null);
   const [inputParticipantName, setInputParticipantName] = useState<string>("");
-  const [inputAmountOfMeat, setInputAmountOfMeat] =
-    useState<string | null>(null);
+  const [inputAmountOfMeat, setInputAmountOfMeat] = useState<string | null>(
+    null
+  );
   const [inputAmount, setInputAmount] = useState<string>("");
   const [isOpenAddedDialog, setIsOpenAddedDialog] = useState<boolean>(false);
   const [isOpenСountDialog, setIsOpenCountDialog] = useState<boolean>(false);
@@ -47,7 +49,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
 
         if (sumOfCounts + count <= MAX_SUM_OF_COUNTS) {
           addNewParticipant(selectedParticipantName, count);
-          setIsAdding(false);
+          setShowAddingForm(false);
         } else {
           setIsOpenCountDialog(true);
         }
@@ -121,7 +123,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           variant="contained"
           size="small"
           color="primary"
-          onClick={() => setIsAdding(false)}
+          onClick={() => setShowAddingForm(false)}
         >
           <span className={classes.btnLabel}>Отмена</span>
         </Button>

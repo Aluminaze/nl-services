@@ -18,6 +18,7 @@ import ActionLogsDialog from "components/Dialogs/ActionLogsDialog";
 import getCurrentDate from "utils/getCurrentDate";
 import useUser from "redux/hooks/useUser";
 import firebase from "firebase";
+import { CSSTransition } from "react-transition-group";
 
 interface TournamentAtTimeProps {
   tournamentDateId: string;
@@ -39,7 +40,8 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const classes = useStyles();
   const database = firebase.database();
   const userData = useUser();
-  const [isAdding, setIsAdding] = useState<boolean>(false);
+  const [showAddingButton, setShowAddingButton] = useState<boolean>(false);
+  const [showAddingForm, setShowAddingForm] = useState<boolean>(false);
   const [selectedParticipantNames, setSelectedParticipantNames] = useState<
     string[]
   >([]);
@@ -80,15 +82,20 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   //
   useEffect(() => {
     if (participants) {
-      const tempSum: number = Object.values(participants).reduce(
+      const calculatedSumOfCounts: number = Object.values(participants).reduce(
         (sum: number, participantData: ParticipantInfoStruct) =>
           sum + participantData.count,
         0
       );
-
-      setSumOfCounts(tempSum);
+      if (calculatedSumOfCounts < MAX_SUM_OF_COUNTS) {
+        setShowAddingButton(true);
+      } else {
+        setShowAddingButton(false);
+      }
+      setSumOfCounts(calculatedSumOfCounts);
     } else {
       setSumOfCounts(0);
+      setShowAddingButton(true);
     }
   }, [participants]);
 
@@ -383,32 +390,42 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
         </ul>
       </div>
 
-      {sumOfCounts < MAX_SUM_OF_COUNTS && (
-        <div className={classes.tableBlockActions}>
-          {isAdding ? (
-            <div className={classes.tableBlockAdding}>
-              <ParticipantAddingForm
-                timeKey={timeKey}
-                allUserNames={allUserNames}
-                selectedParticipantNames={selectedParticipantNames}
-                sumOfCounts={sumOfCounts}
-                setIsAdding={setIsAdding}
-                addNewParticipant={addNewParticipant}
-              />
-            </div>
-          ) : (
-            <Button
-              variant="contained"
-              size="small"
-              color="primary"
-              onClick={() => setIsAdding(true)}
-              disabled={disableWorkWithParticipants}
-            >
-              <span className={classes.btnLabel}>Добавить участника</span>
-            </Button>
-          )}
-        </div>
-      )}
+      <div className={classes.tableBlockActions}>
+        {showAddingButton && (
+          <Button
+            variant="contained"
+            size="small"
+            color="primary"
+            onClick={() => setShowAddingForm(true)}
+            disabled={disableWorkWithParticipants}
+          >
+            <span className={classes.btnLabel}>Добавить участника</span>
+          </Button>
+        )}
+        <CSSTransition
+          in={showAddingForm}
+          timeout={300}
+          unmountOnExit
+          classNames={{
+            enter: classes.addingFormEnter,
+            enterActive: classes.addingFormEnterActive,
+            exit: classes.addingFormExit,
+            exitActive: classes.addingFormExitActive,
+          }}
+          onEnter={() => setShowAddingButton(false)}
+        >
+          <div className={classes.tableBlockAdding}>
+            <ParticipantAddingForm
+              timeKey={timeKey}
+              allUserNames={allUserNames}
+              selectedParticipantNames={selectedParticipantNames}
+              sumOfCounts={sumOfCounts}
+              setShowAddingForm={setShowAddingForm}
+              addNewParticipant={addNewParticipant}
+            />
+          </div>
+        </CSSTransition>
+      </div>
       <ActionLogsDialog
         isDialogOpen={isOpenActionLogsDialog}
         setIsDialogOpen={setIsOpenActionLogsDialog}
