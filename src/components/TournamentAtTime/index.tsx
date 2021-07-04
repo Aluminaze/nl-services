@@ -97,6 +97,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     } else {
       setSumOfCounts(0);
       setShowAddingButton(true);
+      setDisableAddingButton(false);
     }
   }, [participants]);
 
