@@ -14,8 +14,8 @@ interface ParticipantAddingFormProps {
   allUserNames: string[];
   selectedParticipantNames: string[];
   sumOfCounts: number;
-  setShowAddingForm: (status: boolean) => void;
   addNewParticipant: (userName: string, count: number) => void;
+  onCloseForm: () => void;
 }
 const amount: string[] = _.range(0, 17).map((num) => String(num));
 
@@ -25,8 +25,8 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
     allUserNames,
     selectedParticipantNames,
     sumOfCounts,
-    setShowAddingForm,
     addNewParticipant,
+    onCloseForm,
   } = props;
   const classes = useStyles();
   const [selectedParticipantName, setSelectedParticipantName] = useState<
@@ -49,7 +49,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
 
         if (sumOfCounts + count <= MAX_SUM_OF_COUNTS) {
           addNewParticipant(selectedParticipantName, count);
-          setShowAddingForm(false);
+          onCloseForm();
         } else {
           setIsOpenCountDialog(true);
         }
@@ -123,7 +123,7 @@ const ParticipantAddingForm = (props: ParticipantAddingFormProps) => {
           variant="contained"
           size="small"
           color="primary"
-          onClick={() => setShowAddingForm(false)}
+          onClick={onCloseForm}
         >
           <span className={classes.btnLabel}>Отмена</span>
         </Button>

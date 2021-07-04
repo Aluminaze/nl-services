@@ -40,7 +40,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
   const classes = useStyles();
   const database = firebase.database();
   const userData = useUser();
-  const [showAddingButton, setShowAddingButton] = useState<boolean>(false);
+  const [showAddingButton, setShowAddingButton] = useState<boolean>(true);
   const [showAddingForm, setShowAddingForm] = useState<boolean>(false);
   const [selectedParticipantNames, setSelectedParticipantNames] = useState<
     string[]
@@ -50,6 +50,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
     useState<boolean>(false);
   const [disableWorkWithParticipants, setDisableWorkWithParticipants] =
     useState<boolean>(false);
+  const [disableAddingButton, setDisableAddingButton] = useState<boolean>(true);
 
   // firebase refs
   const refUsers = database.ref("users");
@@ -88,9 +89,9 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
         0
       );
       if (calculatedSumOfCounts < MAX_SUM_OF_COUNTS) {
-        setShowAddingButton(true);
+        setDisableAddingButton(false);
       } else {
-        setShowAddingButton(false);
+        setDisableAddingButton(true);
       }
       setSumOfCounts(calculatedSumOfCounts);
     } else {
@@ -397,7 +398,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
             size="small"
             color="primary"
             onClick={() => setShowAddingForm(true)}
-            disabled={disableWorkWithParticipants}
+            disabled={disableWorkWithParticipants || disableAddingButton}
           >
             <span className={classes.btnLabel}>Добавить участника</span>
           </Button>
@@ -413,6 +414,7 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
             exitActive: classes.addingFormExitActive,
           }}
           onEnter={() => setShowAddingButton(false)}
+          onExit={() => setTimeout(() => setShowAddingButton(true), 400)}
         >
           <div className={classes.tableBlockAdding}>
             <ParticipantAddingForm
@@ -420,8 +422,10 @@ const TournamentAtTime = (props: TournamentAtTimeProps) => {
               allUserNames={allUserNames}
               selectedParticipantNames={selectedParticipantNames}
               sumOfCounts={sumOfCounts}
-              setShowAddingForm={setShowAddingForm}
               addNewParticipant={addNewParticipant}
+              onCloseForm={() => {
+                setShowAddingForm(false);
+              }}
             />
           </div>
         </CSSTransition>
