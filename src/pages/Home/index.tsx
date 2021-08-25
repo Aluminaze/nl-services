@@ -1,11 +1,18 @@
 import React from "react";
+import useStyles from "./styles";
 
-const Home = () => {
+const Home: React.FC = (): JSX.Element => {
+  const classes = useStyles();
+
   return (
-    <span>
-      Поздравляю, вы успешно авторизировались! Дождитесь пока администратор
-      проекта откроет вам доступ.
-    </span>
+    <div className={classes.info}>
+      <h1 className={classes.infoTitle}>
+        Поздравляю, вы успешно авторизировались!
+      </h1>
+      <span className={classes.infoText}>
+        Дождитесь пока администратор проекта откроет вам доступ
+      </span>
+    </div>
   );
 };
 
