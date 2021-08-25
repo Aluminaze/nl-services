@@ -3,20 +3,20 @@ import { useObjectVal } from "react-firebase-hooks/database";
 import useStyles from "./styles";
 import firebase from "firebase";
 
-const ActionLogsForYear = () => {
+const ActionLogs = () => {
   const classes = useStyles();
   const database = firebase.database();
   const currentYear: number = new Date().getFullYear();
 
   // firebase refs
-  const refActionLogsForYear = database.ref("actionLogs" + currentYear);
+  const refActionLogs = database.ref("actionLogs" + currentYear);
 
   // firebase data
-  const [actionLogsForYear, loadtionActionLogsForYear] = useObjectVal<{
+  const [actionLogs, loadtionActionLogs] = useObjectVal<{
     [key: string]: string;
-  }>(refActionLogsForYear.limitToLast(100));
-  const actionLogsForYearData: string[] = actionLogsForYear
-    ? Object.values(actionLogsForYear).reverse()
+  }>(refActionLogs.limitToLast(100));
+  const actionLogsData: string[] = actionLogs
+    ? Object.values(actionLogs).reverse()
     : [];
 
   return (
@@ -25,11 +25,11 @@ const ActionLogsForYear = () => {
         <h1>Журнал событий</h1>
       </header>
 
-      {!loadtionActionLogsForYear && (
+      {!loadtionActionLogs && (
         <div className={classes.listWrapper}>
-          {actionLogsForYearData?.length ? (
+          {actionLogsData?.length ? (
             <ul className={classes.list}>
-              {actionLogsForYearData.map((actionLog: string, index: number) => (
+              {actionLogsData.map((actionLog: string, index: number) => (
                 <li key={index}>{actionLog}</li>
               ))}
             </ul>
@@ -44,4 +44,4 @@ const ActionLogsForYear = () => {
   );
 };
 
-export default ActionLogsForYear;
+export default ActionLogs;

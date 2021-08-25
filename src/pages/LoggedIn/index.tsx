@@ -6,7 +6,7 @@ import { UserStruct } from "interfacesAndTypes";
 import useStyles from "./styles";
 import Home from "pages/Home";
 import Tournament from "pages/Tournament";
-import ActionLogsForYear from "pages/ActionLogsForYear";
+import ActionLogs from "pages/ActionLogs";
 import TournamentRating from "pages/TournamentRating";
 import TournamentHistory from "pages/TournamentHistory";
 import TournamentsNavigation from "components/TournamentsNavigation";
@@ -87,7 +87,7 @@ const LoggedIn = (props: LoggedInProps) => {
                 <TournamentHistory />
               </Route>
               <Route exact path="/action-logs">
-                <ActionLogsForYear />
+                <ActionLogs />
               </Route>
               <Redirect to="/tournament" />
             </Switch>
