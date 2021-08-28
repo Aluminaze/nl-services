@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { useListVals, useObjectVal } from "react-firebase-hooks/database";
 import Hidden from "@material-ui/core/Hidden";
 import { UserStruct } from "interfacesAndTypes";
@@ -16,10 +16,10 @@ import "firebase/database";
 import useUser from "redux/hooks/useUser";
 import { useDispatch } from "react-redux";
 import { setUserAdditionalData } from "redux/reducers/user/actions";
+import TournamentHistoryByDate from "pages/TournamentHistoryByDate";
+import Exception404 from "pages/Exception404";
 
-interface LoggedInProps {}
-
-const LoggedIn = (props: LoggedInProps) => {
+const LoggedIn = (): JSX.Element => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const database = firebase.database();
@@ -65,43 +65,48 @@ const LoggedIn = (props: LoggedInProps) => {
         <CircularLoader />
       </div>
     );
-  } else {
-    if (userData.tournaments) {
-      return (
-        <div className={classes.container}>
-          <Hidden smDown>
-            <TournamentsNavigation />
-          </Hidden>
-          <main className={classes.main}>
-            <Switch>
-              <Route exact path="/tournament">
-                <Tournament
-                  currentDate={currentDate ? currentDate : ""}
-                  loadingCurrentDate={loadingCurrentDate}
-                />
-              </Route>
-              <Route exact path="/rating">
-                <TournamentRating />
-              </Route>
-              <Route exact path="/history">
-                <TournamentHistory />
-              </Route>
-              <Route exact path="/action-logs">
-                <ActionLogs />
-              </Route>
-              <Redirect to="/tournament" />
-            </Switch>
-          </main>
-        </div>
-      );
-    }
+  }
 
+  if (userData.tournaments) {
     return (
-      <div className={classes.contentWrapper}>
-        <Home />
+      <div className={classes.container}>
+        <Hidden smDown>
+          <TournamentsNavigation />
+        </Hidden>
+        <main className={classes.main}>
+          <Switch>
+            <Route exact path="/tournament">
+              <Tournament
+                currentDate={currentDate ? currentDate : ""}
+                loadingCurrentDate={loadingCurrentDate}
+              />
+            </Route>
+            <Route exact path="/rating">
+              <TournamentRating />
+            </Route>
+            <Route exact path="/history/">
+              <TournamentHistory />
+            </Route>
+            <Route exact path="/history/:date">
+              <TournamentHistoryByDate />
+            </Route>
+            <Route exact path="/action-logs">
+              <ActionLogs />
+            </Route>
+            <Route path="*">
+              <Exception404 />
+            </Route>
+          </Switch>
+        </main>
       </div>
     );
   }
+
+  return (
+    <div className={classes.contentWrapper}>
+      <Home />
+    </div>
+  );
 };
 
 export default LoggedIn;
