@@ -32,25 +32,18 @@ interface ButtonProps {
   onClick: () => void;
 }
 
-export const ButtonBlack: React.FC<ButtonProps> = ({
-  size,
-  label,
-  variant,
-  disabled,
-  onClick,
-}): JSX.Element => {
+export const ButtonBlack = (props: ButtonProps): JSX.Element => {
+  const { size, label, variant, disabled, onClick } = props;
   const classes = useStyles();
 
   return (
-    <>
-      <ColorBlackButton
-        variant={variant}
-        size={size}
-        onClick={onClick}
-        disabled={disabled}
-      >
-        <span className={classes.btnLabel}>{label}</span>
-      </ColorBlackButton>
-    </>
+    <ColorBlackButton
+      variant={variant}
+      size={size}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      <span className={classes.btnLabel}>{label}</span>
+    </ColorBlackButton>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import useStyles from "./styles";
 
-const Home: React.FC = (): JSX.Element => {
+const Home = (): JSX.Element => {
   const classes = useStyles();
 
   return (

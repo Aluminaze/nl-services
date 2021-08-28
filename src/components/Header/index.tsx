@@ -34,12 +34,12 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
-const HeaderLabel: React.FC = (): JSX.Element => {
+const HeaderLabel = (): JSX.Element => {
   const classes = useStyles();
   return <h1 className={classes.headerLabel}>NLS</h1>;
 };
 
-const Header: React.FC = (): React.ReactElement => {
+const Header = (): JSX.Element => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.userReducer);
