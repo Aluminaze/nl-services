@@ -1,5 +1,5 @@
-import { ButtonBlack } from "components/Buttons";
 import React from "react";
+import { ButtonBlack } from "components/Buttons";
 import { useHistory } from "react-router";
 import useStyles from "./styles";
 
