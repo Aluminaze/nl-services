@@ -20,6 +20,7 @@ const useStyles = makeStyles(() => {
       fontSize: 18,
       color: "#fff",
       padding: "0 0 0 12px",
+      userSelect: "none",
     },
     headerInfo: {
       display: "flex",

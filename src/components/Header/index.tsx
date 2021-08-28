@@ -27,8 +27,6 @@ import { CSSTransition } from "react-transition-group";
 import TournamentsNavigation from "components/TournamentsNavigation";
 import useStyles from "./styles";
 
-interface HeaderProps {}
-
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement },
   ref: React.Ref<unknown>
@@ -36,7 +34,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
-const Header = (props: HeaderProps): React.ReactElement => {
+const Header: React.FC = (): React.ReactElement => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.userReducer);
@@ -94,6 +92,8 @@ const Header = (props: HeaderProps): React.ReactElement => {
     }
   };
 
+  const headerLabel: JSX.Element = <h1 className={classes.headerLabel}>NLS</h1>;
+
   return (
     <header className={classes.header}>
       {userData.isAuthorized ? (
@@ -108,12 +108,10 @@ const Header = (props: HeaderProps): React.ReactElement => {
             </IconButton>
           </Hidden>
 
-          <Hidden smDown>
-            <h1 className={classes.headerLabel}>NLS</h1>
-          </Hidden>
+          <Hidden smDown>{headerLabel}</Hidden>
         </>
       ) : (
-        <h1 className={classes.headerLabel}>NLS</h1>
+        { headerLabel }
       )}
 
       {userData.isAuthorized && (
