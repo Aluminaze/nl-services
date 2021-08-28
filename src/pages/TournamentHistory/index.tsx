@@ -9,18 +9,16 @@ import {
   TIME_KEY_19,
   TIME_KEY_23,
 } from "utils/constants";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import firebase from "firebase";
+import TournamentDatePicker from "components/TournamentDatePicker";
 
-const TournamentHistory = () => {
+const TournamentHistory = (): JSX.Element => {
   const classes = useStyles();
+
   const database = firebase.database();
-  const [tournamentFullDate, setTournamentFullDate] =
-    useState<Date | null>(null);
+  const [tournamentFullDate, setTournamentFullDate] = useState<Date | null>(
+    null
+  );
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   // firebase refs
@@ -50,30 +48,11 @@ const TournamentHistory = () => {
 
   return (
     <section className={classes.container}>
-      <header className={classes.header}>
-        <h1 className={classes.headerTitle}>
-          Выберите дату проведения турнира
-        </h1>
-        <div className={classes.headerDatePicker}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              autoOk={true}
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              id="date-picker"
-              label="дд/мм/гггг"
-              value={tournamentFullDate}
-              onChange={handleDateChange}
-              KeyboardButtonProps={{
-                "aria-label": "change date",
-              }}
-              invalidDateMessage={"Неккоректная дата"}
-            />
-          </MuiPickersUtilsProvider>
-        </div>
-      </header>
+      <TournamentDatePicker
+        date={tournamentFullDate}
+        onChange={handleDateChange}
+      />
+
       {selectedDate && !loadingTournamentsAtDay && (
         <div className={classes.table}>
           {tournamentsAtDay?.length ? (
