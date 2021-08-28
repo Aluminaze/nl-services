@@ -34,6 +34,11 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
+const HeaderLabel: React.FC = (): JSX.Element => {
+  const classes = useStyles();
+  return <h1 className={classes.headerLabel}>NLS</h1>;
+};
+
 const Header: React.FC = (): React.ReactElement => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -92,8 +97,6 @@ const Header: React.FC = (): React.ReactElement => {
     }
   };
 
-  const headerLabel: JSX.Element = <h1 className={classes.headerLabel}>NLS</h1>;
-
   return (
     <header className={classes.header}>
       {userData.isAuthorized ? (
@@ -108,10 +111,12 @@ const Header: React.FC = (): React.ReactElement => {
             </IconButton>
           </Hidden>
 
-          <Hidden smDown>{headerLabel}</Hidden>
+          <Hidden smDown>
+            <HeaderLabel />
+          </Hidden>
         </>
       ) : (
-        { headerLabel }
+        <HeaderLabel />
       )}
 
       {userData.isAuthorized && (
