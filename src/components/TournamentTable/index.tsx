@@ -15,7 +15,7 @@ interface TournamentTableProps {
   date: string | null;
 }
 
-const TournamentTable = (props: TournamentTableProps): JSX.Element => {
+const TournamentTable = (props: TournamentTableProps): JSX.Element | null => {
   const { date } = props;
   const classes = useStyles();
   const database = firebase.database();
@@ -28,54 +28,62 @@ const TournamentTable = (props: TournamentTableProps): JSX.Element => {
     refTournaments.orderByChild("id").equalTo(date)
   );
 
-  return (
-    <>
-      {date && !loadingTournamentsAtDay && (
-        <div className={classes.table}>
-          {tournamentsAtDay?.length ? (
-            tournamentsAtDay.map((tournamentSnapshot, index: number) => {
-              const tournamentData: TournamentStruct = tournamentSnapshot.val();
+  if (loadingTournamentsAtDay) {
+    return null;
+  }
 
-              return (
-                <div className={classes.tableWrapper} key={index}>
-                  <div className={classes.tableContainer}>
-                    <TournamentAtTime
-                      tournamentDateId={date}
-                      timeKey={TIME_KEY_11}
-                      tournamentSnapshot={tournamentSnapshot}
-                      participants={tournamentData.time11?.participants}
-                    />
-                    <TournamentAtTime
-                      tournamentDateId={date}
-                      timeKey={TIME_KEY_15}
-                      tournamentSnapshot={tournamentSnapshot}
-                      participants={tournamentData.time15?.participants}
-                    />
-                    <TournamentAtTime
-                      tournamentDateId={date}
-                      timeKey={TIME_KEY_19}
-                      tournamentSnapshot={tournamentSnapshot}
-                      participants={tournamentData.time19?.participants}
-                    />
-                    <TournamentAtTime
-                      tournamentDateId={date}
-                      timeKey={TIME_KEY_23}
-                      tournamentSnapshot={tournamentSnapshot}
-                      participants={tournamentData.time23?.participants}
-                    />
-                  </div>
+  if (date) {
+    if (tournamentsAtDay?.length) {
+      return (
+        <div className={classes.table}>
+          {tournamentsAtDay.map((tournamentSnapshot, index: number) => {
+            const tournamentData: TournamentStruct = tournamentSnapshot.val();
+
+            return (
+              <div className={classes.tableWrapper} key={index}>
+                <div className={classes.tableContainer}>
+                  <TournamentAtTime
+                    tournamentDateId={date}
+                    timeKey={TIME_KEY_11}
+                    tournamentSnapshot={tournamentSnapshot}
+                    participants={tournamentData.time11?.participants}
+                  />
+                  <TournamentAtTime
+                    tournamentDateId={date}
+                    timeKey={TIME_KEY_15}
+                    tournamentSnapshot={tournamentSnapshot}
+                    participants={tournamentData.time15?.participants}
+                  />
+                  <TournamentAtTime
+                    tournamentDateId={date}
+                    timeKey={TIME_KEY_19}
+                    tournamentSnapshot={tournamentSnapshot}
+                    participants={tournamentData.time19?.participants}
+                  />
+                  <TournamentAtTime
+                    tournamentDateId={date}
+                    timeKey={TIME_KEY_23}
+                    tournamentSnapshot={tournamentSnapshot}
+                    participants={tournamentData.time23?.participants}
+                  />
                 </div>
-              );
-            })
-          ) : (
-            <div className={classes.tableInfo}>
-              <h1>Турнир по введенной дате не найден!</h1>
-            </div>
-          )}
+              </div>
+            );
+          })}
         </div>
-      )}
-    </>
-  );
+      );
+    }
+
+    return (
+      <div className={classes.info}>
+        <h1 className={classes.infoTitle}>
+          Турнир по введенной дате не найден!
+        </h1>
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export default TournamentTable;
