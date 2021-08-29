@@ -6,42 +6,41 @@ import moment from "moment";
 import TournamentTable from "components/TournamentTable";
 
 interface ParamProps {
-  date: string;
+  date: string; // DD-MM-YYYY
 }
 
 const TournamentHistoryByDate = (): JSX.Element => {
   const classes = useStyles();
   const history = useHistory();
+
   const { date } = useParams<ParamProps>();
 
-  const [tournamentFullDate, setTournamentFullDate] = useState<Date | null>(
-    null
-  );
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [dateAsDate, setDateAsDate] = useState<Date | null>(null);
+  const [dateAsString, setDateAsString] = useState<string | null>(null);
 
   //
-  // Если дата корректна, то сохраняем ее в стейт в формате Date
+  // NOTE: Если дата корректна, то сохраняем ее в стейт в формате Date
   //
   useEffect(() => {
     const momentDate = moment(date, "DD-MM-YYYY");
 
     if (momentDate.isValid()) {
-      setTournamentFullDate(momentDate.toDate());
+      setDateAsDate(momentDate.toDate());
     }
   }, [date]);
 
   useEffect(() => {
-    if (tournamentFullDate) {
-      const date: number = tournamentFullDate.getDate();
-      const mounth: number = tournamentFullDate.getMonth() + 1;
-      const year: number = tournamentFullDate.getFullYear();
+    if (dateAsDate) {
+      const date: number = dateAsDate.getDate();
+      const mounth: number = dateAsDate.getMonth() + 1;
+      const year: number = dateAsDate.getFullYear();
       const pickedDate: string = `${date}/${mounth}/${year}`;
 
-      setSelectedDate(pickedDate);
+      setDateAsString(pickedDate);
     } else {
-      setSelectedDate(null);
+      setDateAsString(null);
     }
-  }, [tournamentFullDate]);
+  }, [dateAsDate]);
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
@@ -52,12 +51,9 @@ const TournamentHistoryByDate = (): JSX.Element => {
 
   return (
     <section className={classes.container}>
-      <TournamentDatePicker
-        date={tournamentFullDate}
-        onChange={handleDateChange}
-      />
+      <TournamentDatePicker date={dateAsDate} onChange={handleDateChange} />
 
-      <TournamentTable date={selectedDate} />
+      <TournamentTable date={dateAsString} />
     </section>
   );
 };
