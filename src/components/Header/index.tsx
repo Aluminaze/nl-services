@@ -92,7 +92,7 @@ const Header = (): JSX.Element => {
   };
 
   const handleOpenAdminDialog = (): void => {
-    if (userData.email === "aluminaze@gmail.com") {
+    if (userData.email === process.env.REACT_APP_ADMIN_EMAIL) {
       setIsAdminDialogOpen(!isAdminDialogOpen);
     }
   };
@@ -102,13 +102,17 @@ const Header = (): JSX.Element => {
       {userData.isAuthorized ? (
         <>
           <Hidden mdUp>
-            <IconButton
-              aria-label="nav"
-              color="secondary"
-              onClick={handleClickOpen}
-            >
-              <MenuIcon color="secondary" />
-            </IconButton>
+            {userData.tournaments ? (
+              <IconButton
+                aria-label="nav"
+                color="secondary"
+                onClick={handleClickOpen}
+              >
+                <MenuIcon color="secondary" />
+              </IconButton>
+            ) : (
+              <HeaderLabel />
+            )}
           </Hidden>
 
           <Hidden smDown>
