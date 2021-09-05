@@ -28,6 +28,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: "21rem",
     color: "rgba(0, 0, 0, .08)",
     userSelect: "none",
+
+    [theme.breakpoints.down("md")]: {
+      fontSize: "12rem",
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "6rem",
+    },
   },
 }));
 
