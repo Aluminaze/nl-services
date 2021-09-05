@@ -75,6 +75,9 @@ const LoggedIn = (): JSX.Element => {
         </Hidden>
         <main className={classes.main}>
           <Switch>
+            <Route exact path="/">
+              <Home hasAccess />
+            </Route>
             <Route exact path="/tournament">
               <Tournament
                 currentDate={currentDate ? currentDate : ""}
@@ -104,7 +107,7 @@ const LoggedIn = (): JSX.Element => {
 
   return (
     <div className={classes.contentWrapper}>
-      <Home />
+      <Home hasAccess={false} />
     </div>
   );
 };

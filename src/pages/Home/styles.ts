@@ -5,6 +5,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
 
     [theme.breakpoints.down("md")]: {
       margin: "0 10px",
@@ -21,6 +23,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: "grey",
     margin: "8px 0 0 0",
     textAlign: "center",
+  },
+  label: {
+    fontSize: "21rem",
+    color: "rgba(0, 0, 0, .08)",
+    userSelect: "none",
   },
 }));
 
