@@ -30,13 +30,15 @@ const TournamentHistoryByDate = (): JSX.Element => {
   // NOTE: Если дата корректна, то сохраняем ее в стейт в формате Date
   //
   useEffect(() => {
-    const momentDate = moment(date, "DD-MM-YYYY", true);
+    if (date) {
+      const momentDate = moment(date, ["DD-MM-YYYY", "D-M-YYYY"], true);
 
-    if (momentDate.isValid()) {
-      setDateAsDate(momentDate.toDate());
-      setDateStatus(DateStatus.CORRECT);
-    } else {
-      setDateStatus(DateStatus.UNCORRECT);
+      if (momentDate.isValid()) {
+        setDateAsDate(momentDate.toDate());
+        setDateStatus(DateStatus.CORRECT);
+      } else {
+        setDateStatus(DateStatus.UNCORRECT);
+      }
     }
   }, [date]);
 
@@ -55,7 +57,8 @@ const TournamentHistoryByDate = (): JSX.Element => {
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
-      const dateAsString: string = moment(date).format("DD-MM-YYYY");
+      const dateAsString: string = moment(date).format("D-M-YYYY");
+
       history.push(`/history/${dateAsString}`);
     }
   };
