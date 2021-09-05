@@ -12,9 +12,7 @@ const Home = (props: HomeProps): JSX.Element => {
   return (
     <div className={classes.info}>
       {hasAccess ? (
-        <>
-          <h1 className={classes.label}>NLS</h1>
-        </>
+        <h1 className={classes.label}>NLS</h1>
       ) : (
         <>
           <h1 className={classes.infoTitle}>
