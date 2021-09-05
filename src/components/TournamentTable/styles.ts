@@ -1,11 +1,6 @@
 import { makeStyles, Theme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
   table: {
     display: "flex",
     justifyContent: "center",
@@ -27,19 +22,19 @@ const useStyles = makeStyles((theme: Theme) => ({
       padding: "10px 0",
     },
   },
-  tableInfo: {
+  info: {
     margin: "20px 0",
+  },
+  infoTitle: {
+    textAlign: "center",
 
     [theme.breakpoints.down("sm")]: {
-      "& h1": {
-        fontSize: "1.2rem",
-      },
+      fontSize: "1.2rem",
+      textAlign: "center",
     },
 
     [theme.breakpoints.down("xs")]: {
-      "& h1": {
-        fontSize: "1.1rem",
-      },
+      fontSize: "1.1rem",
     },
   },
 }));

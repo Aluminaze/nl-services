@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CircularLoader: React.FC = (): JSX.Element => {
+const CircularLoader = (): JSX.Element => {
   const classes = useStyles();
 
   return (

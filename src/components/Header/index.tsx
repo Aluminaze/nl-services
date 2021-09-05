@@ -34,12 +34,12 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
-const HeaderLabel: React.FC = (): JSX.Element => {
+const HeaderLabel = (): JSX.Element => {
   const classes = useStyles();
   return <h1 className={classes.headerLabel}>NLS</h1>;
 };
 
-const Header: React.FC = (): React.ReactElement => {
+const Header = (): JSX.Element => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.userReducer);
@@ -92,7 +92,7 @@ const Header: React.FC = (): React.ReactElement => {
   };
 
   const handleOpenAdminDialog = (): void => {
-    if (userData.email === "aluminaze@gmail.com") {
+    if (userData.email === process.env.REACT_APP_ADMIN_EMAIL) {
       setIsAdminDialogOpen(!isAdminDialogOpen);
     }
   };
@@ -102,13 +102,17 @@ const Header: React.FC = (): React.ReactElement => {
       {userData.isAuthorized ? (
         <>
           <Hidden mdUp>
-            <IconButton
-              aria-label="nav"
-              color="secondary"
-              onClick={handleClickOpen}
-            >
-              <MenuIcon color="secondary" />
-            </IconButton>
+            {userData.tournaments ? (
+              <IconButton
+                aria-label="nav"
+                color="secondary"
+                onClick={handleClickOpen}
+              >
+                <MenuIcon color="secondary" />
+              </IconButton>
+            ) : (
+              <HeaderLabel />
+            )}
           </Hidden>
 
           <Hidden smDown>

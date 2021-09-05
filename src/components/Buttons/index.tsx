@@ -25,32 +25,31 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface ButtonProps {
   children?: any;
-  size: "large" | "medium" | "small";
+  size?: "large" | "medium" | "small";
   label: string;
-  variant: "contained" | "outlined" | "text";
+  variant?: "contained" | "outlined" | "text";
   disabled?: boolean;
   onClick: () => void;
 }
 
-export const ButtonBlack: React.FC<ButtonProps> = ({
-  size,
-  label,
-  variant,
-  disabled,
-  onClick,
-}): JSX.Element => {
+export const ButtonBlack = (props: ButtonProps): JSX.Element => {
+  const {
+    size = "medium",
+    label,
+    variant = "outlined",
+    disabled = false,
+    onClick,
+  } = props;
   const classes = useStyles();
 
   return (
-    <>
-      <ColorBlackButton
-        variant={variant}
-        size={size}
-        onClick={onClick}
-        disabled={disabled}
-      >
-        <span className={classes.btnLabel}>{label}</span>
-      </ColorBlackButton>
-    </>
+    <ColorBlackButton
+      variant={variant}
+      size={size}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      <span className={classes.btnLabel}>{label}</span>
+    </ColorBlackButton>
   );
 };
